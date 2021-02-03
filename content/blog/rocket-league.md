@@ -6,10 +6,9 @@ thumbnail: { thumbnailSrc }
 draft: false
 ---
 
-
 A quick tutorial for configuring Rocket League custom maps.
 
-<img href="Rocket League" src="pictures/custom_maps.png" width="550" style="border-radius: 25px;"/>
+<img href="Rocket League" src="images/custom_maps.png" width="550" style="border-radius: 25px;"/>
 
 #### Step 1
 
@@ -21,23 +20,26 @@ Install [Rocket Plugin](https://bakkesplugins.com/plugins/view/26).
 
 #### Step 3
 
-Download Additional [Workshop Textures](https://drive.google.com/file/d/1te3LAFnmeKUemYHiIcmu-tnu_0uF4dSR/view?usp=sharing) and copy them to your game installation directory.  
+Download Additional [Workshop Textures](https://drive.google.com/file/d/1te3LAFnmeKUemYHiIcmu-tnu_0uF4dSR/view?usp=sharing) and copy them to your game installation directory.
+
 ```
 C:\Program Files (x86)\Steam\steamapps\common\rocketleague\TAGame\CookedPCConsole
 ```
 
 #### Step 4
 
-Create a new folder called `mods` in `CookedPCConsole`, the full path should look something like  
+Create a new folder called `mods` in `CookedPCConsole`, the full path should look something like
+
 ```
 C:\Program Files (x86)\Steam\steamapps\common\rocketleague\TAGame\CookedPCConsole\mods
 ```
 
 #### Step 5
 
-Download the desired custom map from [My Google Drive Folder](https://drive.google.com/drive/folders/1q3n5r0Bt7Bqod50DCY58IottOdgv0JcM?usp=sharing).  
+Download the desired custom map from [My Google Drive Folder](https://drive.google.com/drive/folders/1q3n5r0Bt7Bqod50DCY58IottOdgv0JcM?usp=sharing).
 
-Rename the custom map to `Labs_Underpass_P.upk` and place in the newly created `mods` folder.  
+Rename the custom map to `Labs_Underpass_P.upk` and place in the newly created `mods` folder.
+
 ```
 C:\Program Files (x86)\Steam\steamapps\common\rocketleague\TAGame\CookedPCConsole\mods\Labs_Underpass_P.upk
 ```
@@ -54,7 +56,8 @@ Enjoy :)
 #### Extras
 
 Camera Settings
-- Rocket League is a flashy game and by default has awful camera settings.  
-Here are my camera settings:  
 
-<img href="Rocket League" src="pictures/rl_camera_settings.png" width="300" style="border-radius: 10px;"/>
+- Rocket League is a flashy game and has awful camera settings by default.  
+  Here are my camera settings:
+
+<img href="Rocket League" src="images/rl_camera_settings.png" width="300" style="border-radius: 10px;"/>

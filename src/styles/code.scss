@@ -148,3 +148,7 @@ pre[class*='language-'] {
 .token.inserted {
   color: green;
 }
+
+tbody tr:nth-child(odd) {
+  background-color: #f8f8f8;
+}
