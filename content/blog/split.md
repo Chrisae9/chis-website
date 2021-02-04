@@ -7,7 +7,7 @@ draft: false
 
 [split.chis.dev](https://split.chis.dev/)
 
-A React application that lets users dynamically share the cost of a bill. Targeted at college students and first-time apartment renters, Split eliminates the need to do manual bill calculations while increasing bill accuracy and promoting record keeping. Unlike Venmo’s share-cost feature, Split is able to divide a receipt by each individual item. This provides users with a better interface for computing final cost to be distributed to each collaborator.
+A React application that lets users dynamically share the cost of a bill. Targeted at college students and first-time apartment renters, Split eliminates the need to do manual bill calculations while increasing bill accuracy and promoting record keeping. Unlike Venmo’s share-cost feature, Split is able to divide a receipt by each individual item. This provides users with a better interface for computing the final cost to be distributed to each collaborator.
 
 <!-- ![Split](images/split.png) -->
 
@@ -17,7 +17,7 @@ A React application that lets users dynamically share the cost of a bill. Target
 
 ![Split OAuth](images/split-oauth.png)
 
-Split provides users with a single sign-on option using [Google OAuth 2.0](https://developers.google.com/identity/protocols/oauth2). This eliminates the need to store userdata in the backend. Once a user signs in with their Google account, Split will use the ID associated with their account to save and load receipts to a [Mongo database](https://www.mongodb.com/).
+Split provides users with a single sign-on option using [Google OAuth 2.0](https://developers.google.com/identity/protocols/oauth2). This eliminates the need to store user data in the backend. Once a user signs in with their Google account, Split will use the ID associated with their account to save and load receipts to a [Mongo database](https://www.mongodb.com/) accessible through the api located at [api.chis.dev](https://api.chis.dev).
 
 ### React Bootstrap Table 2
 

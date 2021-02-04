@@ -1,7 +1,7 @@
 ---
 title: Rocket League Custom Maps
 date: 2020-10-15 12:02:38
-category: extras
+category: tutorials
 thumbnail: { thumbnailSrc }
 draft: false
 ---
