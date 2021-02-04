@@ -5,9 +5,9 @@ category: resume
 thumbnail: { thumbnailSrc }
 draft: false
 ---
+[Link to Resume](https://share.chis.dev/resume.pdf)
 
-<embed src="https://share.chis.dev/resume.pdf" width="100%" height="1275px" />
-
-I am a recent graduate of George Mason University’s Computer Science program, currently living in Fairfax, Virginia. I spent two summers interning at Northrop Grumman as a Software Engineer.
+I am a recent graduate of George Mason University's Computer Science program, currently living in Fairfax, Virginia. I spent two summers interning at Northrop Grumman as a Software Engineer.
 
 I am looking for software engineering opportunities in the DC area, and would be happy to connect with you!
+
