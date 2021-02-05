@@ -229,7 +229,7 @@ inotifywait -m -e create -e moved_to --format "%f" $TARGET \
           done
 ```
 
-Make the folders to recieve and process the incoming videos:
+Make the folders to receive and process the incoming videos:
 
 `mkdir incoming processed`
 
