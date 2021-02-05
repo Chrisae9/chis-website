@@ -1,6 +1,151 @@
 ---
-title: Hosting a Minecraft Server on a Linux Server
-date: 2020-12-20 05:02:38
+title: Hosting a 24/7 Minecraft Server on Linux with Backups
+date: 2021-01-12 05:02:38
 category: tutorials
 draft: True
 ---
+
+![Minecraft MOTD](images/minecraft-motd.png)
+
+Minecraft is a wonderful game and it is even better with friends. In order to play multiplayer you must run a Java program. This can be tedious because people play Minecraft all hours of the day and night. To keep the player base active, we must make sure that the Minecraft server is accessable to everyone. Here is my setup for a 24/7 modded Minecraft server.
+
+## Installing Modded Minecraft
+
+Download the BuildTools.jar file from the [SpigotMC Website](https://www.spigotmc.org/wiki/buildtools/)
+
+```bash
+mkdir minecraft-server
+cd minecraft-server
+curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+```
+
+Run the BuildTools.jar file:
+
+`java -jar BuildTools.jar`
+
+_Note: this is the same command to use when the server needs to update to a newer version._
+
+Bypass the EULA agreement:
+
+`echo "eula=true" > eula.txt`
+
+Rename the Spigot file:
+
+`mv spigot-{version}.jar server.jar`
+
+Create scripts directory with a start script:
+
+```bash
+mkdir scripts
+cd scripts
+touch start
+chmod +x start
+vim start
+```
+
+```bash
+#!/bin/bash
+
+#4gb server
+cd /hdd/minecraft-server
+java -Xmx4096M -Xms4096M -jar server.jar nogui
+```
+
+Run the server for the first time:
+
+`/hdd/minecraft-server/scripts/start`
+
+Edit the `server.properties` file to include the motd and server ip.
+
+Add a server-icon by dropping a **64x64** image named `server-icon.png` into the root folder.
+
+![Server Icon](images/server-icon.png)
+
+Open minecraft port on firewall
+
+`ufw allow 25565`
+
+_Note: you should enable this on your routers firewall_
+
+## Configuring the Plugins
+
+Create a directory called mods inside the server folder:
+
+`mkdir plugins`
+
+Drop the desired mods into this folder. I believe that Vanilla Minecraft is good on its own so it isn't necessary to install heavy mods into the game. Currently I only have Advanced Teleport installed on my server. But feel free to lookup and install any mods that you like.
+
+`cd plugins`
+
+Download page for [AdvancedTeleport](https://www.spigotmc.org/resources/advanced-teleport.64139/?__cf_chl_jschl_tk__=c186a37a8451c11060100d0ae603750e7be656a9-1612559567-0-ATiV1ovTQtdQFnt6LTgoH9STP1nJB9iExRsBC0f-5_K4Pw_z7aA1B4vT5ZpRZ6DSLMwEdKGIUhyll8oZJON6zlIi71xzzhSBgyXg8RjsF_lG7_vuzPk7LoAoBjsn0d_cmaipaEVCATQ4Y34kOaTZkRWEbjiaYw-NA24WfmIqiKANr2gAqKPubA4t6duEVKraZD29XjWqsDfu-pW5PyzJdbGTLbyhGLla6_U25HHLwu85wfZ7VMHCUuXTW1PQ2362H23VYvijFpuRpJxeETdgH-i1bOr4845VsD3Ylb-ZZnRCXyWZu2NlK5DPFfjxbHYw5F0Apr8cnwIZXyWz86CNoq-4ZfvbIvqMcrw897qZSUFo)
+
+Run the server again and let the mod create its configuration files.
+
+Make any changes to the configuration file here `vim /hdd/minecraft-server/plugins/AdvancedTeleport/config.yml`.
+
+## Creating a Minecraft Systemd Service
+
+Install mcrcon, this will allow us to send commands to the minecraft server without having an interactive terminal session running.
+
+```
+git clone https://github.com/Tiiffi/mcrcon.git
+cd mcrcon
+make
+sudo make install
+```
+
+Open rcon port on firewall
+
+`ufw allow 25575`
+
+_Note: you should enable this on your routers firewall_
+
+Create a stop script in the Minecraft scripts folder:
+
+```bash
+cd /hdd/minecraft-server/scripts
+touch stop
+chmod +x stop
+vim stop
+```
+
+```bash
+#!/bin/sh
+
+mcrcon -H server.chis.dev -P 25575 -p "your-very-own-password" stop
+
+while kill -0 $MAINPID 2>/dev/null
+do
+  sleep 0.5
+done
+```
+
+Make a minecraft-server service:
+
+`sudo vim /lib/systemd/system/minecraft-server.service`
+
+```bash
+[Unit]
+Description=minecraft-server
+After=NetworkManager.service
+
+[Service]
+WorkingDirectory=/hdd/minecraft-server/
+User=chris
+Group=sambashare
+Type=simple
+KillMode=none
+SuccessExitStatus=0 1
+ExecStart=/hdd/minecraft-server/scripts/start
+ExecStop=/hdd/minecraft-server/scripts/stop
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Enable and start the service:
+
+`sudo systemctl start minecraft-server.service`
+
+`sudo systemctl enable minecraft-server.service`
