@@ -2,12 +2,12 @@
 title: Hosting a 24/7 Minecraft Server on Linux with Backups
 date: 2021-01-12 05:02:38
 category: tutorials
-draft: True
+draft: false
 ---
 
 ![Minecraft MOTD](images/minecraft-motd.png)
 
-Minecraft is a wonderful game and it is even better with friends. In order to play multiplayer you must run a Java program. This can be tedious because people play Minecraft all hours of the day and night. To keep the player base active, we must make sure that the Minecraft server is accessable to everyone. Here is my setup for a 24/7 modded Minecraft server.
+Minecraft is a wonderful game and it should be played with friends! What's the point of building amazing cites and structures if no one is going to admire your craftsmanship? In order to play with friends a multiplayer server is required. This can be tedious because people play Minecraft all hours of the day and night. To keep these people building, we must make sure that our Minecraft server is accessible even when we are not awake. Here is my setup for a 24/7 modded Minecraft server.
 
 ## Installing Modded Minecraft
 
