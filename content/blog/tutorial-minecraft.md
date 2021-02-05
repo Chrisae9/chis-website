@@ -1,6 +1,6 @@
 ---
 title: Hosting a 24/7 Minecraft Server on Linux with Backups
-date: 2021-01-12 05:02:38
+date: 2021-02-01 05:02:38
 category: tutorials
 draft: false
 ---
