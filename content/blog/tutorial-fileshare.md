@@ -9,7 +9,7 @@ draft: false
 
 One common problem that arises is having to deal with the Discord upload limit of 100 MB. Previously, I would upload my gaming videos to [Imgur](https://imgur.com/), but ever since they enforced watching ads I can't bear waiting 10 minutes just to share a funny moment.
 
-My solution is to host the video I want to share off of my server. In order to acheive this, I trim the video using [LosslessCut](https://github.com/mifi/lossless-cut) and drop it into a [Samba](https://www.samba.org/) shared folder. This shared folder with be hosted on my server at [share.chis.dev](https://share.chis.dev) using [Nginx](https://www.nginx.com/) paired with [Cloudflare](https://www.cloudflare.com/), once the file is dropped into that folder it can converted into streaming quality using small bash script containing an [`ffmpeg`](https://ffmpeg.org/) command.
+My solution is to host the video I want to share off of my server. In order to acheive this, I trim the video using [LosslessCut](https://github.com/mifi/lossless-cut) and drop it into a [Samba](https://www.samba.org/) shared folder. This shared folder with be hosted on my server at [share.chis.dev](https://share.chis.dev) using [Nginx](https://www.nginx.com/) paired with [Cloudflare](https://www.cloudflare.com/), once the file is dropped into that folder it is automatically converted into streaming quality using [inotify](https://man7.org/linux/man-pages/man7/inotify.7.html) with a small bash script containing an [`ffmpeg`](https://ffmpeg.org/) command.
 
 ## Create a DNS entry for the Sub-domain on Cloudflare
 
@@ -195,10 +195,83 @@ Restart the nginx service
 
 `sudo systemctl restart nginx.service`
 
-## Ffmpeg bash script
+## Automatic Video Conversion
+
+Install inotify:
+
+`sudo apt install inotify-tools`
+
+Create the video conversion script:
+
+```bash
+cd /hdd/share/videos
+touch discord-converter
+chmod +x discord-converter
+vim discord-converter
+```
 
 ```bash
 #!/bin/bash
-ffmpeg -i "$1" -c:v libx264 "$2"
-rm "$1"
+
+TARGET=/hdd/share/videos/incoming
+PROCESSED=/hdd/share/videos/processed
+
+
+inotifywait -m -e create -e moved_to --format "%f" $TARGET \
+        | while read FILENAME
+                do
+                    while fuser "$TARGET/$FILENAME"; do
+                        echo "waiting"
+                    done
+                    if ffmpeg -y -i "$TARGET/$FILENAME" -c:v libx264 "$PROCESSED/$FILENAME"; then
+                            rm "$TARGET/$FILENAME"
+                    fi
+          done
 ```
+
+Make the folders to recieve and process the incoming videos:
+
+`mkdir incoming processed`
+
+Make a discord-converter service:
+
+`sudo vim /lib/systemd/system/discord-converter.service`
+
+```bash
+[Unit]
+Description=discord.converter
+
+[Service]
+WorkingDirectory=/hdd/share/videos/incoming
+Type=simple
+KillMode=none
+SuccessExitStatus=0 1
+ExecStart=/hdd/share/videos/discord-converter
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Enable and start the service:
+
+`sudo systemctl start discord-converter.service`
+
+`sudo systemctl enable discord-converter.service`
+
+Create a URL link for easier access:
+
+`touch /hdd/share/videos/Processed\ Video\ Link.url`
+
+```bash
+[InternetShortcut]
+URL=https://share.chis.dev/videos/processed
+```
+
+Test by dropping a file into the folder:
+
+![Files Incoming](images/file-incoming.png)
+
+Wait for the video to process and it should be available on [share.chis.dev/videos/processed](https://share.chis.dev/videos/processed)
+
+![Files Processed](images/file-processed.png)
