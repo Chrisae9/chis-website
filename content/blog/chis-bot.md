@@ -13,21 +13,19 @@ A Discord bot that provides users with a simple interface to plan pick up Valora
 
 _For additional information, run `$help` bot comand_
 
-| Command  | Description                                                                       |
-| -------- | --------------------------------------------------------------------------------- |
-| \$plan   | Takes in a number of players, creates a new game.                                 |
-| \$add    | Add users by @tag or by typing the display name.                                  |
-| \$addall | Add all users in the current voice channel.                                       |
-| \$delete | Delete users by @tag or by typing the display name.                               |
-| \$team   | Give a list of valid captains to start team selection.                            |
-| \$play   | Click on the letter corresponding to the correct voice channel to move each team. |
-| \$move   | Move all players to the same voice channel                                        |
-| \$side   | Randomly picks a side, (Attackers, Defenders)                                     |
-| \$map    | Randomly picks a Valorant map                                                     |
-
-Notes:
-
-- _Accepted types for users: @Name, Name, "Name With Spaces"_
+| Command                                      | Description                                                                       |
+| -------------------------------------------- | --------------------------------------------------------------------------------- |
+| \$plan \<# spots\> \<title\>                 | Takes in a number of players, creates a new game.                                 |
+| \$rename \<title\>                           | Renames the current plan.                                                         |
+| \$show                                       | Display match, useful for switching text channels.                                |
+| \$add \<@Name, Name, "Name With Spaces"\>    | Add users by @tag or by typing the display name.                                  |
+| \$addall                                     | Add all users in the current voice channel.                                       |
+| \$delete \<@Name, Name, "Name With Spaces"\> | Delete users by @tag or by typing the display name.                               |
+| \$team \<@Name, Name, "Name With Spaces"\>   | Give a list of valid captains to start team selection.                            |
+| \$play                                       | Click on the letter corresponding to the correct voice channel to move each team. |
+| \$side                                       | Randomly picks a side, (Attackers, Defenders).                                    |
+| \$map                                        | Randomly selects a Valorant map.                                                  |
+| \$move                                       | Move all players to the same voice channel, useful after match ends.              |
 
 _Please give support to [zacharied](https://github.com/zacharied) for the wonderful [Discord React-Prompt library](https://github.com/zacharied/discord-eprompt)._
 
