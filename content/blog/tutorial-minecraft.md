@@ -149,3 +149,60 @@ Enable and start the service:
 `sudo systemctl start minecraft-server.service`
 
 `sudo systemctl enable minecraft-server.service`
+
+## Enabling Minecraft Server Backups
+
+Create a backup folder:
+
+`mkdir /hdd/minecraft-backup`
+
+Add a save script to the Minecraft scripts folder:
+
+```bash
+cd /hdd/minecraft-server/scripts
+touch save
+chmod +x save
+```
+
+```bash
+#!/bin/sh
+
+/bin/echo "Starting backup..."
+
+/usr/local/bin/mcrcon -H server.chis.dev -P 25575 -p "your-very-own-password" "say Backing up server."
+/usr/local/bin/mcrcon -H server.chis.dev -P 25575 -p "your-very-own-password" save-off
+/usr/local/bin/mcrcon -H server.chis.dev -P 25575 -p "your-very-own-password" save-all
+
+latest=$(/bin/date '+%h-%d-%Y')
+
+/bin/tar -cpzf /hdd/minecraft-backup/mc-backup-${latest}.tar.gz -P /hdd/minecraft-server
+
+/bin/cp /hdd/minecraft-backup/mc-backup-${latest}.tar.gz /hdd/minecraft-backup/hourly/mc-backup-$(/bin/date '+%H').tar.gz
+
+find /hdd/minecraft-backup -mtime +4 -name "*.gz"
+
+/usr/local/bin/mcrcon -H server.chis.dev -P 25575 -p "your-very-own-password" save-on
+/usr/local/bin/mcrcon -H server.chis.dev -P 25575 -p "your-very-own-password" "say Backup complete!"
+
+/bin/echo "Backup complete!"
+```
+
+This script will use mcrcon to manually save the server. Once it is saved we will create a backup of the server and move it into a backup folder.
+
+Make sure that the cron service is running:
+
+`service cron status`
+
+Turn this script into a cronjob:
+
+`crontab -e`
+
+Add this at the bottom of the file:
+
+`@hourly /hdd/minecraft-server/scripts/save`
+
+_Note: There are other ways to add this script as a cronjob but this is the least intrusive._
+
+To view cron logs:
+
+`grep CRON /var/log/syslog`
