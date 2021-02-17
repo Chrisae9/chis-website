@@ -1,7 +1,7 @@
 ---
 title: Hosting a Gatsby Blog on a Linux Server
 date: 2021-02-07 05:02:38
-category: tutorials
+category: server
 draft: false
 ---
 
@@ -67,7 +67,7 @@ I personally did not like how squished the default starter page looks. I was abl
         style={{
           marginLeft: `auto`,
           marginRight: `auto`,
-          maxWidth: rhythm(48), // expand here
+          maxWidth: rhythm(40), // expand here
           padding: `${rhythm(1)} ${rhythm(3 / 4)}`,
         }}
 ```
