@@ -5,7 +5,11 @@ category: builds
 draft: false
 ---
 
-![Keyboard](images/keyboard.png)
+![Keyboard](images/keyboard_best.JPG)
+
+![Keyboard Letters](images/keyboard_letters.JPG)
+
+![Keyboard Mountain Keycap](images/keyboard_mountain_keycap.JPG)
 
 ### Layout
 

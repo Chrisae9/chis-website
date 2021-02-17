@@ -5,9 +5,9 @@ category: server
 draft: false
 ---
 
-## How to Join
+![Minecraft MOTD](images/minecraft-motd.png)
 
-![server](images/server.png)
+Server Address: `server.chis.dev`
 
 ## World Maps
 

@@ -2,17 +2,26 @@
 title: Mini ITX form factor PC Build 2021
 date: 2021-01-28 12:02:38
 category: builds
-thumbnail: { thumbnailSrc }
 draft: false
 ---
-<iframe width="560" height="315" src="https://www.youtube.com/embed/okdysgL4MM0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 After 6.5 years I decided to repurpose my i7-4790K to be my new permanent server and build a new PC in a Mini ITX form factor.
 
+## Youtube Video
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/okdysgL4MM0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## Pictures
+
+![Room picture](images/room_pic.JPG)
+
+![PC VR headset](images/pc_with_vr_headset_far.JPG)
+
+![PC Glass off](images/pc_glass_off_straight_on.JPG)
 
 ## User Benchmark Results
-![userbenchmark](images/userbenchmark.png)
+
+![Userbenchmark](images/userbenchmark.png)
 
 [Link to Detailed User Run](https://www.userbenchmark.com/UserRun/39141234)
 
@@ -95,7 +104,6 @@ After 6.5 years I decided to repurpose my i7-4790K to be my new permanent server
   </tbody>
 </table>
 
-
 ## Build Notes
 
 - NZXT has always offered high-quality cases for a low price, so I went with the NZXT H210.
@@ -109,6 +117,5 @@ After 6.5 years I decided to repurpose my i7-4790K to be my new permanent server
 - I went with a fully modular power supply so that I didn't have too many wires hanging free in the bottom of the case. I bought from EVGA because I have never had any issues with their products in the past. The 2070 Super that I bought from them off Newegg was refurbished but it came looking brand new.
 
 - I recommend that anyone with a similar build path, try and connect everything to the motherboard before screwing it into the case. It was a PAIN getting all the wires connected with minimal room for fingers.
-
 
 > Feel free to leave any comments about the build and I will make sure to reply :smile:
