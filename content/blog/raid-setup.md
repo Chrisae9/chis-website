@@ -1,5 +1,5 @@
 ---
-title: Configuring RAID 1 on Linux
+title: Configuring RAID on My Home Server
 date: 2021-02-18 05:02:43
 category: server
 draft: false
@@ -56,7 +56,7 @@ I installed the new hard drive into my servers bay and rebooted the PC to enter 
 
 ### Mounting the Drive on Linux
 
-After the hard drives initialized in RAID I needed to get them to mount them to my file system.
+After the hard drives initialized in RAID, I needed to get them to mount them to my file system.
 
 #### Displaying the drive:
 
