@@ -7,7 +7,7 @@ draft: false
 
 ![valheim](images/valheim.png)
 
-I just recently bought the game Valheim, it sparked my attention because I love games that allow the player to craft. After playing a couple of hours I decided that it was time to setup a dedicated server. 
+I just recently bought the game Valheim, it sparked my attention because I love games that allow the player to craft. After playing a couple of hours I decided that it was time to setup a dedicated server.
 
 Here is my process for transfering your already existing Valheim world to a home linux server.
 
@@ -19,9 +19,7 @@ Make sure that SteamCMD is installed on the linux server.
 
 I chose to install SteamCMD here:
 
-```bash
-/hdd/steam
-```
+`/hdd/steam`
 
 ## Installing Valheim's Dedicated Server Application
 
@@ -29,9 +27,7 @@ Valheim's developers decided to put an application on the steam store to make ru
 
 To install this on our linux server we need to launch SteamCMD:
 
-```bash
-/hdd/steam/steamcmd.sh
-```
+`/hdd/steam/steamcmd.sh`
 
 Make sure you are logged into Steam
 
@@ -44,7 +40,8 @@ Set an installation directory:
 ```bash
 force_install_dir valheim_server
 ```
-Install the  Valheim Dedicated Server appllication using its app_id:
+
+Install the Valheim Dedicated Server appllication using its app_id:
 
 ```bash
 app_update 896660
@@ -54,17 +51,13 @@ app_update 896660
 
 The pre-existing save should be located in your %APPDATA%:
 
-```bash
-C:\Users\chris\AppData\LocalLow\IronGate\Valheim
-```
+`C:\Users\chris\AppData\LocalLow\IronGate\Valheim`
 
 Copy the worlds folder to the linux server. Make sure to store this outside of the valheim folder so that it doesn't get deleted on application update.
 
 I decided to rename the folder and store it here:
 
-```bash
-/hdd/steam/valheim_data/worlds
-```
+`/hdd/steam/valheim_data/worlds`
 
 ## Starting the Valheim Server
 
@@ -100,3 +93,6 @@ echo "Starting server PRESS CTRL-C to exit"
 /hdd/steam/valheim_server/valheim_server.x86_64 -name "SERVER_NAME" -port 2456 -world "WORLD_NAME" -password "PASSWORD" -savedir /hdd/steam/valheim_data
 
 export LD_LIBRARY_PATH=$templdpath
+
+> Run by exec `/hdd/steam/valheim.sh`
+```
