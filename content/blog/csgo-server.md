@@ -61,23 +61,19 @@ This will be passed as a parameter in the script to tie the game server to a spe
 
 Visit this [link](https://steamcommunity.com/dev/apikey) to generate a web API token. This is necessary to download community maps from the steam workshop.
 
-## Editing the Server Config
+## Editing the Server Config Files
 
 `/hdd/steam/csgo_server/csgo/cfg/server.cfg`
 
 ```bash
+sv_cheats 1
 sv_maxrate 0
 sv_minrate 80000
 sv_mincmdrate 100
 sv_minupdaterate 100
 
-sv_cheats 1
-sv_vote_issue_restart_game_allowed 1
-sv_vote_allow_in_warmup 1
-
 sv_autobunnyhopping 1
 sv_enablebunnyhopping 1
-sv_clamp_unsafe_velocities 0
 sv_staminamax 0;
 sv_staminajumpcost 0;
 sv_staminalandcost 0;
@@ -86,15 +82,41 @@ sv_airaccelerate 2000;
 sv_accelerate_use_weapon_speed 0;
 sv_maxvelocity 3500;
 sv_falldamage_scale 0
-
-mp_match_restart_delay 20
-//mp_endmatch_votenextmap_keepcurrent 0
-mp_endmatch_votenextmap 1
-mp_endmatch_votenextleveltime 20
-
-mp_warmuptime 0
-mp_restartgame 1
+sv_clamp_unsafe_velocities 0
 ```
+
+`/hdd/steam/csgo_server/csgo/cfg/gamemode_deathmatch.cfg`
+
+```bash
+mp_roundtime										60
+mp_warmuptime										5
+```
+
+## Install SourceMod and Knife Plugin
+
+Follow this [link](https://www.sourcemod.net/downloads.php?branch=stable) to Download Sourcemod.
+
+Follow this [link](https://www.sourcemm.net/downloads.php?branch=stable) to Download MetaMod:Source.
+
+Once downloaded extract the `addons` and `cfg` folders into:
+
+`/hdd/steam/csgo_server/csgo/`
+
+Add yourself as an Admin under `/hdd/steam/csgo_server/csgo/addons/sourcemod/configs/admins_simple.ini`:
+
+```bash
+"STEAM_ID" "99:z" // Username
+```
+
+_To find your Steam ID follow this [link](https://steamidfinder.com/)._
+
+Disable guidelines under by setting this paramater to 'no' under `/hdd/steam/csgo_server/csgo/addons/sourcemod/configs/core.cfg`:
+
+```bash
+	"FollowCSGOServerGuidelines"	"no"
+```
+
+> Players should now be able to change their knife and skin by typing `!knife` and `!ws`.
 
 ## Generating a Run Script
 
