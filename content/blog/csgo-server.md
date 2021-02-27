@@ -92,6 +92,34 @@ mp_roundtime										60
 mp_warmuptime										5
 ```
 
+Copy the default gamemode config to the custom server config and change the map groups to reflect the community maps:
+
+`cp /hdd/steam/csgo_server/csgo/gamemode.txt gamemode_server.txt`
+
+Under the `"deathmatch"` section, change the multiplayer maps section to reflect the community map collection ID:
+
+```
+	// Map groups for online modes
+	"mapgroupsMP"
+	{
+		//Other Maps Groups
+		"2405267676"	""
+	}
+```
+
+Once, the community maps are loaded, append the community maps to the `maplist.txt` and `mapcycle.txt` in the top level directory:
+
+EXAMPLE (`/hdd/steam/csgo_server_csgo/mapcycle.txt`):
+
+```
+workshop\542674577\bhop_aztec
+workshop\817372600\bhop_arcane_classic
+workshop\271411841\bhop_kiwi_cwfx_csgo_fix
+workshop\269112877\bhop_clarity_csgo_fix
+workshop\271318976\bhop_mp_stairs_hq_csgo_b1
+workshop\270797012\bhop_speedrun_valley_csgo_b2
+```
+
 ## Install SourceMod and Knife Plugin
 
 Follow this [link](https://www.sourcemod.net/downloads.php?branch=stable) to Download Sourcemod.
@@ -116,7 +144,7 @@ Disable guidelines under by setting this paramater to 'no' under `/hdd/steam/csg
 	"FollowCSGOServerGuidelines"	"no"
 ```
 
-> Players should now be able to change their knife and skin by typing `!knife` and `!ws`.
+> Players should now be able to change the current knife, skin, and map by typing `!knife`, `!ws`, and `!map`.
 
 ## Generating a Run Script
 
