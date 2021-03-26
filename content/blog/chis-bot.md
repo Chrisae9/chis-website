@@ -43,7 +43,7 @@ This will create a plan named "Valorant Match @ 10" with 10 available spots.
 
 ### Adding Players to the Plan
 
-`$add @Chis unholydog106 "Neko's pet dog"`
+`$add @Chis Unholydog106 "Neko's pet dog"`
 
 This will add 3 players to the current plan.
 
@@ -55,7 +55,7 @@ The bot is able to add people by using thier @Name and by matching with the clos
 
 ## Team Selection
 
-`$team chis anjirocool`
+`$team chis Unholydog106`
 
 Start the team selection by entering two or more players to be captains. Captains can be selected using the same method as add and delete.
 
