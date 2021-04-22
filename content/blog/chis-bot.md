@@ -41,7 +41,7 @@ This will create a plan named "Valorant Match @ 10" with 10 available spots.
 
 ### Adding Players to the Plan
 
-`$add user:@Chis`
+`/add user:@Chis`
 
 This will add a player to the current plan.
 
@@ -59,7 +59,7 @@ Once the team selection begins, the captain can choose the emoji letter correspo
 
 ## Starting the Match
 
-`$play`
+`/play`
 
 After the teams have been selected, run the play command to move the teams to different voice channels.
 
@@ -69,7 +69,7 @@ After the teams have been selected, run the play command to move the teams to di
 
 ## Ending the game
 
-`$move`
+`/move`
 
 After the match has completed, the move command can be used to return everyone to the selected voice channel.
 
