@@ -20,7 +20,7 @@ _Now supports Discord Slash Commands_
 | /display                                   | Display plan, useful for switching text channels.                                 |
 | [/add `user`](#adding-players-to-the-plan) | Add users by @tag or by typing the display name.                                  |
 | /addall                                    | Add all users in the current voice channel.                                       |
-| \$delete `user`                            | Delete users by @tag or by typing the display name.                               |
+| /delete `user`                             | Delete users by @tag or by typing the display name.                               |
 | [/team `user`](#team-selection)            | Give a list of valid captains to start team selection.                            |
 | [/play](#starting-the-match)               | Click on the letter corresponding to the correct voice channel to move each team. |
 | [/move](#ending-the-game)                  | Move all players to the same voice channel, useful after match ends.              |
