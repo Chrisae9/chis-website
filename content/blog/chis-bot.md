@@ -11,21 +11,19 @@ A Discord bot that provides users with a simple interface to plan pickup Valoran
 
 ## Usage
 
-_For additional information, run `$help` bot comand_
+_Now supports Discord Slash Commands_
 
-| Command                                                                  | Description                                                                       |
-| ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
-| [\$plan \<#\> \<title\>](#creating-a-plan)                               | Takes in a number of players, creates a new game.                                 |
-| \$rename \<title\>                                                       | Renames the current plan.                                                         |
-| \$show                                                                   | Display plan, useful for switching text channels.                                 |
-| [\$add \<@Name, Name, "Name With Spaces"\>](#adding-players-to-the-plan) | Add users by @tag or by typing the display name.                                  |
-| \$addall                                                                 | Add all users in the current voice channel.                                       |
-| \$delete \<@Name, Name, "Name With Spaces"\>                             | Delete users by @tag or by typing the display name.                               |
-| [\$team \<@Name, Name, "Name With Spaces"\>](#team-selection)            | Give a list of valid captains to start team selection.                            |
-| [\$play](#starting-the-match)                                            | Click on the letter corresponding to the correct voice channel to move each team. |
-| \$side                                                                   | Randomly picks a side, (Attackers, Defenders).                                    |
-| \$map                                                                    | Randomly selects a Valorant map.                                                  |
-| [\$move](#ending-the-game)                                               | Move all players to the same voice channel, useful after match ends.              |
+| Command                                    | Description                                                                       |
+| ------------------------------------------ | --------------------------------------------------------------------------------- |
+| [\/plan `spots` `title`](#creating-a-plan) | Takes in a number of players, creates a new game.                                 |
+| /rename `title`                            | Renames the current plan.                                                         |
+| /display                                   | Display plan, useful for switching text channels.                                 |
+| [/add `user`](#adding-players-to-the-plan) | Add users by @tag or by typing the display name.                                  |
+| /addall                                    | Add all users in the current voice channel.                                       |
+| \$delete `user`                            | Delete users by @tag or by typing the display name.                               |
+| [/team `user`](#team-selection)            | Give a list of valid captains to start team selection.                            |
+| [/play](#starting-the-match)               | Click on the letter corresponding to the correct voice channel to move each team. |
+| [/move](#ending-the-game)                  | Move all players to the same voice channel, useful after match ends.              |
 
 _Please give support to [zacharied](https://github.com/zacharied) for the wonderful [Discord React-Prompt library](https://github.com/zacharied/discord-eprompt)._
 
@@ -35,7 +33,7 @@ _Please give support to [zacharied](https://github.com/zacharied) for the wonder
 
 ### Creating a plan
 
-`$plan 10 Valorant Match @ 10`
+`/plan spots:10 title: Valorant Match @ 10`
 
 This will create a plan named "Valorant Match @ 10" with 10 available spots.
 
@@ -43,23 +41,19 @@ This will create a plan named "Valorant Match @ 10" with 10 available spots.
 
 ### Adding Players to the Plan
 
-`$add @Chis Unholydog106 "Neko's pet dog"`
+`$add user:@Chis`
 
-This will add 3 players to the current plan.
-
-The bot is able to add people by using thier @Name and by matching with the closest Discord username.
-
-**It is important to note that players are seperated by a space, so anyone with spaces in their name should be enclosed with quotation marks " ".**
+This will add a player to the current plan.
 
 ![Adding Players](images/adding-players.png)
 
 ## Team Selection
 
-`$team chis Unholydog106`
+`/team captain1:@Unholydog106 captain2:@Chis`
 
-Start the team selection by entering two or more players to be captains. Captains can be selected using the same method as add and delete.
+Start the team selection by supplying the captains for the match.
 
-Once the team selection begins, the captain can select the emoji letter corresponding to the player they want to have on their team.
+Once the team selection begins, the captain can choose the emoji letter corresponding to the player they want to have on their team.
 
 ![Team Selection](images/team-selection.png)
 
