@@ -5,7 +5,7 @@ category: projects
 draft: false
 ---
 
-[![chisbot](images/chisbot.png)](https://discord.com/api/oauth2/authorize?client_id=724657775652634795&permissions=8&scope=bot)
+[![chisbot](images/chisbot.png)](https://discord.com/oauth2/authorize?client_id=724657775652634795&permissions=8&scope=bot%20applications.commands)
 
 A Discord bot that provides users with a simple interface to plan pickup Valorant games.
 
