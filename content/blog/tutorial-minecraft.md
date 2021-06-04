@@ -206,3 +206,32 @@ _Note: There are other ways to add this script as a cronjob but this is the leas
 To view cron logs:
 
 `grep CRON /var/log/syslog`
+
+## Moving the Minecraft Server to a User Service
+
+As less people play on the Minecraft server, there is not much of a reason to keep the server running 24/7. This being said, if anyone wants to play on the server I would like them to have the ability to start the service themselves. With the introduction of [Discord Slash Commands](https://discord.com/developers/docs/interactions/slash-commands) it is very easy to restrict commands to certain roles in a server. This is perfect for the Minecraft Server.
+
+The main idea here is to give certain people the ability to start and stop the Minecraft Server using my Discord bot.
+
+Make the Minecraft Server a user service so that the bot has permission to start and stop it as a service.
+
+```bash
+# enable the ‘linger‘ functionality so that the account can use systemd services without being logged in
+loginctl enable-linger chris
+sudo systemctl disable minecraft-server.service
+mkdir -p ~/.config/systemd/user/
+sudo mv /lib/systemd/system/minecraft-server.service ~/.config/systemd/user/
+```
+
+### I had a dbus error so I found this fix
+
+So there's a long standing issue where the `XDG_RUNTIME_DIR` environment variable doesn't get set properly, or at all, when users log in, and therefore can't access the user D-Bus. This happens when the user logs in via some other method than the local graphical console.
+
+You can work around this by adding to the user's `\$HOME/.bashrc`:
+
+`export XDG_RUNTIME_DIR=/run/user/\$(id -u)`
+Then log out and back in.
+
+The bot can now run the command:
+
+`systemctl --user start minecraft-server.service`
