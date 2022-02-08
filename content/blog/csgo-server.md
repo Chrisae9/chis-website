@@ -47,7 +47,7 @@ Set an installation directory:
 force_install_dir csgo_server
 ```
 
-Install the Valheim Dedicated Server appllication using its app_id:
+Install the CSGO Dedicated Server application using its app_id:
 
 ```bash
 app_update 740

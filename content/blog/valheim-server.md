@@ -41,7 +41,7 @@ Set an installation directory:
 force_install_dir valheim_server
 ```
 
-Install the Valheim Dedicated Server appllication using its app_id:
+Install the Valheim Dedicated Server application using its app_id:
 
 ```bash
 app_update 896660

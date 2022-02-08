@@ -1,6 +1,6 @@
 module.exports = {
   title: `Chis.Dev`,
-  description: `My personal website`,
+  description: `Software Engineer. Rock Climber. Video Editor. Gamer.`,
   author: `Chris Alves`,
   introduction: `Software Engineer. Rock Climber. Video Editor. Gamer.`,
   siteUrl: `https://chis.dev`, // Your blog site url
