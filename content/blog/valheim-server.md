@@ -7,13 +7,13 @@ draft: false
 
 ![valheim](images/valheim.png)
 
-I just recently bought the game Valheim, it sparked my attention because I love games that allow the player to craft. After playing a couple of hours I decided that it was time to setup a dedicated server.
+I just recently bought the game Valheim, it sparked my attention because I love games that allow the player to craft. After playing a couple of hours I decided that it was time to set up a dedicated server.
 
-Here is my process for transfering your already existing Valheim world to a home linux server.
+Here is my process for transferring your already existing Valheim world to a home Linux server.
 
 ## Installing SteamCMD
 
-Make sure that SteamCMD is installed on the linux server.
+Make sure that SteamCMD is installed on the Linux server.
 
 [Link to SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD)
 
@@ -23,9 +23,9 @@ I chose to install SteamCMD here:
 
 ## Installing Valheim's Dedicated Server Application
 
-Valheim's developers decided to put an application on the steam store to make running Valheim decicated servers easier.
+Valheim's developers decided to put an application on the steam store to make running Valheim dedicated servers easier.
 
-To install this on our linux server we need to launch SteamCMD:
+To install this on our Linux server we need to launch SteamCMD:
 
 `/hdd/steam/steamcmd.sh`
 
@@ -53,7 +53,7 @@ The pre-existing save should be located in your %APPDATA%:
 
 `C:\Users\chris\AppData\LocalLow\IronGate\Valheim`
 
-Copy the worlds folder to the linux server. Make sure to store this outside of the valheim folder so that it doesn't get deleted on application update.
+Copy the worlds folder to the Linux server. Make sure to store this outside of the Calheim folder so that it doesn't get deleted on the application update.
 
 I decided to rename the folder and store it here:
 
@@ -61,7 +61,7 @@ I decided to rename the folder and store it here:
 
 ## Starting the Valheim Server
 
-Move the start script outside of the valheim folder so that it doesn't get overwritten on application update.
+Move the start script outside of the Valheim folder so that it doesn't get overwritten on the application update.
 
 ```bash
 mv /hdd/steam/valheim_server/start_server.sh /hdd/steam/valheim.sh
@@ -89,7 +89,7 @@ echo "Starting server PRESS CTRL-C to exit"
 
 # Tip: Make a local copy of this script to avoid it being overwritten by steam.
 # NOTE: Minimum password length is 5 characters & Password cant be in the server name.
-# NOTE: You need to make sure the ports 2456-2458 is being forwarded to your server through your local router & firewall.
+# NOTE: You need to make sure the ports 2456-2458 are being forwarded to your server through your local router & firewall.
 /hdd/steam/valheim_server/valheim_server.x86_64 -name "SERVER_NAME" -port 2456 -world "WORLD_NAME" -password "PASSWORD" -savedir /hdd/steam/valheim_data
 
 export LD_LIBRARY_PATH=$templdpath

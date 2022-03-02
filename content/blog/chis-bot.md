@@ -23,7 +23,7 @@ _Now supports Discord Slash Commands_
 | /delete `user`                             | Delete users by @tag or by typing the display name.                               |
 | [/team `user`](#team-selection)            | Give a list of valid captains to start team selection.                            |
 | [/play](#starting-the-match)               | Click on the letter corresponding to the correct voice channel to move each team. |
-| [/move](#ending-the-game)                  | Move all players to the same voice channel, useful after match ends.              |
+| [/move](#ending-the-game)                  | Move all players to the same voice channel, useful after a match ends.            |
 
 _Please give support to [zacharied](https://github.com/zacharied) for the wonderful [Discord React-Prompt library](https://github.com/zacharied/discord-eprompt)._
 
@@ -71,6 +71,6 @@ After the teams have been selected, run the play command to move the teams to di
 
 `/move`
 
-After the match has completed, the move command can be used to return everyone to the selected voice channel.
+After the match has been completed, the move command can be used to return everyone to the selected voice channel.
 
 ![Move Command](images/move-command.png)

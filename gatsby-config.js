@@ -55,6 +55,10 @@ module.exports = {
             },
           },
           {
+            resolve: 'gatsby-remark-embed-gist',
+            options: {},
+          },
+          {
             resolve: `gatsby-remark-prismjs`,
             options: {
               inlineCodeMarker: '%',

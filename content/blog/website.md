@@ -1,13 +1,13 @@
 ---
 title: Hosting a Gatsby Blog on a Linux Server
 date: 2021-02-07 05:02:38
-category: server
+category: tutorials
 draft: false
 ---
 
 Creating a blog is a form of documentation, it allows you to write about things that don't necessarily belong in a GitHub README. It shows others your progress, serving as a record keeper for all of the things you find important. It is your home on the internet.
 
-My goal of this project was not learn web development, but to jumpstart my first blog. After searching the internet for a while, I came across [Gatsby](https://www.gatsbyjs.com/) which seemed like it would provide the best interface for getting a website up quickly. I decided to use [Gatsby Starter Bee](https://github.com/JaeYeopHan/gatsby-starter-bee) which was a very simple but elegant blog template.
+My goal for this project was not to learn web development but to jumpstart my first blog. After searching the internet for a while, I came across [Gatsby](https://www.gatsbyjs.com/) which seemed like it would provide the best interface for getting a website up quickly. I decided to use [Gatsby Starter Bee](https://github.com/JaeYeopHan/gatsby-starter-bee) which was a very simple but elegant blog template.
 
 ## Creating the Website
 
@@ -35,9 +35,9 @@ There were some things that didn't fit my style in the template. Even though the
 
 Fill in the `gatsby-meta-config.js` at the top of the source tree. I decided not to use Google Analytics so I put a `"1"` in the field to bypass the application errors.
 
-I do not have a Meduim account so I decided to replace it with YouTube.
+I do not have a Medium account so I decided to replace it with YouTube.
 
-Find all references of Medium and replace with YouTube. They should be in the `gatsby-meta-config.js` and the `src/components/bio/index.jsx` files.
+Find all references of Medium and replace them with YouTube. They should be in the `gatsby-meta-config.js` and the `src/components/bio/index.jsx` files.
 
 ### Changing the color
 
@@ -58,7 +58,7 @@ I was able to invert the color of the GitHub icon by applying a svg filter in `s
 
 ### Resizing the page
 
-I personally did not like how squished the default starter page looks. I was able to extend the page to be longer by editing the `src/layout/index.jsx` file:
+I did not like how squished the default starter page looks. I was able to extend the page to be longer by editing the `src/layout/index.jsx` file:
 
 ```js
     <React.Fragment>
@@ -107,7 +107,7 @@ return <div className="switch-container">{/* <label htmlFor="normal-switch">
 
 ### Creating a Blog Post
 
-The main reason I like this template is because I get to write my posts in Markdown! The default way to create a post is to run `npm run post`. I decided to not use this functionality because this will create a folder to store each blog post by category. While this seems like a good idea for organization, it adds a uneccessary paths to the URL.
+The main reason I like this template is that I get to write my posts in Markdown! The default way to create a post is to run `npm run post`. I decided to not use this function because this will create a folder to store each blog post by category. While this seems like a good idea for an organization, it adds unnecessary paths to the URL.
 
 For example:
 
@@ -132,7 +132,7 @@ And put any images I need in the `content/blog/images` folder.
 
 ### Hosting on the Web
 
-To buid the website run `gatsby build`
+To build the website run `gatsby build`
 
 Here is my nginx configuration used to host the website on my server:
 

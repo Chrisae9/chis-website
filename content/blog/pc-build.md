@@ -1,7 +1,7 @@
 ---
 title: Mini ITX form factor PC Build 2021
 date: 2021-01-28 12:02:38
-category: builds
+category: projects
 draft: false
 ---
 

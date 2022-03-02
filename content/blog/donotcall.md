@@ -1,239 +1,38 @@
 ---
-title: Project Zomboid Server
-date: 2022-01-05 05:02:43
-category: server
-draft: false
+title: Automated Spam Call Mitigator
+date: 2022-02-28 05:02:43
+category: projects
+draft: False
 ---
 
-![Project Zomboid](images/pz.webp)
+![Spam Call](images/scam.jpg)
 
-Another day another server! 
+Over the past couple of years, spam calls have been a big part of my life. Almost every day I get a call stating that my car's warranty is expired or some threatening message that is supposed to make me feel like I need to fork over some money to whoever is on the other line. It's upsetting knowing that these people are successful with their lucrative businesses. Before my grandparents passed away, they were a victim of this awful scam.
 
-Here is how to get a simple Project Zomboid Dedicated Server up and running. 
+Not only did I want these scammers to stop calling my phone, but I also wanted to make it so they wouldn't be able to call anyone else. Here is what I did to get scammers to stop calling my phone. It's been about a month, and I have not received any spam calls.
 
-You will no longer have to overheat your gaming pc/laptop by hosting a server while playing with your friends.
+## Registering on the National Do Not Call Registry
 
+Yes, it is that simple. If you don't want solicitors to call you then you can register at [donotcall.gov](https://www.donotcall.gov/). That is if they are an organization that follows rules and regulations. This is not enough to stop the scammers that I was dealing with.
 
-## Installing SteamCMD
+## Reporting an Unwanted Call
 
-Make sure that SteamCMD is installed on the linux server.
+If you get a call from an unwanted number you can submit a form on the Do Not Call Registry to get this number blacklisted. According to my knowledge, this works but it is a lengthy process that requires a decent amount of input from the user to get the form completed and submitted.
 
-[Link to SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD)
+## Automating the Form
 
-I chose to install SteamCMD here:
+Here is a quick python script that automates the form submission using Selenium.
 
-`/hdd/steam`
+`gist:chrisae9/ae22a31bd5eba4a3b77e2c914af086da?file=donotcall.py&lines=30-35,43-73`
 
-## Installing Project Zomboid's Dedicated Server Application
+## Configuring on iOS
 
-PZ's developers decided to put an application on the steam store to make running Valheim decicated servers easier.
+To run this script from an iPhone, we must create an iOS Shortcut.
 
-To install this on our linux server we need to launch SteamCMD:
+![donotcall](images/donotcall.png)
 
-`/hdd/steam/steamcmd.sh`
+## Running the Script
 
-Make sure you are logged into Steam
+Whenever a call is received on my phone, I can activate the script using the share contact dialog.
 
-```bash
-login anonymous
-```
-
-Set an installation directory:
-
-```bash
-force_install_dir pz_server
-```
-
-Install the PZ Dedicated Server appllication using its app_id:
-
-```bash
-app_update 380870 validate
-```
-
-## Configuring the Default Settings
-
-Configure the settings by creating the file:
-
-`/hdd/steam/pz_server/servertest.ini`
-
-Here are my set parameters:
-
-```ini
-ServerWelcomeMessage=Welcome to Chis Project Zomboid Server! <LINE> <LINE> To interact with the Chat panel: press Tab, T, or Enter. <LINE> <LINE> The Tab key will change the target stream of the message. <LINE> <LINE> Global Streams: /all <LINE> Local Streams: /say, /yell <LINE> Special Steams: /whisper, /safehouse, /faction. <LINE> <LINE> Press the Up arrow to cycle through your message history. Click the Gear icon to customize chat. <LINE> <LINE> Happy surviving!
-
-Public=true
-
-PublicName=Chis Server
-
-PublicDescription=Friend server.
-
-PingLimit=600
-
-AnnounceDeath=true
-
-UPnP=false
-```
-
-## Starting the PZ Server
-
-Open ports on your router to make the server accessible to people outside of your network.
-
-```bash
-sudo ufw allow 8766
-sudo ufw allow 16261
-```
-Run the server.
-
-```
-/hdd/steam/pz_server/start-server.sh
-```
-
-### Automating the Process Using Discord
-
-Create a systemd service for the PZ start script.
-
-`/lib/systemd/system/pz-server.service`
-
-```bash
-[Unit] 
-Description=pz-server
-After=NetworkManager.service
-
-[Service]
-WorkingDirectory=/hdd/steam/pz
-Type=simple
-KillMode=control-group
-TimeoutStopSec=2
-SuccessExitStatus=0 1
-ExecStart=/hdd/steam/pz/start-server.sh
-Restart=always
-RestartSec=2
-
-[Install]
-WantedBy=multi-user.target
-```
-
-Reload the systemd daemon.
-
-`sudo systemctl daemon-reload`
-
-Create a Discord bot using Python (recommended to use slash commands).
-
-Add a Cog that includes code similar to this:
-
-`options`
-```python
-from discord_slash import SlashContext, cog_ext
-from discord_slash.model import (SlashCommandOptionType,
-                                 SlashCommandPermissionType)
-from discord_slash.utils.manage_commands import (create_choice, create_option,
-                                                 create_permission)
-
-SERVICES = [
-    create_choice(
-        name="Minecraft",
-        value="minecraft-server.service"
-    ),
-    create_choice(
-        name="Project Zomboid",
-        value="pz-server.service"
-    ),
-    create_choice(
-        name="CSGO Bhop",
-        value="csgo-bhop-server.service"
-    )
-]
-```
-
-`slash command`
-```python
-@cog_ext.cog_slash(name="server",
-                    description="Start a Chis Bot service",
-                    options=[
-                        create_option(
-                            name="service",
-                            description="Select a service",
-                            option_type=SlashCommandOptionType.STRING,
-                            required=True,
-                            choices=SERVICES
-                        ),
-                        create_option(
-                            name="state",
-                            description="Stop a service",
-                            option_type=SlashCommandOptionType.STRING,
-                            required=True,
-                            choices=[create_choice(
-                                name="start",
-                                value="start"
-                            ),
-                                create_choice(
-                                name="stop",
-                                value="stop"
-                            ), create_choice(
-                                name="status",
-                                value="status"
-                            )]
-                        )
-                    ],
-                    default_permission=False,
-                    guild_ids=[0000000000],
-                    permissions={000000000000000: [create_permission(
-                        00000000000000, SlashCommandPermissionType.ROLE, True)]}
-                    )
-async def server_command(self, ctx, service, state):
-    await ctx.defer()
-    check = subprocess.run(
-        ['/bin/systemctl', 'show', '-p', 'ActiveState' ,'--value', service], capture_output=True, timeout=120)
-
-    checkout= check.stdout.decode("utf-8")
-    checkerr= check.stderr.decode("utf-8")
-    logging.info(check)
-    action = subprocess.run(
-                ['/bin/systemctl', state, service], capture_output=True, timeout=120)
-    logging.info(action)
-
-    embed = discord.Embed(
-        title=f'Chis Server', description='', color=0xff00d4)
-    embed.set_author(name="Chis Bot", url="https://chis.dev/chis-bot/",
-                        icon_url="https://cdn.discordapp.com/app-icons/724657775652634795/22a8bc7ffce4587048cb74b41d2a7363.png?size=256")
-    embed.add_field(name=f'Service',
-            value=f'{service}', inline=False)
-
-    if state == 'status':
-        embed.add_field(name=f'Command',
-            value=f'{state}', inline=True)
-        embed.add_field(name=f'Output',
-                        value=f'{checkout if checkout else "N/A"}', inline=True)
-        embed.add_field(name=f'Error',
-                        value=f'{checkerr if checkerr else "N/A"}', inline=True)
-
-    if state == 'start':
-        embed.add_field(name=f'Command',
-            value=f'{state}', inline=True)
-        if checkout == "deactivating":
-            embed.add_field(name=f'Action',
-                value=f'{service} is still deactivating, hold on.', inline=True)
-        else:
-            action = subprocess.run(
-                    ['/bin/systemctl', state, service], capture_output=True, timeout=120)
-            embed.add_field(name=f'Action',
-                        value=f'{service} is starting, hold on.', inline=True)
-            embed.add_field(name=f'Previous State',
-                        value=f'{checkout if checkout else "N/A"}', inline=True)
-
-    if state == 'stop':
-        embed.add_field(name=f'Command',
-                    value=f'{state}', inline=True)
-        embed.add_field(name=f'Action',
-                    value=f'{service} is stopped.', inline=True)
-        embed.add_field(name=f'Previous State',
-                    value=f'{checkout if checkout else "N/A"}', inline=True)
-
-    await ctx.send(embed=embed)
-```
-
-If running as not-root make sure to include `--user` tag in `subprocess.run()` function when calling `systemctl`.
-
-Both the bot and the service must be run by the same user.
-
-🦔
+Thanks for reading!

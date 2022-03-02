@@ -9,7 +9,7 @@ draft: false
 
 ## Card Games are Fun
 
-I have owned the card game Phase 10 for a little over a month now and I have been able to play it a handful of times. The card game itself is really fun, but it quickly got old playing the same 10 phases each time. Therefore, I created a webapp to randomly generate the 10 phases.
+I have owned the card game Phase 10 for a little over a month now and I have been able to play it a handful of times. The card game itself is really fun, but it quickly got old playing the same 10 phases each time. Therefore, I created a web app to randomly generate the 10 phases.
 
 ### Creating the randomizer
 
@@ -46,6 +46,6 @@ for n in range(10):
 
 ### Why I chose the generator
 
-I could have made the phases completely random by creating a list of constraints and generating random numbers for each type of combination of cards. But I chose not to do this because it would be very hard to ensure that the phases were increasing in difficulty. Since each combination of cards is unique in its own way, calculating the diffculty between two combinations is not a linear task. So, I went ahead and reused the already generated phases from the wiki page which ended up being a pool of 140+ phases (about 10+ phases per level).
+I could have made the phases completely random by creating a list of constraints and generating random numbers for each type of combination of cards. But I chose not to do this because it would be very hard to ensure that the phases were increasing in difficulty. Since each combination of cards is unique in its way, calculating the difficulty between two combinations is not a linear task. So, I went ahead and reused the already generated phases from the wiki page which ended up being a pool of 140+ phases (about 10+ phases per level).
 
 Link to the randomizer: https://phase.chis.dev/

@@ -1,21 +1,21 @@
 ---
 title: Automatically View SD Card Over Network
 date: 2021-09-08 14:08:64
-category: server
+category: tutorials
 draft: false
 ---
 
 ![DJI Drone Picture](images/dji.png)
 
-I just bought a DJI Drone that takes wonderful pictures in the sky. It uses an mirco SD to save the videos to be viewed later. Since my server is headless, I needed a way to plugin the SD card and have the videos and pictures show up in my network folder.
+I just bought a DJI Drone that takes wonderful pictures in the sky. It uses an Mirco SD to save the videos to be viewed later. Since my server is headless, I needed a way to plug in the SD card and have the videos and pictures show up in my network folder.
 
 ## Create mountpoint
 
-In a shared location create a folder which will be the home for all the data located on the SD card `mkdir /hdd/share/ssd/`.
+In a shared location create a folder that will be the home for all the data located on the SD card `mkdir /hdd/share/ssd/`.
 
-## Autmount Entry
+## Automount Entry
 
-1. Find the UUID of the SD card, this will be used to identify the device when it is pluged in to the server.
+1. Find the UUID of the SD card, this will be used to identify the device when it is plugged into the server.
 
 2. Open the fstab to create the entry. `sudo vim /etc/fstab`
 

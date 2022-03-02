@@ -1,7 +1,7 @@
 ---
 title: Mechanical Keyboard
 date: 2020-07-25 05:02:54
-category: builds
+category: projects
 draft: false
 ---
 

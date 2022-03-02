@@ -9,7 +9,7 @@ draft: false
 
 One common problem that arises is having to deal with the Discord upload limit of 100 MB. Previously, I would upload my gaming videos to [Imgur](https://imgur.com/), but ever since they enforced watching ads I can't bear waiting 10 minutes just to share a funny moment.
 
-My solution is to host the video I want to share off of my server. In order to acheive this, I trim the video using [LosslessCut](https://github.com/mifi/lossless-cut) and drop it into a [Samba](https://www.samba.org/) shared folder. This shared folder with be hosted on my server at [share.chis.dev](https://share.chis.dev) using [Nginx](https://www.nginx.com/) paired with [Cloudflare](https://www.cloudflare.com/), once the file is dropped into that folder it is automatically converted into streaming quality using [inotify](https://man7.org/linux/man-pages/man7/inotify.7.html) with a small bash script containing an [`ffmpeg`](https://ffmpeg.org/) command.
+My solution is to host the video I want to share off of my server. To achieve this, I trim the video using [LosslessCut](https://github.com/mifi/lossless-cut) and drop it into a [Samba](https://www.samba.org/) shared folder. This shared folder with be hosted on my server at [share.chis.dev](https://share.chis.dev) using [Nginx](https://www.nginx.com/) paired with [Cloudflare](https://www.cloudflare.com/), once the file is dropped into that folder it is automatically converted into streaming quality using [inotify](https://man7.org/linux/man-pages/man7/inotify.7.html) with a small bash script containing an [`ffmpeg`](https://ffmpeg.org/) command.
 
 ## Create a DNS entry for the Sub-domain on Cloudflare
 
@@ -21,7 +21,7 @@ Install Samba onto the server:
 
 `sudo apt install samba`
 
-Create a Samba password, this will be used to login through the client:
+Create a Samba password, this will be used to log in through the client:
 
 `sudo smbpasswd -a <user_name>`
 

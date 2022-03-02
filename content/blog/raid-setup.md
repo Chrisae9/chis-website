@@ -1,7 +1,7 @@
 ---
 title: Configuring RAID on My Home Server
 date: 2021-02-18 05:02:43
-category: server
+category: tutorials
 draft: false
 ---
 
@@ -11,11 +11,11 @@ draft: false
 
 Since my server has been running for more than a month, I decided to upgrade the storage solution.
 
-In the event of a hard drive disk failure I wanted to be able to keep my server up and running. To ensure data availability, I decided to setup RAID 1 using two 2TB hard drives.
+In the event of a hard drive disk failure, I wanted to be able to keep my server up and running. To ensure data availability, I decided to set up RAID 1 using two 2TB hard drives.
 
 ## What is RAID 1?
 
-RAID 1 is where stored data is mirrored across the two hard drives. The benefit being, if one hard drive disk fails the other is able to take over. This was important for me because I was storing all of my sensitive data on a 7+ year old Seagate hard drive that came from my first PC build back when I was in high school.
+RAID 1 is where stored data is mirrored across the two hard drives. The benefit is if one hard drive disk fails the other can take over. This was important for me because I was storing all of my sensitive data on a 7+-year-old Seagate hard drive that came from my first PC build back when I was in high school.
 
 ![RAID pic](images/RAID_1.svg)
 
@@ -34,11 +34,11 @@ After reading many articles about NAS storage I decided to go with RAID 1 for th
 
 ## How I Setup RAID on My Server
 
-My goal was to setup two hard drives in RAID mode while leaving my SSD untouched. This allows me to have two copies of all my important data isolating it from the operating system. My SSD will not be in RAID mode and it will be used as a boot drive. It is not important for me to backup my operating system because all of my Ubuntu settings and configuration files are managed by Ansible using a pull configuration.
+My goal was to set up two hard drives in RAID mode while leaving my SSD untouched. This allows me to have two copies of all my important data isolating it from the operating system. My SSD will not be in RAID mode and it will be used as a boot drive. I don't have to back up my operating system because all of my Ubuntu settings and configuration files are managed by Ansible using a pull configuration.
 
 ### Moving the data
 
-The existing hard drive that I had previously been using to run everything from my web sever to my Discord bot needs to formatted in order to be properly configured in RAID mode. To ensure that none of my data was lost I created an archive of all of my data and temporarily stored it on my SSD.
+The existing hard drive that I had previously been using to run everything from my web server to my Discord bot needs to be formatted to be properly configured in RAID mode. To ensure that none of my data was lost I created an archive of all of my data and temporarily stored it on my SSD.
 
 ```bash
 tar -czvf hard_drive.tar.gz /hdd
@@ -50,13 +50,13 @@ I was lucky that data on my hard drive was able to fit on the SSD. If I didn't h
 
 With just a few clicks I was able to enable RAID mode in BIOS.
 
-I installed the new hard drive into my servers bay and rebooted the PC to enter the configuration utility.
+I installed the new hard drive into my server's bay and rebooted the PC to enter the configuration utility.
 
 ![Raid Setup](images/raid_setup.jpg)
 
 ### Mounting the Drive on Linux
 
-After the hard drives initialized in RAID, I needed to get them to mount them to my file system.
+After the hard drives were initialized in RAID, I needed to get them to mount them to my file system.
 
 #### Displaying the drive:
 
@@ -88,7 +88,7 @@ This will mount the drive to the filesystem in the correct place.
 
 #### Persisting Mount on Boot:
 
-In order for the mounted drive to persist on boot, a proper `/etc/fstab` entry must be created:
+For the mounted drive to persist on boot, a proper `/etc/fstab` entry must be created:
 
 ```bash
 /dev/md/chis_raid    /hdd    ext4    defaults    0    0
@@ -103,4 +103,4 @@ tar xvf hard_drive.tar.gz -C /hdd
 rm hard_drive.tar.gz
 ```
 
-> After system reboot, RAID should be setup!
+> After the system reboot, RAID should be set up!

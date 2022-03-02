@@ -7,7 +7,7 @@ draft: false
 
 ![Minecraft MOTD](images/minecraft-motd.png)
 
-Minecraft is a wonderful game and it should be played with friends! What's the point of building amazing cites and structures if no one is going to admire your craftsmanship? In order to play with friends a multiplayer server is required. This can be tedious because people play Minecraft all hours of the day and night. To keep these people building, we must make sure that our Minecraft server is accessible even when we are not awake. Here is my setup for a 24/7 modded Minecraft server.
+Minecraft is a wonderful game and it should be played with friends! What's the point of building amazing cities and structures if no one is going to admire your craftsmanship? To play with friends, a multiplayer server is required. This can be tedious because people play Minecraft all hours of the day and night. To keep these people building, we must make sure that our Minecraft server is accessible even when we are not awake. Here is my setup for a 24/7 modded Minecraft server.
 
 ## Installing Modded Minecraft
 
@@ -61,7 +61,7 @@ Add a server-icon by dropping a **64x64** image named `server-icon.png` into the
 
 ![Server Icon](images/server-icon.png)
 
-Open minecraft port on firewall
+Open Minecraft port on the firewall
 
 `ufw allow 25565`
 
@@ -73,7 +73,7 @@ Create a directory called mods inside the server folder:
 
 `mkdir plugins`
 
-Drop the desired mods into this folder. I believe that Vanilla Minecraft is good on its own so it isn't necessary to install heavy mods into the game. Currently I only have Advanced Teleport installed on my server. But feel free to lookup and install any mods that you like.
+Drop the desired mods into this folder. I believe that Vanilla Minecraft is good on its own so it isn't necessary to install heavy mods into the game. Currently, I only have Advanced Teleport installed on my server. But feel free to look up and install any mods that you like.
 
 `cd plugins`
 
@@ -85,7 +85,7 @@ Make any changes to the configuration file here `vim /hdd/minecraft-server/plugi
 
 ## Creating a Minecraft Systemd Service
 
-Install mcrcon, this will allow us to send commands to the minecraft server without having an interactive terminal session running.
+Install mcrcon, this will allow us to send commands to the Minecraft server without having an interactive terminal session running.
 
 ```
 git clone https://github.com/Tiiffi/mcrcon.git
@@ -94,7 +94,7 @@ make
 sudo make install
 ```
 
-Open rcon port on firewall
+Open rcon port on the firewall
 
 `ufw allow 25575`
 
@@ -209,7 +209,7 @@ To view cron logs:
 
 ## Moving the Minecraft Server to a User Service
 
-As less people play on the Minecraft server, there is not much of a reason to keep the server running 24/7. This being said, if anyone wants to play on the server I would like them to have the ability to start the service themselves. With the introduction of [Discord Slash Commands](https://discord.com/developers/docs/interactions/slash-commands) it is very easy to restrict commands to certain roles in a server. This is perfect for the Minecraft Server.
+As fewer people play on the Minecraft server, there is not much of a reason to keep the server running 24/7. This being said, if anyone wants to play on the server I would like them to have the ability to start the service themselves. With the introduction of [Discord Slash Commands](https://discord.com/developers/docs/interactions/slash-commands) it is very easy to restrict commands to certain roles in a server. This is perfect for the Minecraft Server.
 
 The main idea here is to give certain people the ability to start and stop the Minecraft Server using my Discord bot.
 
@@ -225,7 +225,7 @@ sudo mv /lib/systemd/system/minecraft-server.service ~/.config/systemd/user/
 
 ### I had a dbus error so I found this fix
 
-So there's a long standing issue where the `XDG_RUNTIME_DIR` environment variable doesn't get set properly, or at all, when users log in, and therefore can't access the user D-Bus. This happens when the user logs in via some other method than the local graphical console.
+So there's a long-standing issue where the `XDG_RUNTIME_DIR` environment variable doesn't get set properly, or at all, when users log in, and therefore can't access the user D-Bus. This happens when the user logs in via some other method than the local graphical console.
 
 You can work around this by adding to the user's `\$HOME/.bashrc`:
 

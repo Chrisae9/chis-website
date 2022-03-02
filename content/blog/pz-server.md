@@ -7,16 +7,15 @@ draft: false
 
 ![Project Zomboid](images/pz.webp)
 
-Another day another server! 
+Another day another server!
 
-Here is how to get a simple Project Zomboid Dedicated Server up and running. 
+Here is how to get a simple Project Zomboid Dedicated Server up and running.
 
 You will no longer have to overheat your gaming pc/laptop by hosting a server while playing with your friends.
 
-
 ## Installing SteamCMD
 
-Make sure that SteamCMD is installed on the linux server.
+Make sure that SteamCMD is installed on the Linux server.
 
 [Link to SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD)
 
@@ -26,9 +25,9 @@ I chose to install SteamCMD here:
 
 ## Installing Project Zomboid's Dedicated Server Application
 
-PZ's developers decided to put an application on the steam store to make running Valheim decicated servers easier.
+PZ's developers decided to put an application on the steam store to make running Valheim dedicated servers easier.
 
-To install this on our linux server we need to launch SteamCMD:
+To install this on our Linux server we need to launch SteamCMD:
 
 `/hdd/steam/steamcmd.sh`
 
@@ -44,7 +43,7 @@ Set an installation directory:
 force_install_dir pz_server
 ```
 
-Install the PZ Dedicated Server appllication using its app_id:
+Install the PZ Dedicated Server application using its app_id:
 
 ```bash
 app_update 380870 validate
@@ -82,6 +81,7 @@ Open ports on your router to make the server accessible to people outside of you
 sudo ufw allow 8766
 sudo ufw allow 16261
 ```
+
 Run the server.
 
 ```
@@ -95,7 +95,7 @@ Create a systemd service for the PZ start script.
 `/lib/systemd/system/pz-server.service`
 
 ```bash
-[Unit] 
+[Unit]
 Description=pz-server
 After=NetworkManager.service
 
@@ -122,6 +122,7 @@ Create a Discord bot using Python (recommended to use slash commands).
 Add a Cog that includes code similar to this:
 
 `options`
+
 ```python
 from discord_slash import SlashContext, cog_ext
 from discord_slash.model import (SlashCommandOptionType,
@@ -146,6 +147,7 @@ SERVICES = [
 ```
 
 `slash command`
+
 ```python
 @cog_ext.cog_slash(name="server",
                     description="Start a Chis Bot service",

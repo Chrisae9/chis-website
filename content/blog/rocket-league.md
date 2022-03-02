@@ -10,54 +10,40 @@ A quick tutorial for configuring Rocket League custom maps.
 
 <img href="Rocket League" src="images/custom_maps.png" width="550" style="border-radius: 25px;"/>
 
-#### Step 1
+## Installing BakkesMod
 
 Install [Bakkes Mod](https://www.bakkesmod.com/) and run the program.
 
-#### Step 2
+## Installing Plugins
 
-Install [Rocket Plugin](https://bakkesplugins.com/plugins/view/26).
+- [Rocket Plugin](https://bakkesplugins.com/plugins/view/26)
+- [NetCode Plugin](https://bakkesplugins.com/plugins/view/166)
+- [Workshop Map Downloader](https://bakkesplugins.com/plugins/view/223)
 
-#### Step 3
+## Downloading Custom Maps
 
-Download Additional [Workshop Textures](https://drive.google.com/file/d/1te3LAFnmeKUemYHiIcmu-tnu_0uF4dSR/view?usp=sharing) and copy them to your game installation directory.
+Use the [Workshop Map Downloader](https://bakkesplugins.com/plugins/view/223) or [Steam Workshop](https://steamcommunity.com/app/252950/workshop/) to download the desired map. Make sure to read description as maps have different settings that need to be configured.
 
-```
-C:\Program Files (x86)\Steam\steamapps\common\rocketleague\TAGame\CookedPCConsole
-```
+## Joining a Custom Game
 
-#### Step 4
+- Open BakkesMod using `F2`.
+- Switch to the Rocket Plugin, located under the plugin tab
+- Open the GUI
+- On the right hand side, enter the correct IP and Port (default=`7777`)
+- Click "joining a custom game"
+- Select correct map
+- Follow the steps by restarting game
+- Navigate back to Rocket Plugin and deselect "joining a custom game"
+- Wait for host, click join
 
-Create a new folder called `mods` in `CookedPCConsole`, the full path should look something like
+## Hosting a Custom Game
 
-```
-C:\Program Files (x86)\Steam\steamapps\common\rocketleague\TAGame\CookedPCConsole\mods
-```
+Forward port `7777` on router
 
-#### Step 5
-
-Download the desired custom map from [My Google Drive Folder](https://drive.google.com/drive/folders/1q3n5r0Bt7Bqod50DCY58IottOdgv0JcM?usp=sharing).
-
-Rename the custom map to `Labs_Underpass_P.upk` and place in the newly created `mods` folder.
-
-```
-C:\Program Files (x86)\Steam\steamapps\common\rocketleague\TAGame\CookedPCConsole\mods\Labs_Underpass_P.upk
-```
-
-#### Step 6
-
-Launch Rocket League.
-Open BakkesMod using `F2`.  
-Switch to the Rocket Plugin, located under the plugin tab.  
-Type in the correct IP and Port.
-
-Enjoy :)
-
-#### Extras
-
-Camera Settings
-
-- Rocket League is a flashy game and has awful camera settings by default.  
-  Here are my camera settings:
-
-<img href="Rocket League" src="images/rl_camera_settings.png" width="300" style="border-radius: 10px;"/>
+- Launch Rocket League.
+- Open BakkesMod using `F2`.
+- Switch to the Rocket Plugin, located under the plugin tab.
+- Select correct map
+- Change settings according to workshop description
+- Click host new game
+- Share IP with friends
