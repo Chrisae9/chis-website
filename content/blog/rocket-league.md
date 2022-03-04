@@ -12,28 +12,32 @@ A quick tutorial for configuring Rocket League custom maps.
 
 ## Installing BakkesMod
 
-Install [Bakkes Mod](https://www.bakkesmod.com/) and run the program.
+- Install <a href="https://www.bakkesmod.com/" target="_blank">Bakkes Mod</a>
+- Run the program
+- Launch Rocket League Before installing plugins
+
 
 ## Installing Plugins
 
-- [Rocket Plugin](https://bakkesplugins.com/plugins/view/26)
-- [NetCode Plugin](https://bakkesplugins.com/plugins/view/166)
-- [Workshop Map Downloader](https://bakkesplugins.com/plugins/view/223)
+- <a href="https://bakkesplugins.com/plugins/view/26" target="_blank">Rocket Plugin</a>
+- <a href="https://bakkesplugins.com/plugins/view/166" target="_blank">NetCode Plugin</a>
+- <a href="https://bakkesplugins.com/plugins/view/223" target="_blank">Workshop Map Downloader</a>
 
 ## Downloading Custom Maps
 
-Use the [Workshop Map Downloader](https://bakkesplugins.com/plugins/view/223) or [Steam Workshop](https://steamcommunity.com/app/252950/workshop/) to download the desired map. Make sure to read description as maps have different settings that need to be configured.
+Use the <a href="https://bakkesplugins.com/plugins/view/223" target="_blank">Workshop Map Downloader</a> or <a href="https://steamcommunity.com/app/252950/workshop/" target="_blank">Steam Workshop</a> to download the desired map. Make sure to read description as maps have different settings that need to be configured.
 
 ## Joining a Custom Game
 
 - Open BakkesMod using `F2`.
 - Switch to the Rocket Plugin, located under the plugin tab
-- Open the GUI
+- Open the GUI by clicking advanced
 - On the right hand side, enter the correct IP and Port (default=`7777`)
 - Click "joining a custom game"
 - Select correct map
 - Follow the steps by restarting game
-- Navigate back to Rocket Plugin and deselect "joining a custom game"
+- Navigate back to Rocket Plugin GUI
+- Deselect "joining a custom game"
 - Wait for host, click join
 
 ## Hosting a Custom Game
