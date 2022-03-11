@@ -10,8 +10,6 @@ type: about
 
 [![Resume](../blog/images/resume.png)](https://share.chis.dev/resume.pdf)
 
-OLD RESUME, New one in progress
-
 I am looking for software engineering opportunities in the DC area, and would be happy to connect with you!
 
 </div>
