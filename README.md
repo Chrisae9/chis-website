@@ -12,7 +12,7 @@
 # Production & Development
 docker-compose -f "docker-compose.yaml" up -d --build
 
-Production or Development
+# Production or Development
 docker-compose -f "docker-compose.yaml" up -d --build [dev|prod]
 ```
 
