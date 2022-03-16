@@ -2,7 +2,7 @@ FROM ubuntu:latest
 
 WORKDIR /website
 
-COPY . .
+COPY package.json . 
 
 RUN apt update -y
 RUN apt install curl gnupg git python make build-essential -y
@@ -11,6 +11,8 @@ RUN echo deb https://deb.nodesource.com/node_15.x focal main > /etc/apt/sources.
 
 RUN apt update -y
 RUN apt install nodejs -y
+
+COPY . .
 RUN npm install
 RUN npm install -g gatsby
 
