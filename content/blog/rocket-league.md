@@ -14,40 +14,63 @@ A quick tutorial for configuring Rocket League custom maps.
 
 - Install <a href="https://www.bakkesmod.com/" target="_blank">Bakkes Mod</a>
 - Run the program
-- Launch Rocket League Before installing plugins
-
+- Launch Rocket League **before** installing plugins.
 
 ## Installing Plugins
 
-- <a href="https://bakkesplugins.com/plugins/view/26" target="_blank">Rocket Plugin</a>
 - <a href="https://bakkesplugins.com/plugins/view/166" target="_blank">NetCode Plugin</a>
 - <a href="https://bakkesplugins.com/plugins/view/223" target="_blank">Workshop Map Downloader</a>
 
-## Downloading Custom Maps
-
-Use the <a href="https://bakkesplugins.com/plugins/view/223" target="_blank">Workshop Map Downloader</a> or <a href="https://steamcommunity.com/app/252950/workshop/" target="_blank">Steam Workshop</a> to download the desired map. Make sure to read description as maps have different settings that need to be configured.
-
 ## Joining a Custom Game
 
-- Open BakkesMod using `F2`.
-- Switch to the Rocket Plugin, located under the plugin tab
-- Open the GUI by clicking advanced
-- On the right hand side, enter the correct IP and Port (default=`7777`)
-- Click "joining a custom game"
-- Select correct map
-- Follow the steps by restarting game
-- Navigate back to Rocket Plugin GUI
-- Deselect "joining a custom game"
-- Wait for host, click join
+### Finding the Workshop Map Downloader Plugin
+
+![workshop1](images/workshop1.png)
+
+Open BakkesMod using `F2`.   
+Under Plugins find the `Workshop Map Downloader` and open the `Plugin Window`.
+
+### Selecting a Download Location
+
+![workshop2](images/workshop2.png)
+
+Select a download location for the custom maps.   
+This can be anywhere on your PC.
+
+### Downloading the Additional Textures
+
+![workshop3](images/workshop3.png)
+
+Under the settings tap, select `Download Textures`.  
+These extra files are necessary for some maps to work.
+
+### Adding a Map to Your Library
+
+![workshop4](images/workshop4.png)
+
+Search for a Rocket League Map from `rocketleaguemaps.us`.  
+Once you find the right map, click download.
+
+### Loading Custom Maps
+
+![workshop5](images/workshop5.png)
+
+Go back to the Map Loader and click refresh to see your maps.  
+Click on the map to load it.
+
+
+**Note: When joining a custom game, you will be prompted to restart the Rocket League**
+
 
 ## Hosting a Custom Game
 
 Forward port `7777` on router
+<a href="https://www.noip.com/support/knowledgebase/general-port-forwarding-guide/" target="_blank">(How to forward a port)</a>
 
 - Launch Rocket League.
 - Open BakkesMod using `F2`.
-- Switch to the Rocket Plugin, located under the plugin tab.
+- Switch to the Workshop Map Downloader Plugin, located under the plugin tab.
 - Select correct map
 - Change settings according to workshop description
-- Click host new game
-- Share IP with friends
+- Click host new game (Restart not required)
+- Share IP with friends!
