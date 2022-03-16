@@ -7,3 +7,5 @@ draft: false
 ---
 
 [![Resume](images/resume.png)](https://share.chis.dev/resume.pdf)
+
+Current Resume
