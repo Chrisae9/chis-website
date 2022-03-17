@@ -1,5 +1,5 @@
 ---
-title: RTSP Surveillance Camera with Motioneye
+title: RTSP Surveillance Camera with motionEye
 date: 2022-03-16 14:08:64
 category: tutorials
 draft: false
@@ -15,7 +15,7 @@ Flash the RTSP firmware on the camera. Firmware can be found [here](https://supp
 
 Navigate to the advanced settings to generate an RTSP URL. This will be used later on.
 
-## Set up Motioneye Docker Container
+## Set up motionEye Docker Container
 
 For this, you are going to need `docker` and `docker-compose`.  
 I decided to set up a compose file just in case I need to save live video or pictures to my shared drive. 
