@@ -1,15 +1,15 @@
 ---
-title: Things I Recommend Doing with Macbook
+title: Things I Recommend Doing with MacBook
 date: 2021-09-08 14:08:64
 category: tutorials
 draft: false
 ---
 
-![Macbook Pro Picture](images/macbookpro.jpeg)
+![MacBook Pro Picture](images/macbookpro.jpeg)
 
-If you are like me and have never owned a Macbook but have extensive knowledge of other operating systems like Windows, Linux, and Chrome OS. Then this post might be for you.
+If you are like me and have never owned a MacBook but have extensive knowledge of other operating systems like Windows, Linux, and Chrome OS. Then this post might be for you.
 
-I am mostly writing this in case I accidentally wipe my Macbook and need to recover all of the settings/modifications that I make to my device. 😎
+I am mostly writing this in case I accidentally wipe my MacBook and need to recover all of the settings/modifications that I make to my device. 😎
 
 ## The Touchbar
 
@@ -29,4 +29,4 @@ Add this line in `/etc/pam.d/`
 
 `auth sufficient pam_tid.so`
 
-And there you have it! Not much customization on my Macbook (as expected).
+And there you have it! Not much customization on my MacBook (as expected).
