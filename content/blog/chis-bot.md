@@ -1,7 +1,7 @@
 ---
-title: Discord Bot
+title: Old Discord Bot
 date: 2020-08-17 17:02:75
-category: projects
+category: tutorials
 draft: false
 ---
 

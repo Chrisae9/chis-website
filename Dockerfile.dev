@@ -1,19 +1,7 @@
-FROM ubuntu:latest
+FROM node:14.19.1-buster
 
 WORKDIR /website
 
-COPY package.json . 
-
-RUN apt update -y
-RUN apt install curl gnupg git python make build-essential -y
-RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
-RUN echo deb https://deb.nodesource.com/node_15.x focal main > /etc/apt/sources.list.d/nodesource.list
-
-RUN apt update -y
-RUN apt install nodejs -y
-
-COPY . .
 RUN npm install
-RUN npm install -g gatsby
 
 CMD [ "npm", "run", "develop" ]
