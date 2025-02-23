@@ -2,16 +2,14 @@ version: '3.8'
 
 services:
   blog:
-    build: .
+    image: denoland/deno:alpine-1.37
     container_name: deno_blog
     ports:
       - "8000:8000"
     volumes:
       - .:/app
       - ./posts:/app/posts
-      - ./public:/app/public 
+      - ./public:/app/public
       - ./views:/app/views
-    environment:
-      - DENO_INSTALL=/deno
-      - PATH=/deno/bin:${PATH}
+    working_dir: /app
     command: deno run --allow-read --allow-net --watch main.ts
