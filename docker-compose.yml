@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   blog:
-    image: denoland/deno:alpine-1.37
+    image: denoland/deno:latest
     container_name: deno_blog
     ports:
-      - "8000:8000"
+      - "8034:8000"
     volumes:
       - .:/app
       - ./posts:/app/posts
