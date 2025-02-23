@@ -1,0 +1,67 @@
+<script>
+  // Original placeholder implementation
+  let currentResults = [];
+  let selectedIndex = -1;
+
+  function performSearch(e) {
+    const query = e.target.value.trim();
+    if (!query) {
+      currentResults = [];
+      updateResults([]);
+      return;
+    }
+
+    const cached = getSearchIndexCache();
+    if (cached) {
+      fuse.setCollection(cached);
+      currentResults = fuse.search(query);
+      updateResults(currentResults);
+    } else {
+      fetch('/search-index.json')
+        .then(r => r.json())
+        .then(index => {
+          fuse.setCollection(index);
+          saveSearchIndexCache(index);
+          currentResults = fuse.search(query);
+          updateResults(currentResults);
+        });
+    }
+  }
+
+  // Extended with new features
+  let currentResults = [];
+  let selectedIndex = -1;
+
+  // Keyboard navigation handlers
+  document.addEventListener('keydown', (e) => {
+    if (['ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) {
+      const results = document.querySelectorAll('.post-card');
+      if (results.length === 0) return;
+
+      e.preventDefault();
+      if (e.key === 'ArrowDown') {
+        selectedIndex = Math.min(selectedIndex + 1, results.length - 1);
+      } else if (e.key === 'ArrowUp') {
+        selectedIndex = Math.max(selectedIndex - 1, -1);
+      } else if (e.key === 'Enter' && selectedIndex >= 0) {
+        results[selectedIndex].click();
+      }
+
+      results.forEach((r, i) => 
+        r.classList.toggle('keyboard-selected', i === selectedIndex));
+    }
+  });
+
+  function escapeHtml(unsafe) {
+    return unsafe?.replace(/[&<"'>]/g, m => 
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+  }
+
+  function debounce(func, timeout = 300) {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => func.apply(this, args), timeout);
+    };
+  }
+</script>
