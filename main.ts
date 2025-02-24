@@ -8,7 +8,7 @@ const router = new Router();
 router
   .get("/", async (ctx) => {
     const posts = await getPosts();
-    ctx.response.body = "Welcome to the blog!";
+    await ctx.render("index", { posts });
   });
 
 app.use(router.routes());
