@@ -1,5 +1,15 @@
 <head>
   <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+  <script>
+    // Simple client-side search implementation
+    function performSearch(e) {
+      const query = e.target.value.toLowerCase();
+      document.querySelectorAll('.post-card').forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(query) ? 'block' : 'none';
+      });
+    }
+  </script>
   <style>
     .search-highlight {
       @apply bg-yellow-100 rounded-sm px-1 font-medium;

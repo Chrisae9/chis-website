@@ -1,18 +1,15 @@
 import { serve } from "https://deno.land/std@0.212.0/http/server.ts";
 import { getPosts } from "./utils/posts.ts";
-import { renderFile } from "https://deno.land/x/ejs@v0.5.0/mod.ts";
-
 const posts = await getPosts();
 
 serve(async (req: Request) => {
   const url = new URL(req.url);
   
   if (url.pathname === "/") {
-    const template = await renderFile("./views/index.ejs", {
-      posts, 
-      filename: "./views/layout.ejs"
-    });
-    return new Response(template, {
+    const layout = await Deno.readTextFile("./views/layout.ejs");
+    const indexContent = await Deno.readTextFile("./views/index.ejs");
+    const html = layout.replace("</head>", `${indexContent}</head>`);
+    return new Response(html, {
       headers: { "content-type": "text/html" }
     });
   }

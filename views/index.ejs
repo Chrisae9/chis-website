@@ -7,25 +7,22 @@
   </div>
 
   <div id="results" class="space-y-6">
-    <% posts.forEach(post => { %>
+    ${posts.map(post => `
       <article class="post-card p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
         <h2 class="text-2xl font-semibold mb-2">
-          <a href="/<%= post.slug %>" class="text-blue-600 hover:text-blue-800">
-            <%= post.title %>
+          <a href="/${post.slug}" class="text-blue-600 hover:text-blue-800">
+            ${post.title}
           </a>
         </h2>
         <div class="text-sm text-gray-500 mb-2">
-          <time><%= post.date.toLocaleDateString() %></time> • 
-          <%= post.tags.map(t => `#${t}`).join(' ') %>
+          <time>${post.date.toLocaleDateString()}</time> • 
+          ${post.tags.map(t => `#${t}`).join(' ')}
         </div>
-        <p class="text-gray-700"><%= post.description %></p>
+        <p class="text-gray-700">${post.description}</p>
       </article>
-    <% }) %>
+    `).join('')}
   </div>
 </div>
-
-<script>
-  // Initialize Fuse.js with search options
   const fuse = new Fuse([], {
     keys: [
       { name: 'title', weight: 0.5 },
