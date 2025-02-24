@@ -1,22 +1,21 @@
-import { Application, Router } from "https://deno.land/x/oak@v12.5.0/mod.ts";
+import { serve } from "https://deno.land/std@0.212.0/http/server.ts";
 import { getPosts } from "./utils/posts.ts";
-import { ejs } from "oak/middleware/ejs/renderer.ts";
+import { renderFile } from "https://deno.land/x/ejs@v0.5.0/mod.ts";
 
-const app = new Application();
-const router = new Router();
+const posts = await getPosts();
 
-// Configure EJS view engine
-app.use(ejs.engine({ viewsDir: "views" }));
+serve(async (req: Request) => {
+  const url = new URL(req.url);
+  
+  if (url.pathname === "/") {
+    const template = await renderFile("./views/index.ejs", {
+      posts, 
+      filename: "./views/layout.ejs"
+    });
+    return new Response(template, {
+      headers: { "content-type": "text/html" }
+    });
+  }
 
-// Basic routes
-router
-  .get("/", async (ctx) => {
-    const posts = await getPosts();
-    await ctx.render("index", { posts });
-  });
-
-app.use(router.routes());
-app.use(router.allowedMethods());
-
-console.log("Server running on http://localhost:8000");
-await app.listen({ port: 8000 });
+  return new Response("Not found", { status: 404 });
+}, { port: 8000 });

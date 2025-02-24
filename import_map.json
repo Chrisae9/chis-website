@@ -1,7 +1,6 @@
 {
   "imports": {
-    "oak": "https://deno.land/x/oak@v12.5.0/mod.ts",
     "std/": "https://deno.land/std@0.212.0/",
-    "oak/middleware/ejs/": "https://deno.land/x/oak@v12.5.0/middleware/ejs/"
+    "ejs": "https://deno.land/x/ejs@v0.5.0/mod.ts"
   }
 }
