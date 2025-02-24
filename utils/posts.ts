@@ -20,7 +20,7 @@ export function stripMarkdown(content: string): string {
     .trim();
 }
 
-import { parse } from "https://deno.land/std@0.128.0/yaml/mod.ts";
+import { parse } from "https://deno.land/std@0.212.0/yaml/mod.ts";
 
 // Post processing and loading
 export interface Post {
