@@ -1,6 +1,6 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.5.0/mod.ts";
 import { getPosts } from "./utils/posts.ts";
-import { ejs } from "https://deno.land/x/oak@v12.5.0/ejs.ts";
+import { ejs } from "https://deno.land/x/oak@v12.5.0/renderer/ejs.ts";
 
 const app = new Application();
 const router = new Router();
