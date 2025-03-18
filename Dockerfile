@@ -1,7 +1,13 @@
-FROM denoland/deno:alpine-1.37
+FROM node:18-alpine
 
 WORKDIR /app
 
+COPY package.json .
+
+RUN npm install
+
 COPY . .
 
-CMD ["deno", "run", "--allow-read", "--allow-net", "--watch", "main.ts"]
+EXPOSE 8080
+
+CMD [ "npm", "run", "dev" ]
