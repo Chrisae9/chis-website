@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.prose pre {
+ @apply p-4 rounded-lg bg-gray-100 dark:bg-gray-800 overflow-x-auto;
+}
+
+/* Inline code styling */
+.prose :not(pre) > code {
+ @apply px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono text-sm;
+}
+
+.dark .prose :not(pre) > code {
+ @apply text-gray-200 bg-gray-700;
+}
+
+.hljs {
+  background: #f0f0f0; /* Light mode background */
+  color: #333; /* Light mode text color */
+}
+
+.dark .hljs {
+  background: #1e1e1e; /* Dark mode background */
+  color: #d4d4d4; /* Dark mode text color */
+}
+
+/* Add more specific styles for different code elements as needed, based on the classes provided by highlight.js */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-link {
+  color: #007acc; /* Example color for keywords */
+}
+
+.dark .hljs-keyword,
+.dark .hljs-selector-tag,
+.dark .hljs-literal,
+.dark .hljs-section,
+.dark .hljs-link {
+  color: #569cd6;
+}
+
+.hljs-string,
+.hljs-attribute {
+  color: #a31515;
+}
+
+.dark .hljs-string,
+.dark .hljs-attribute {
+  color: #ce9178;
+}
