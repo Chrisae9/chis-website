@@ -1,6 +1,24 @@
 import { Post } from '../types';
 import matter from 'gray-matter';
 
+function extractBacklinks(content: string): string[] {
+  const backlinks = new Set<string>();
+  const backlinkRegex = /\[\[(.*?)\]\]/g;
+  let match;
+
+  while ((match = backlinkRegex.exec(content)) !== null) {
+    backlinks.add(match[1].trim());
+  }
+
+  return Array.from(backlinks);
+}
+
+function processBacklinkSyntax(content: string): string {
+  return content.replace(/\[\[(.*?)\]\]/g, (_, text) => {
+    return `[${text}](#${text})`;
+  });
+}
+
 export async function loadPosts(): Promise<Post[]> {
   const postFiles = import.meta.glob('../posts/*.md', { 
     query: '?raw',
@@ -12,11 +30,16 @@ export async function loadPosts(): Promise<Post[]> {
       const content = await loader();
       const slug = filepath.replace('../posts/', '').replace('.md', '');
       const { data, content: markdownContent } = matter(content as string);
+      const backlinks = extractBacklinks(markdownContent);
+      const processedContent = processBacklinkSyntax(markdownContent);
       
       return {
         slug,
-        content: markdownContent,
-        frontmatter: data as Post['frontmatter'],
+        content: processedContent,
+        frontmatter: {
+          ...data as Post['frontmatter'],
+          backlinks
+        },
       };
     })
   );

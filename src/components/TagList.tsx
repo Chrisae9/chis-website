@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tag, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 
 interface TagListProps {
   tags: string[];
@@ -15,32 +15,27 @@ export function TagList({ tags, selectedTags, onTagToggle }: TagListProps) {
   );
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <Tag className="h-5 w-5" />
-        <h2 className="text-lg font-semibold">Tags</h2>
-      </div>
-      
+    <div className="space-y-3">
       <div className="relative">
         <input
           type="text"
           value={tagSearch}
           onChange={(e) => setTagSearch(e.target.value)}
-          placeholder="Search tags..."
-          className="w-full px-3 py-1.5 pl-8 text-sm text-gray-900 dark:text-gray-50 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+          placeholder="Filter tags"
+          className="w-full h-9 pl-8 pr-3 text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-gray-300 dark:focus:border-gray-700 rounded-md placeholder-gray-500 dark:placeholder-gray-400"
         />
-        <Search className="absolute left-2 top-2 h-4 w-4 text-gray-400 dark:text-gray-500" />
+        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400 dark:text-gray-500" />
       </div>
 
-      <div className="space-y-1">
+      <div className="flex flex-wrap gap-2">
         {filteredTags.map((tag) => (
           <button
             key={tag}
             onClick={() => onTagToggle(tag)}
-            className={`flex items-center px-3 py-1 rounded-full text-sm ${
+            className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
               selectedTags.includes(tag)
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-700'
+                : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-100 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700'
             }`}
           >
             {tag}

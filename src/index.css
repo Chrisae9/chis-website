@@ -2,36 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Base gradient backgrounds */
+.bg-gradient-blue {
+  @apply bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800;
+}
+
+.bg-gradient-blue-subtle {
+  @apply bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800;
+}
+
+/* Code block styling */
 .prose pre {
- @apply p-4 rounded-lg bg-gray-100 dark:bg-gray-800 overflow-x-auto;
+  @apply p-5 rounded-lg bg-white dark:bg-gray-900 overflow-x-auto my-4 border border-gray-200 dark:border-gray-700 shadow-sm;
+}
+
+.prose pre code {
+  @apply bg-transparent p-0 text-sm leading-relaxed font-normal text-gray-800 dark:text-gray-200;
 }
 
 /* Inline code styling */
 .prose :not(pre) > code {
- @apply px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono text-sm;
+  @apply px-1.5 py-0.5 rounded text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700;
 }
 
-.dark .prose :not(pre) > code {
- @apply text-gray-200 bg-gray-700;
+/* Link styling */
+.prose a {
+  @apply text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 no-underline transition-colors duration-150;
 }
 
+/* Syntax highlighting - Light theme */
 .hljs {
-  background: #f0f0f0; /* Light mode background */
-  color: #333; /* Light mode text color */
+  @apply text-gray-800 bg-transparent dark:text-gray-200;
 }
 
-.dark .hljs {
-  background: #1e1e1e; /* Dark mode background */
-  color: #d4d4d4; /* Dark mode text color */
-}
-
-/* Add more specific styles for different code elements as needed, based on the classes provided by highlight.js */
-.hljs-keyword,
-.hljs-selector-tag,
-.hljs-literal,
-.hljs-section,
-.hljs-link {
-  color: #007acc; /* Example color for keywords */
+/* Syntax highlighting - Dark theme adjustments */
+.dark .hljs-comment,
+.dark .hljs-quote {
+  @apply text-gray-400;
 }
 
 .dark .hljs-keyword,
@@ -39,15 +46,138 @@
 .dark .hljs-literal,
 .dark .hljs-section,
 .dark .hljs-link {
-  color: #569cd6;
-}
-
-.hljs-string,
-.hljs-attribute {
-  color: #a31515;
+  @apply text-blue-300 font-medium;
 }
 
 .dark .hljs-string,
-.dark .hljs-attribute {
-  color: #ce9178;
+.dark .hljs-title,
+.dark .hljs-name,
+.dark .hljs-attribute,
+.dark .hljs-symbol,
+.dark .hljs-bullet,
+.dark .hljs-built_in,
+.dark .hljs-addition,
+.dark .hljs-variable,
+.dark .hljs-template-tag,
+.dark .hljs-template-variable {
+  @apply text-green-300;
+}
+
+.dark .hljs-type,
+.dark .hljs-class .hljs-title {
+  @apply text-yellow-300;
+}
+
+.dark .hljs-number,
+.dark .hljs-selector-attr,
+.dark .hljs-selector-pseudo,
+.dark .hljs-meta {
+  @apply text-orange-300;
+}
+
+.dark .hljs-subst,
+.dark .hljs-function,
+.dark .hljs-regexp,
+.dark .hljs-selector-id,
+.dark .hljs-selector-class {
+  @apply text-purple-300;
+}
+
+.dark .hljs-doctag,
+.dark .hljs-strong,
+.dark .hljs-emphasis,
+.dark .hljs-deletion {
+  @apply text-red-300;
+}
+
+/* Light theme syntax highlighting */
+.hljs-comment,
+.hljs-quote {
+  @apply text-gray-500 italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-link {
+  @apply text-blue-700 font-medium;
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-name,
+.hljs-attribute,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-built_in,
+.hljs-addition,
+.hljs-variable,
+.hljs-template-tag,
+.hljs-template-variable {
+  @apply text-green-700;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+  @apply text-yellow-700;
+}
+
+.hljs-number,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-meta {
+  @apply text-orange-700;
+}
+
+.hljs-subst,
+.hljs-function,
+.hljs-regexp,
+.hljs-selector-id,
+.hljs-selector-class {
+  @apply text-purple-700;
+}
+
+.hljs-doctag,
+.hljs-strong,
+.hljs-emphasis,
+.hljs-deletion {
+  @apply text-red-700;
+}
+
+/* Custom component styles */
+.sidebar-gradient {
+  @apply bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800;
+}
+
+/* Table of Contents styles */
+.toc-link {
+  @apply block text-sm py-1 border-l-2 pl-3 transition-colors duration-200;
+}
+
+.toc-link-active {
+  @apply border-blue-500 text-blue-600 dark:text-blue-400 font-medium;
+}
+
+.toc-link-inactive {
+  @apply border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200;}
+
+/* Sticky TOC for desktop */
+@media (min-width: 768px) {
+  .sticky-toc {
+    position: sticky;
+    top: 5rem;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+  }
+}
+
+/* Smooth scrolling for the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ensure headings have proper scroll margin to account for fixed header */
+h2, h3, h4 {
+  scroll-margin-top: 80px;
 }

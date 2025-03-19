@@ -1,14 +1,17 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Fuse from 'fuse.js';
-import { ExternalLink } from 'lucide-react';
 import { SearchBar } from './components/SearchBar';
 import { TagList } from './components/TagList';
 import { PostCard } from './components/PostCard';
 import { PostContent } from './components/PostContent';
 import { Layout } from './components/Layout';
 import { Sidebar } from './components/Sidebar';
+import { DynamicLinks } from './components/DynamicLinks';
+import { TableOfContents } from './components/TableOfContents';
+import { links } from './config/links';
 import { Post } from './types';
 import { loadPosts } from './utils/posts';
+import { SortOrder, SortControls } from './components/SortControls';
 
 function App() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -21,9 +24,34 @@ function App() {
   });
   const [showLeftSidebar, setShowLeftSidebar] = useState(false);
   const [showRightSidebar, setShowRightSidebar] = useState(false);
+  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
 
   useEffect(() => {
     loadPosts().then(setPosts);
+  }, []);
+
+  useEffect(() => {
+    const slug = window.location.pathname.slice(1);
+    if (slug) {
+      setSelectedPost(slug);
+    }
+  }, []);
+
+  useEffect(() => {
+    const newPath = selectedPost ? `/${selectedPost}` : '/';
+    if (window.location.pathname !== newPath) {
+      window.history.pushState({ slug: selectedPost }, '', newPath);
+    }
+  }, [selectedPost]);
+
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      const slug = event.state?.slug || null;
+      setSelectedPost(slug);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   useEffect(() => {
@@ -61,8 +89,15 @@ function App() {
       );
     }
 
+    // Sort posts by date
+    result = [...result].sort((a, b) => {
+      const dateA = new Date(a.frontmatter.date).getTime();
+      const dateB = new Date(b.frontmatter.date).getTime();
+      return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+    });
+
     return result;
-  }, [posts, searchTerm, selectedTags, fuse]);
+  }, [posts, searchTerm, selectedTags, fuse, sortOrder]);
 
   const handleTagToggle = (tag: string) => {
     setSelectedTags(prev =>
@@ -77,11 +112,30 @@ function App() {
     return posts.find(post => post.slug === selectedPost);
   }, [selectedPost, posts]);
 
-  const socialLinks = [
-    { href: "https://github.com/yourusername", label: "GitHub" },
-    { href: "https://twitter.com/yourusername", label: "Twitter" },
-    { href: "https://linkedin.com/in/yourusername", label: "LinkedIn" }
-  ];
+  // Left sidebar content - show table of contents when viewing a post
+  const leftSidebarContent = selectedPostData ? (
+    <Sidebar
+      title="Table of Contents"
+      onClose={() => setShowLeftSidebar(false)}
+      showMobileHeader={true}
+    >
+      <div className="sticky top-20">
+        <TableOfContents content={selectedPostData.content} />
+      </div>
+    </Sidebar>
+  ) : (
+    <Sidebar
+      title="Tags"
+      onClose={() => setShowLeftSidebar(false)}
+      showMobileHeader={true}
+    >
+      <TagList
+        tags={allTags}
+        selectedTags={selectedTags}
+        onTagToggle={handleTagToggle}
+      />
+    </Sidebar>
+  );
 
   return (
     <Layout
@@ -92,51 +146,31 @@ function App() {
       setShowLeftSidebar={setShowLeftSidebar}
       setShowRightSidebar={setShowRightSidebar}
       header={<SearchBar value={searchTerm} onChange={setSearchTerm} />}
-      leftSidebar={
-        <Sidebar
-          title="Tags"
-          onClose={() => setShowLeftSidebar(false)}
-          showMobileHeader={true}
-        >
-          <TagList
-            tags={allTags}
-            selectedTags={selectedTags}
-            onTagToggle={handleTagToggle}
-          />
-        </Sidebar>
-      }
+      leftSidebar={leftSidebarContent}
       rightSidebar={
         <Sidebar
           title="Links"
           onClose={() => setShowRightSidebar(false)}
           showMobileHeader={true}
         >
-          <ul className="space-y-3">
-            {socialLinks.map(({ href, label }) => (
-              <li key={label}>
-                <a
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300"
-                >
-                  {label}
-                  <ExternalLink className="h-4 w-4" />
-                </a>
-              </li>
-            ))}
-          </ul>
+          <div className="space-y-3">
+            <DynamicLinks links={links} />
+          </div>
         </Sidebar>
       }
+      isPostView={!!selectedPostData}
     >
       {selectedPostData ? (
         <PostContent
           post={selectedPostData}
           onBack={() => setSelectedPost(null)}
           darkMode={darkMode}
+          onPostClick={setSelectedPost}
+          allPosts={posts}
         />
       ) : (
         <div className="space-y-8">
+          <SortControls sortOrder={sortOrder} onSortChange={setSortOrder} />
           {filteredPosts.map((post) => (
             <PostCard
               key={post.slug}

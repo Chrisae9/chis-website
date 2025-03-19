@@ -1,9 +1,11 @@
 services:
   app:
     image: node:18-alpine
-    network_mode: host
+    user: "1000:1000"
     environment:
       - NODE_ENV=development
+    ports:
+      - "5174:5173"
     volumes:
       - .:/app
     working_dir: /app

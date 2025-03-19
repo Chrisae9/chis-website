@@ -15,6 +15,15 @@ export default {
             },
             'code::after': {
               content: '""'
+            },
+            'pre': {
+              backgroundColor: 'transparent',
+              paddingLeft: '0',
+              paddingRight: '0',
+              paddingTop: '0',
+              paddingBottom: '0',
+              marginTop: '0',
+              marginBottom: '0',
             }
           }
         }

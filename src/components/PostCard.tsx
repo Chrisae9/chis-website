@@ -1,11 +1,6 @@
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeRaw from 'rehype-raw';
-import rehypeHighlight from 'rehype-highlight';
 import { Calendar, Tag as TagIcon, ChevronRight } from 'lucide-react';
 import { Post } from '../types';
-import 'highlight.js/styles/github.css';
 
 interface PostCardProps {
   post: Post;
@@ -19,7 +14,7 @@ export function PostCard({ post, searchTerm, onPostClick }: PostCardProps) {
     const parts = text.split(new RegExp(`(${searchTerm})`, 'gi'));
     return parts.map((part, i) => 
       part.toLowerCase() === searchTerm.toLowerCase() ? 
-        <mark key={i} className="bg-yellow-200 dark:bg-yellow-400">{part}</mark> : 
+        <mark key={i} className="bg-yellow-100 dark:bg-yellow-900/50 text-gray-900 dark:text-gray-100 px-0.5">{part}</mark> : 
         part
     );
   };
@@ -35,27 +30,40 @@ export function PostCard({ post, searchTerm, onPostClick }: PostCardProps) {
 
   return (
     <article 
-      className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform hover:scale-[1.02]"
+      className="bg-gradient-blue-subtle border border-blue-100 dark:border-blue-900/30 hover:border-blue-200 dark:hover:border-blue-800/30 cursor-pointer rounded-lg shadow-sm transition-all hover:shadow-md"
       onClick={() => onPostClick(post.slug)}
     >
-      <div className="p-6">
-        <h2 className="text-2xl font-bold mb-2">{highlightText(post.frontmatter.title)}</h2>
-        <div className="flex items-center gap-4 text-gray-600 dark:text-gray-400 mb-4">
-          <div className="flex items-center gap-1">
-            <Calendar className="h-4 w-4" />
-            <span>{formatDate(post.frontmatter.date)}</span>
+      <div className="p-4">
+        <h2 className="text-base font-medium mb-3 text-gray-900 dark:text-gray-100">{highlightText(post.frontmatter.title)}</h2>
+        
+        <div className="flex flex-col gap-2 mb-3 sm:flex-row sm:items-center sm:gap-3">
+          <div className="flex items-center gap-1.5">
+            <Calendar className="h-4 w-4 text-gray-400" />
+            <span className="text-sm text-gray-600 dark:text-gray-300">
+              {formatDate(post.frontmatter.date)}
+            </span>
           </div>
-          <div className="flex items-center gap-2">
-            <TagIcon className="h-4 w-4" />
-            {post.frontmatter.tags.map((tag) => (
-              <span key={tag} className="text-sm bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">
-                {tag}
-              </span>
-            ))}
+          
+          <div className="flex items-center gap-1.5">
+            <TagIcon className="h-4 w-4 text-gray-400 shrink-0" />
+            <div className="flex flex-wrap gap-1.5">
+              {post.frontmatter.tags.map((tag) => (
+                <span 
+                  key={tag} 
+                  className="text-xs px-1.5 py-0.5 bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800/30 text-gray-700 dark:text-gray-200 rounded whitespace-nowrap"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
-        <p className="text-gray-600 dark:text-gray-300 mb-4">{post.frontmatter.summary}</p>
-        <div className="flex items-center text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300">
+
+        <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
+          {highlightText(post.frontmatter.summary)}
+        </p>
+        
+        <div className="flex items-center text-sm text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 font-medium">
           Read more <ChevronRight className="h-4 w-4 ml-1" />
         </div>
       </div>

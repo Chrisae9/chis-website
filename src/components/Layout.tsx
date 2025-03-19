@@ -12,6 +12,7 @@ interface LayoutProps {
   leftSidebar: React.ReactNode;
   rightSidebar: React.ReactNode;
   header: React.ReactNode;
+  isPostView: boolean;
 }
 
 export function Layout({
@@ -24,33 +25,41 @@ export function Layout({
   setShowRightSidebar,
   leftSidebar,
   rightSidebar,
-  header
+  header,
+  isPostView
 }: LayoutProps) {
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-gray-900 text-gray-50' : 'bg-gray-50 text-gray-900'} transition-colors duration-300`}>
-      <header className="sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+    <div className={`min-h-screen bg-gradient-blue`}>
+      <header className="sticky top-0 z-10 bg-white/80 dark:bg-gray-900/80 border-b border-gray-200 dark:border-gray-800 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto h-16 flex items-center justify-between gap-4 px-4">
+          <div className="flex items-center gap-3 md:w-64">
             <button
               onClick={() => setShowLeftSidebar(!showLeftSidebar)}
-              className="md:hidden p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
+              className="md:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors text-gray-700 dark:text-gray-100"
             >
-              {showLeftSidebar ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {showLeftSidebar ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </button>
             {header}
           </div>
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => setShowRightSidebar(!showRightSidebar)}
-              className="md:hidden p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
-            >
-              {showRightSidebar ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+          
+          <div className="flex-1 max-w-2xl">
+            {/* Search bar container */}
+          </div>
+
+          <div className="flex items-center gap-3 md:w-64 justify-end">
+            {!isPostView && (
+              <button
+                onClick={() => setShowRightSidebar(!showRightSidebar)}
+                className="md:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors text-gray-700 dark:text-gray-100"
+              >
+                {showRightSidebar ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+              </button>
+            )}
             <button
               onClick={toggleDarkMode}
-              className="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors text-gray-700 dark:text-gray-100"
             >
-              {darkMode ? <Sun className="h-6 w-6" /> : <Moon className="h-6 w-6" />}
+              {darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
           </div>
         </div>
@@ -58,7 +67,7 @@ export function Layout({
 
       {(showLeftSidebar || showRightSidebar) && (
         <div
-          className="fixed inset-0 bg-black opacity-50 z-40"
+          className="fixed inset-0 bg-gray-900/20 backdrop-blur-sm z-40 md:hidden"
           onClick={() => {
             setShowLeftSidebar(false);
             setShowRightSidebar(false);
@@ -66,25 +75,31 @@ export function Layout({
         />
       )}
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-12 gap-8">
-          <aside className={`fixed top-0 left-0 z-50 h-screen w-64 bg-white dark:bg-gray-800 shadow-lg transition-transform duration-300 transform ${
-            showLeftSidebar ? 'translate-x-0' : '-translate-x-full'
-          } md:translate-x-0 md:static md:h-auto md:w-full md:shadow-none md:z-auto md:col-span-2`}>
+      <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="grid grid-cols-12 gap-4">
+          <aside className={`col-span-2 md:block ${
+            showLeftSidebar 
+              ? 'fixed inset-y-0 left-0 w-64 z-50 sidebar-gradient border-r border-gray-200 dark:border-gray-800' 
+              : 'hidden'
+          }`}>
             {leftSidebar}
           </aside>
 
-          <div className="col-span-12 md:col-span-7">
+          <main className={`${isPostView ? 'col-span-12 md:col-span-10 md:col-start-3' : 'col-span-12 md:col-span-7'} space-y-4`}>
             {children}
-          </div>
+          </main>
 
-          <aside className={`fixed top-0 right-0 z-50 h-screen w-64 bg-white dark:bg-gray-800 shadow-lg transition-transform duration-300 transform ${
-            showRightSidebar ? 'translate-x-0' : 'translate-x-full'
-          } md:translate-x-0 md:static md:h-auto md:w-full md:shadow-none md:z-auto md:col-span-3`}>
-            {rightSidebar}
-          </aside>
+          {!isPostView && (
+            <aside className={`col-span-3 md:block ${
+              showRightSidebar 
+                ? 'fixed inset-y-0 right-0 w-64 z-50 sidebar-gradient border-l border-gray-200 dark:border-gray-800' 
+                : 'hidden'
+            }`}>
+              {rightSidebar}
+            </aside>
+          )}
         </div>
-      </main>
+      </div>
     </div>
   );
 }
