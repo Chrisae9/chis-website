@@ -14,15 +14,15 @@ After 6.5 years I decided to repurpose my i7-4790K to be my new permanent server
 
 ## Pictures
 
-![itx1](src/assets/images/itx1.png)
+![PC Build](/images/itx1.png)
 
-![itx2](src/assets/images/itx2.png)
+![PC Build](/images/itx2.png)
 
-![ittx3](src/assets/images/itx3.png)
+![PC Build](/images/itx3.png)
 
 ## PCPartPicker Completed Build
 
-![itx-header](src/assets/images/itxheader.png)
+![PC Build](/images/itxheader.png)
 
 [Link to Completed Build](https://pcpartpicker.com/b/KtdmP6)
 

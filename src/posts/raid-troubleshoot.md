@@ -14,7 +14,7 @@ The goal of this is to document my problem-solving process to understand better 
 
 ## Background
 
-![raid](src/assets/images/raid-0-vs-raid-1-thumbnail.jpg)
+![Raid](/images/raid-0-vs-raid-1-thumbnail.jpg)
 
 Regular operation of my server consists of a RAID 1 configuration with setup using Intel Rapid Storage, mounted on my Arch Linux drive on the `/hdd` path.
 

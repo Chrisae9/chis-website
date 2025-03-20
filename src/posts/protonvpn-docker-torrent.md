@@ -10,7 +10,7 @@ tags: [Docker, Torrent, VPN]
 
 Go to: [https://account.proton.me/u/0/vpn/WireGuard](https://account.proton.me/u/0/vpn/WireGuard)
 
-![wireguard](src/assets/images/protonvpn-docker-torrent.png)
+![Transmission](/images/protonvpn-docker-torrent.png)
 
 Use these settings and select a server tagged as P2P—preferably a server in Switzerland where the data privacy laws are sold.
 
@@ -68,25 +68,25 @@ Start the VPN service from the `docker-compose.yaml` file and look in `gluetun/i
 
 To login, the default admin account is `admin/adminadmin`.
 
-![qbit admin](src/assets/images/protonvpn-docker-torrent1.png)
+![Transmission](/images/protonvpn-docker-torrent1.png)
 
 Head over to the settings and setup the port forwarding in the connection tab.
 
-![port forwarding](src/assets/images/protonvpn-docker-torrent2.png)
+![Transmission](/images/protonvpn-docker-torrent2.png)
 
 Limit the network interface to only use the VPN by binding it to `/dev/tun`.
 
-![limit network interface](src/assets/images/protonvpn-docker-torrent3.png)
+![Transmission](/images/protonvpn-docker-torrent3.png)
 
 ## Additional Setup
 
 Recommended to setup a Global seeding limit in the BitTorrent tab, mine is configured to a ratio of 2.
 
-![seed ratio](src/assets/images/protonvpn-docker-torrent4.png)
+![Transmission](/images/protonvpn-docker-torrent4.png)
 
 Here is my configuration for saving files in the Downloads tab. 
 
-![file config](src/assets/images/protonvpn-docker-torrent5.png)
+![Transmission](/images/protonvpn-docker-torrent5.png)
 
 ### Automatically Updating qBittorrent Port to Match Gluetun Port
 

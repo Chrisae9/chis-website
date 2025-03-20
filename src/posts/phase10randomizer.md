@@ -7,7 +7,7 @@ tags: [App, Website]
 ---
 
 
-![phase10](src/assets/images/phase10.png)
+![phase10](/images/phase10.png)
 
 [https://phase.chis.dev/](https://phase.chis.dev/)
 
