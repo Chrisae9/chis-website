@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { MessageSquare } from 'lucide-react';
 
 interface TOCItem {
   id: string;
@@ -160,6 +161,20 @@ export function TableOfContents({
           >
             <span>Connected Posts</span>
             <FontAwesomeIcon icon={faLink} className="text-xs" />
+          </button>
+          
+          <button
+            onClick={() => {
+              const commentsSection = document.getElementById('comments');
+              if (commentsSection) {
+                commentsSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+            className="flex items-center gap-1.5 text-sm mt-3 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+            aria-label="Scroll to comments section"
+          >
+            <span>Comments</span>
+            <MessageSquare className="h-3.5 w-3.5 ml-1" />
           </button>
         </div>
       )}

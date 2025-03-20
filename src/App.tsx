@@ -29,14 +29,43 @@ function App() {
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
 
   useEffect(() => {
-    loadPosts().then(setPosts);
-  }, []);
-
-  useEffect(() => {
-    const slug = window.location.pathname.slice(1);
-    if (slug) {
-      setSelectedPost(slug);
-    }
+    const loadData = async () => {
+      const loadedPosts = await loadPosts();
+      setPosts(loadedPosts);
+      
+      // Check for redirected path from query params
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirectPath = urlParams.get('path');
+      
+      // If we have a redirected path, use it and clean the URL
+      if (redirectPath) {
+        const slug = redirectPath.slice(1); // Remove leading slash
+        window.history.replaceState(null, '', redirectPath);
+        if (slug && slug.length > 0) {
+          const postExists = loadedPosts.some(post => post.slug === slug);
+          if (postExists) {
+            setSelectedPost(slug);
+            return;
+          }
+        }
+      }
+      
+      // Normal path handling
+      const slug = window.location.pathname.slice(1);
+      if (slug && slug.length > 0) {
+        // Check if the post exists in loaded posts
+        const postExists = loadedPosts.some(post => post.slug === slug);
+        if (postExists) {
+          setSelectedPost(slug);
+        } else {
+          console.warn(`Post with slug "${slug}" not found`);
+          // Redirect to home if post not found
+          window.history.replaceState(null, '', '/');
+        }
+      }
+    };
+    
+    loadData();
   }, []);
 
   useEffect(() => {

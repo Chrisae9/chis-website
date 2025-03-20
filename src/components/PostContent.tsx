@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Tag as TagIcon } from 'lucide-react';
+import { Utterances } from './Utterances';
+import { utterancesConfig } from '../config/utterances';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
@@ -187,6 +189,11 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
   }, [post.content]);
 
   const [isConnectedPostsActive, setIsConnectedPostsActive] = useState(false);
+  
+  // Scroll to top when post changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [post.slug]);
 
   // Add keyboard shortcut to navigate to Connected Posts
   useEffect(() => {
@@ -388,6 +395,19 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
           </div>
         </aside>
       )}
+      
+      <div id="comments" className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
+        <div className="p-4">
+          <h2 className="text-base font-semibold mb-4 text-gray-900 dark:text-gray-100">
+            Comments
+          </h2>
+          <Utterances 
+            repo={utterancesConfig.repo}
+            issueTerm={post.frontmatter.title}
+            theme={darkMode ? utterancesConfig.theme.dark : utterancesConfig.theme.light}
+          />
+        </div>
+      </div>
     </div>
   );
 }

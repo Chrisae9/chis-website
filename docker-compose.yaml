@@ -1,7 +1,12 @@
+networks:
+  public:
+    external: true
 services:
   app:
     image: node:18-alpine
     user: "1000:1000"
+    container_name: chis-blog
+    pull_policy: always
     environment:
       - NODE_ENV=development
     ports:
@@ -10,3 +15,24 @@ services:
       - .:/app
     working_dir: /app
     command: sh -c "rm -rf node-modules/ && npm install && npm run dev"
+    labels:
+      - "traefik.enable=false"
+  
+#   web:
+#     image: nginx:alpine
+#     container_name: chis-blog-web
+#     restart: unless-stopped
+#     volumes:
+#       - ./dist:/usr/share/nginx/html:ro
+#     depends_on:
+#       - app
+#     networks:
+#       - public
+#     labels:
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.blog.rule=Host(`chis.dev`)"
+#       - "traefik.http.routers.blog.entrypoints=websecure"
+#       - "traefik.http.routers.blog.tls.certresolver=cloudflare"
+#       - "traefik.http.services.blog.loadbalancer.server.port=80"
+#       - "traefik.docker.network=public"
+
