@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { createInternalUrl, normalizeSlug } from './utils/routeUtils';
+import { SectionState, defaultSectionState, scrollToSection } from './utils/sectionUtils';
 import Fuse from 'fuse.js';
 import { SearchBar } from './components/SearchBar';
 import { TagList } from './components/TagList';
@@ -33,16 +34,14 @@ function App() {
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
   
   // Add state for tracking active sections
-  const [isConnectedPostsActive, setIsConnectedPostsActive] = useState(false);
-  const [isCommentsActive, setIsCommentsActive] = useState(false);
+  const [sectionState, setSectionState] = useState<SectionState>(defaultSectionState);
 
   const location = useLocation();
   const navigate = useNavigate();
   
   // Custom scroll handling for synchronized sidebar navigation
   const handleSectionChange = (section: { connected: boolean, comments: boolean }) => {
-    setIsConnectedPostsActive(section.connected);
-    setIsCommentsActive(section.comments);
+    setSectionState(section);
   };
 
   // Load posts only once on initial mount
@@ -201,29 +200,15 @@ function App() {
 
   // Function to scroll to connected posts section
   const scrollToConnectedPosts = () => {
-    const connectedPostsSection = document.querySelector('[data-connected-posts]');
-    if (connectedPostsSection) {
-      connectedPostsSection.scrollIntoView({ behavior: 'smooth' });
-      setIsConnectedPostsActive(true);
-      setIsCommentsActive(false);
-    }
+    scrollToSection('connected-posts');
+    setSectionState({ connected: true, comments: false });
   };
 
   // Function to scroll to comments section
   const scrollToComments = () => {
-    const commentsSection = document.getElementById('comments');
-    if (commentsSection) {
-      commentsSection.scrollIntoView({ behavior: 'smooth' });
-      setIsCommentsActive(true);
-      setIsConnectedPostsActive(false);
-    }
+    scrollToSection('comments');
+    setSectionState({ connected: false, comments: true });
   };
-
-  // Reset active sections when changing posts
-  useEffect(() => {
-    setIsConnectedPostsActive(false);
-    setIsCommentsActive(false);
-  }, [selectedPost]);
 
   // Left sidebar content - show table of contents when viewing a post
   const leftSidebarContent = selectedPostData ? (
@@ -237,7 +222,7 @@ function App() {
           content={selectedPostData.content} 
           hasConnectedPosts={hasConnectedPosts}
           onConnectedPostsClick={scrollToConnectedPosts}
-          isConnectedPostsActive={isConnectedPostsActive}
+          isConnectedPostsActive={sectionState.connected}
         />
       </div>
     </Sidebar>
@@ -254,6 +239,11 @@ function App() {
       />
     </Sidebar>
   );
+
+  // Reset section state when changing posts
+  useEffect(() => {
+    setSectionState(defaultSectionState);
+  }, [selectedPost]);
 
   // Function to handle post selection
   const handlePostSelect = (slug: string | null) => {
@@ -315,8 +305,8 @@ function App() {
           onPostClick={handlePostSelect}
           allPosts={posts}
           onSectionChange={handleSectionChange}
-          isConnectedPostsActive={isConnectedPostsActive}
-          isCommentsActive={isCommentsActive}
+          isConnectedPostsActive={sectionState.connected}
+          isCommentsActive={sectionState.comments}
         />
       ) : (
         <div className="space-y-8">
