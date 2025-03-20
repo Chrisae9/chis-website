@@ -10,6 +10,8 @@ import { Sidebar } from './components/Sidebar';
 import { DynamicLinks } from './components/DynamicLinks';
 import { TableOfContents } from './components/TableOfContents';
 import { CategoryFilter } from './components/CategoryFilter';
+import { Utterances } from './components/Utterances';
+import { utterancesConfig } from './config/utterances';
 import { links } from './config/links';
 import { Post } from './types';
 import { loadPosts } from './utils/posts';
@@ -32,37 +34,49 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Load posts only once on initial mount
   useEffect(() => {
     const loadData = async () => {
-      const loadedPosts = await loadPosts();
-      setPosts(loadedPosts);
-      
-      // Get the current path from react-router
-      const slug = location.pathname.slice(1);
-      
-      if (slug && slug.length > 0) {
-        // Check if the post exists in loaded posts
-        const postExists = loadedPosts.some(post => post.slug === slug);
-        if (postExists) {
-          setSelectedPost(slug);
-        } else {
-          console.warn(`Post with slug "${slug}" not found`);
-          // Redirect to home if post not found
-          navigate('/', { replace: true });
+      try {
+        const loadedPosts = await loadPosts();
+        setPosts(loadedPosts);
+        
+        // After posts are loaded, handle the current URL
+        const slug = location.pathname.slice(1);
+        if (slug && slug.length > 0) {
+          const postExists = loadedPosts.some(post => post.slug === slug);
+          if (postExists) {
+            setSelectedPost(slug);
+          } else {
+            console.warn(`Post with slug "${slug}" not found`);
+            navigate('/', { replace: true });
+          }
         }
+      } catch (error) {
+        console.error("Failed to load posts:", error);
       }
     };
     
     loadData();
-  }, [location.pathname, navigate]);
+  }, []); // Empty dependency array - only run once on mount
 
-  // Update URL when selected post changes
+  // Handle URL changes separately
   useEffect(() => {
-    const newPath = selectedPost ? `/${selectedPost}` : '/';
-    if (location.pathname !== newPath) {
-      navigate(newPath, { replace: false });
+    if (posts.length === 0) return; // Skip if posts aren't loaded yet
+    
+    const slug = location.pathname.slice(1);
+    if (slug && slug.length > 0) {
+      const postExists = posts.some(post => post.slug === slug);
+      if (postExists) {
+        setSelectedPost(slug);
+      } else {
+        console.warn(`Post with slug "${slug}" not found`);
+        navigate('/', { replace: true });
+      }
+    } else {
+      setSelectedPost(null);
     }
-  }, [selectedPost, location.pathname, navigate]);
+  }, [location.pathname, posts, navigate]);
 
   useEffect(() => {
     localStorage.setItem('darkMode', JSON.stringify(darkMode));
@@ -190,6 +204,21 @@ function App() {
     </Sidebar>
   );
 
+  // Function to handle post selection
+  const handlePostSelect = (slug: string | null) => {
+    if (slug) {
+      // Check if the post exists before navigating
+      const postExists = posts.some(post => post.slug === slug);
+      if (postExists) {
+        navigate(`/${slug}`);
+      } else {
+        console.warn(`Post with slug "${slug}" not found`);
+      }
+    } else {
+      navigate('/');
+    }
+  };
+
   return (
     <Layout
       darkMode={darkMode}
@@ -201,7 +230,7 @@ function App() {
       header={
         selectedPostData ? (
           <button
-            onClick={() => setSelectedPost(null)}
+            onClick={() => handlePostSelect(null)}
             className="flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
           >
             ← Back to posts
@@ -227,9 +256,9 @@ function App() {
       {selectedPostData ? (
         <PostContent
           post={selectedPostData}
-          onBack={() => setSelectedPost(null)}
+          onBack={() => handlePostSelect(null)}
           darkMode={darkMode}
-          onPostClick={setSelectedPost}
+          onPostClick={handlePostSelect}
           allPosts={posts}
         />
       ) : (
@@ -252,7 +281,7 @@ function App() {
               key={post.slug}
               post={post}
               searchTerm={searchTerm}
-              onPostClick={setSelectedPost}
+              onPostClick={handlePostSelect}
             />
           ))}
           

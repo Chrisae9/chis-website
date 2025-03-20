@@ -13,7 +13,7 @@ export function Utterances({ repo, theme, slug }: UtterancesProps) {
   
   useEffect(() => {
     const utterancesDiv = containerRef.current;
-    if (!utterancesDiv) return;
+    if (!utterancesDiv || !slug) return;
     
     // Clean up any existing content
     utterancesDiv.innerHTML = '';
@@ -23,14 +23,9 @@ export function Utterances({ repo, theme, slug }: UtterancesProps) {
     script.src = 'https://utteranc.es/client.js';
     script.setAttribute('repo', repo);
     
-    // Use the slug as the issue term to ensure comments are tied to the post
-    // regardless of the URL structure
-    if (slug) {
-      script.setAttribute('issue-term', slug);
-    } else {
-      // Fallback to pathname if no slug is provided
-      script.setAttribute('issue-term', 'pathname');
-    }
+    // Use title mapping for consistent comment threads
+    script.setAttribute('issue-term', 'title');
+    script.setAttribute('title', slug);
     
     script.setAttribute('theme', theme);
     script.setAttribute('crossorigin', 'anonymous');
@@ -43,7 +38,7 @@ export function Utterances({ repo, theme, slug }: UtterancesProps) {
     return () => {
       utterancesDiv.innerHTML = '';
     };
-  }, [repo, theme, slug, location.pathname]);
+  }, [repo, theme, slug]);
   
-  return <div ref={containerRef} className="utterances-comments w-full mt-8" />;
+  return <div ref={containerRef} className="utterances-comments w-full" />;
 }
