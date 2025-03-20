@@ -398,9 +398,6 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
       
       <div id="comments" className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
         <div className="p-4">
-          <h2 className="text-base font-semibold mb-4 text-gray-900 dark:text-gray-100">
-            Comments
-          </h2>
           <Utterances 
             repo={utterancesConfig.repo}
             slug={post.slug}
