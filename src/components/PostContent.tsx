@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Tag as TagIcon } from 'lucide-react';
+import { Tag as TagIcon, Copy, Check } from 'lucide-react';
 import { Utterances } from './Utterances';
 import { utterancesConfig } from '../config/utterances';
 import ReactMarkdown from 'react-markdown';
@@ -101,8 +101,36 @@ export function PostContent({
     // Process each part
     return parts.map((part, index) => {
       if (part.type === 'code') {
-        // Return code blocks as-is
-        return <ReactMarkdown key={index} remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>{part.content}</ReactMarkdown>;
+        // Wrap code blocks with custom component that includes copy button
+        return (
+          <div key={index} className="relative group">
+            <ReactMarkdown 
+              remarkPlugins={[remarkGfm]} 
+              rehypePlugins={[rehypeHighlight]}
+            >
+              {part.content}
+            </ReactMarkdown>
+            <button
+              onClick={() => {
+                // Extract code content without the markdown code fence syntax
+                const codeContent = part.content
+                  .replace(/^```.*\n/, '') // Remove opening fence with optional language
+                  .replace(/```$/, '')     // Remove closing fence
+                  .trim();                 // Remove extra whitespace
+                copyToClipboard(codeContent);
+              }}
+              className="absolute top-2 right-2 p-1.5 bg-gray-700/50 hover:bg-gray-700/80 text-gray-200 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+              aria-label="Copy code"
+              title="Copy code"
+            >
+              {copyStatus && part.content.includes(copyStatus.substring(0, 20)) ? (
+                <Check className="h-4 w-4" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
+            </button>
+          </div>
+        );
       } else {
         // Process YouTube embeds in text parts
         const segments: React.ReactNode[] = [];
@@ -333,23 +361,38 @@ export function PostContent({
   };
 
   const copyToClipboard = (text: string) => {
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.setAttribute('readonly', '');
-    textarea.style.position = 'absolute';
-    textarea.style.left = '-9999px';
-    document.body.appendChild(textarea);
+    // Use modern clipboard API if available
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text)
+        .then(() => {
+          setCopyStatus(text.substring(0, 20)); // Store part of the copied text to identify which block was copied
+          setTimeout(() => setCopyStatus(''), 2000);
+        })
+        .catch(err => {
+          console.error('Failed to copy text: ', err);
+          setCopyStatus('Failed to copy');
+          setTimeout(() => setCopyStatus(''), 2000);
+        });
+    } else {
+      // Fallback for older browsers
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'absolute';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
 
-    try {
-      textarea.select();
-      document.execCommand('copy');
-      setCopyStatus('Copied!');
-    } catch (err) {
-      console.error('Failed to copy text: ', err);
-      setCopyStatus('Failed to copy');
-    } finally {
-      document.body.removeChild(textarea);
-      setTimeout(() => setCopyStatus(''), 2000);
+      try {
+        textarea.select();
+        document.execCommand('copy');
+        setCopyStatus(text.substring(0, 20)); // Store part of the copied text to identify which block was copied
+      } catch (err) {
+        console.error('Failed to copy text: ', err);
+        setCopyStatus('Failed to copy');
+      } finally {
+        document.body.removeChild(textarea);
+        setTimeout(() => setCopyStatus(''), 2000);
+      }
     }
   };
 
