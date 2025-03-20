@@ -27,12 +27,12 @@ export function TagList({ tags, selectedTags, onTagToggle }: TagListProps) {
         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400 dark:text-gray-500" />
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-1.5">
         {filteredTags.map((tag) => (
           <button
             key={tag}
             onClick={() => onTagToggle(tag)}
-            className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+            className={`px-2.5 py-1 text-sm rounded transition-colors ${
               selectedTags.includes(tag)
                 ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-700'
                 : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-100 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700'
