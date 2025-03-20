@@ -170,7 +170,18 @@ function App() {
       showRightSidebar={showRightSidebar}
       setShowLeftSidebar={setShowLeftSidebar}
       setShowRightSidebar={setShowRightSidebar}
-      header={<SearchBar value={searchTerm} onChange={setSearchTerm} />}
+      header={
+        selectedPostData ? (
+          <button
+            onClick={() => setSelectedPost(null)}
+            className="flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+          >
+            ← Back to posts
+          </button>
+        ) : (
+          <SearchBar value={searchTerm} onChange={setSearchTerm} />
+        )
+      }
       leftSidebar={leftSidebarContent}
       rightSidebar={
         <Sidebar

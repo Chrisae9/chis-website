@@ -287,12 +287,6 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
     <div className="space-y-4">
       <article className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
         <div className="p-4">
-          <button
-            onClick={onBack}
-            className="mb-4 text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-          >
-            ← Back to posts
-          </button>
           
           <div className="border-b border-gray-200 dark:border-gray-800 pb-4 mb-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
