@@ -1,5 +1,6 @@
 import React from 'react';
-import { ExternalLink, Sun, Moon, Menu, X } from 'lucide-react';
+import { Link, Sun, Moon, Menu, X } from 'lucide-react';
+import { BackToTop } from './BackToTop';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -47,12 +48,13 @@ export function Layout({
           </div>
 
           <div className="flex items-center gap-3 md:w-64 justify-end">
+            <BackToTop />
             {!isPostView && (
               <button
                 onClick={() => setShowRightSidebar(!showRightSidebar)}
                 className="md:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors text-gray-700 dark:text-gray-100"
               >
-                {showRightSidebar ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+                {showRightSidebar ? <X className="h-4 w-4" /> : <Link className="h-4 w-4" />}
               </button>
             )}
             <button
