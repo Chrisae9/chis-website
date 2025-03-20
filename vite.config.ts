@@ -9,5 +9,12 @@ export default defineConfig({
       '@': '/src',
       '@assets': '/src/assets'
     }
+  },
+  server: {
+    historyApiFallback: true
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: true
   }
 })

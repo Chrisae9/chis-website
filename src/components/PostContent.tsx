@@ -403,7 +403,7 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
           </h2>
           <Utterances 
             repo={utterancesConfig.repo}
-            issueTerm={post.frontmatter.title}
+            slug={post.slug}
             theme={darkMode ? utterancesConfig.theme.dark : utterancesConfig.theme.light}
           />
         </div>

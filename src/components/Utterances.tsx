@@ -1,12 +1,15 @@
 import React, { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 
 interface UtterancesProps {
   repo: string;
   theme: string;
+  slug?: string;
 }
 
-export function Utterances({ repo, theme }: UtterancesProps) {
+export function Utterances({ repo, theme, slug }: UtterancesProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
   
   useEffect(() => {
     const utterancesDiv = containerRef.current;
@@ -19,7 +22,16 @@ export function Utterances({ repo, theme }: UtterancesProps) {
     const script = document.createElement('script');
     script.src = 'https://utteranc.es/client.js';
     script.setAttribute('repo', repo);
-    script.setAttribute('issue-term', 'pathname');
+    
+    // Use the slug as the issue term to ensure comments are tied to the post
+    // regardless of the URL structure
+    if (slug) {
+      script.setAttribute('issue-term', slug);
+    } else {
+      // Fallback to pathname if no slug is provided
+      script.setAttribute('issue-term', 'pathname');
+    }
+    
     script.setAttribute('theme', theme);
     script.setAttribute('crossorigin', 'anonymous');
     script.async = true;
@@ -31,7 +43,7 @@ export function Utterances({ repo, theme }: UtterancesProps) {
     return () => {
       utterancesDiv.innerHTML = '';
     };
-  }, [repo, theme]);
+  }, [repo, theme, slug, location.pathname]);
   
   return <div ref={containerRef} className="utterances-comments w-full mt-8" />;
 }

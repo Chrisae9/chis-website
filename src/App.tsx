@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Fuse from 'fuse.js';
 import { SearchBar } from './components/SearchBar';
 import { TagList } from './components/TagList';
@@ -28,30 +29,17 @@ function App() {
   const [showRightSidebar, setShowRightSidebar] = useState(false);
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
   useEffect(() => {
     const loadData = async () => {
       const loadedPosts = await loadPosts();
       setPosts(loadedPosts);
       
-      // Check for redirected path from query params
-      const urlParams = new URLSearchParams(window.location.search);
-      const redirectPath = urlParams.get('path');
+      // Get the current path from react-router
+      const slug = location.pathname.slice(1);
       
-      // If we have a redirected path, use it and clean the URL
-      if (redirectPath) {
-        const slug = redirectPath.slice(1); // Remove leading slash
-        window.history.replaceState(null, '', redirectPath);
-        if (slug && slug.length > 0) {
-          const postExists = loadedPosts.some(post => post.slug === slug);
-          if (postExists) {
-            setSelectedPost(slug);
-            return;
-          }
-        }
-      }
-      
-      // Normal path handling
-      const slug = window.location.pathname.slice(1);
       if (slug && slug.length > 0) {
         // Check if the post exists in loaded posts
         const postExists = loadedPosts.some(post => post.slug === slug);
@@ -60,30 +48,21 @@ function App() {
         } else {
           console.warn(`Post with slug "${slug}" not found`);
           // Redirect to home if post not found
-          window.history.replaceState(null, '', '/');
+          navigate('/', { replace: true });
         }
       }
     };
     
     loadData();
-  }, []);
+  }, [location.pathname, navigate]);
 
+  // Update URL when selected post changes
   useEffect(() => {
     const newPath = selectedPost ? `/${selectedPost}` : '/';
-    if (window.location.pathname !== newPath) {
-      window.history.pushState({ slug: selectedPost }, '', newPath);
+    if (location.pathname !== newPath) {
+      navigate(newPath, { replace: false });
     }
-  }, [selectedPost]);
-
-  useEffect(() => {
-    const handlePopState = (event: PopStateEvent) => {
-      const slug = event.state?.slug || null;
-      setSelectedPost(slug);
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
+  }, [selectedPost, location.pathname, navigate]);
 
   useEffect(() => {
     localStorage.setItem('darkMode', JSON.stringify(darkMode));
