@@ -26,11 +26,13 @@ export const defaultSectionState: SectionState = {
 export function scrollToSection(sectionId: string, behavior: ScrollBehavior = 'smooth'): void {
   const section = document.getElementById(sectionId) || document.querySelector(`[data-${sectionId}]`);
   if (section) {
-    // Add offset to account for fixed header
-    const headerOffset = 80;
-    const elementPosition = section.getBoundingClientRect().top;
-    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    // Get the position of the element relative to the document
+    const yPosition = section.getBoundingClientRect().top + window.pageYOffset;
     
+    // Calculate position with offset for fixed header (64px)
+    const offsetPosition = yPosition - 64;
+    
+    // Scroll to the position
     window.scrollTo({
       top: offsetPosition,
       behavior

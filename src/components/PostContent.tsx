@@ -237,13 +237,16 @@ export function PostContent({
 
   // Helper function to scroll to connected posts
   const scrollToConnectedPosts = () => {
-    const headerOffset = 80;
     const connectedPostsSection = document.getElementById('connected-posts');
     
     if (connectedPostsSection) {
-      const elementPosition = connectedPostsSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      // Get the position of the element relative to the document
+      const yPosition = connectedPostsSection.getBoundingClientRect().top + window.pageYOffset;
       
+      // Calculate position with offset for fixed header (64px)
+      const offsetPosition = yPosition - 64;
+      
+      // Scroll to the position
       window.scrollTo({
         top: offsetPosition,
         behavior: 'smooth'
@@ -258,13 +261,16 @@ export function PostContent({
   
   // Helper function to scroll to comments
   const scrollToCommentsSection = () => {
-    const headerOffset = 80;
     const commentsSection = document.getElementById('comments');
     
     if (commentsSection) {
-      const elementPosition = commentsSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      // Get the position of the element relative to the document
+      const yPosition = commentsSection.getBoundingClientRect().top + window.pageYOffset;
       
+      // Calculate position with offset for fixed header (64px)
+      const offsetPosition = yPosition - 64;
+      
+      // Scroll to the position
       window.scrollTo({
         top: offsetPosition,
         behavior: 'smooth'
@@ -285,21 +291,24 @@ export function PostContent({
       const commentsSection = document.getElementById('comments');
       if (!connectedPostsSection || !commentsSection) return;
 
-      const scrollPosition = window.scrollY + 100; // Add offset for header
-      const connectedPostsPosition = connectedPostsSection.offsetTop - 100;
-      const commentsPosition = commentsSection.offsetTop - 100;
+      // Get current scroll position
+      const scrollY = window.scrollY;
+      
+      // Get the positions of each section
+      const connectedPostsTop = connectedPostsSection.offsetTop - 100; // Offset for header
+      const commentsTop = commentsSection.offsetTop - 100; // Offset for header
       
       // Determine which section is active based on scroll position
-      const isConnectedActive = scrollPosition >= connectedPostsPosition && scrollPosition < commentsPosition;
-      const isCommentsActive = scrollPosition >= commentsPosition;
+      const isAtConnectedPosts = scrollY >= connectedPostsTop && scrollY < commentsTop;
+      const isAtComments = scrollY >= commentsTop;
       
-      setLocalIsConnectedPostsActive(isConnectedActive);
+      setLocalIsConnectedPostsActive(isAtConnectedPosts);
       
       // If we have an external handler, call it
       if (onSectionChange) {
         onSectionChange({ 
-          connected: isConnectedActive, 
-          comments: isCommentsActive 
+          connected: isAtConnectedPosts, 
+          comments: isAtComments 
         });
       }
     };
