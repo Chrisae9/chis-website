@@ -12,12 +12,14 @@ interface TableOfContentsProps {
   content: string;
   hasConnectedPosts?: boolean;
   onConnectedPostsClick?: () => void;
+  isConnectedPostsActive?: boolean;
 }
 
 export function TableOfContents({ 
   content, 
   hasConnectedPosts = false, 
-  onConnectedPostsClick 
+  onConnectedPostsClick,
+  isConnectedPostsActive = false
 }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>('');
   const [headings, setHeadings] = useState<TOCItem[]>([]);
@@ -148,7 +150,13 @@ export function TableOfContents({
         <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
           <button
             onClick={onConnectedPostsClick}
-            className="flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+            className={`
+              flex items-center gap-1.5 text-sm 
+              ${isConnectedPostsActive 
+                ? 'text-blue-600 dark:text-blue-400 font-medium' 
+                : 'text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400'}
+              transition-colors duration-200
+            `}
           >
             <span>Connected Posts</span>
             <FontAwesomeIcon icon={faLink} className="text-xs" />

@@ -185,6 +185,8 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
     return () => clearTimeout(timer);
   }, [post.content]);
 
+  const [isConnectedPostsActive, setIsConnectedPostsActive] = useState(false);
+
   // Add keyboard shortcut to navigate to Connected Posts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -194,6 +196,7 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
         const connectedPostsSection = document.querySelector('[data-connected-posts]');
         if (connectedPostsSection) {
           connectedPostsSection.scrollIntoView({ behavior: 'smooth' });
+          setIsConnectedPostsActive(true);
         }
       }
     };
@@ -208,6 +211,45 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [hasConnectedPosts]);
+
+  // Set up scroll event listener to detect when connected posts section is active
+  useEffect(() => {
+    if (!hasConnectedPosts) return;
+
+    const handleScroll = () => {
+      const connectedPostsSection = document.querySelector('[data-connected-posts]');
+      if (!connectedPostsSection) return;
+
+      const headings = Array.from(document.querySelectorAll('h2, h3, h4'));
+      const scrollPosition = window.scrollY + window.innerHeight / 2;
+      
+      // Check if we're at the bottom of the page
+      const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
+      
+      // Check if connected posts section is in view
+      const connectedPostsRect = connectedPostsSection.getBoundingClientRect();
+      const isConnectedPostsVisible = 
+        connectedPostsRect.top < window.innerHeight && 
+        connectedPostsRect.bottom > 0;
+      
+      // If we're at the bottom of the page or the connected posts section is the main thing in view
+      if (isAtBottom || (isConnectedPostsVisible && headings.length > 0 && 
+          scrollPosition > headings[headings.length - 1].getBoundingClientRect().bottom + window.scrollY)) {
+        setIsConnectedPostsActive(true);
+      } else {
+        setIsConnectedPostsActive(false);
+      }
+    };
+
+    // Initial check
+    handleScroll();
+
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [hasConnectedPosts]);
 
@@ -282,6 +324,7 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
           </div>
         </div>
       </article>
+
 
       {hasConnectedPosts && (
         <aside 
