@@ -302,7 +302,7 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
               <div className="flex flex-wrap gap-2">
                 {post.frontmatter.category && (
                   <span 
-                    className="text-xs px-2 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/30 rounded-md font-medium mr-2"
+                    className="text-xs px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full font-medium mr-3"
                   >
                     {post.frontmatter.category}
                   </span>
@@ -314,7 +314,7 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
                       {post.frontmatter.tags.map(tag => (
                         <span 
                           key={tag}
-                          className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-md"
+                          className="text-xs px-2 py-1 bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800/30 text-gray-700 dark:text-gray-200 rounded-md"
                         >
                           {tag}
                         </span>

@@ -46,7 +46,7 @@ export function PostCard({ post, searchTerm, onPostClick }: PostCardProps) {
           
           {post.frontmatter.category && (
             <div className="flex items-center gap-1.5">
-              <span className="text-xs px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/40 border border-blue-200 dark:border-blue-800/40 text-blue-700 dark:text-blue-300 rounded whitespace-nowrap font-medium">
+              <span className="text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-full whitespace-nowrap font-medium">
                 {post.frontmatter.category}
               </span>
             </div>
