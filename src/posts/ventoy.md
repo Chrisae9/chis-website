@@ -2,6 +2,7 @@
 title: All-in-one Bootable USB with Ventoy
 date: 2023-12-14
 summary: All-in-one bootable solution for multiple ISOs.
+category: Tutorial
 tags: [Engineering, OS]
 ---
 

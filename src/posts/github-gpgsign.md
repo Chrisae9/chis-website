@@ -2,6 +2,7 @@
 title: Signing GitHub commits with GPG Key
 date: 2022-06-09
 summary: Signing GitHub commits with a GPG key. Reference to importing and exporting key to different devices through ssh/file transfer.
+category: Docs
 tags: [Git, Security]
 ---
 

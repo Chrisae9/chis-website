@@ -2,6 +2,7 @@
 title: RAID troubleshooting
 date: 2023-11-17
 summary: Right before Thanksgiving, my server failed to boot. Thinking it was a failed hard drive, I tried to diagnose the problem. Leading to an even worse issue. Here is the post-mortem.
+category: Learning
 tags: [Post-Mortem, RAID]
 ---
 

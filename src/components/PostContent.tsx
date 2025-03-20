@@ -297,20 +297,25 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
                 {formattedDate}
               </div>
             </div>
-            {post.frontmatter.tags && (
-              <div className="mt-3">
-                <div className="flex flex-wrap gap-2">
-                  {post.frontmatter.tags.map(tag => (
-                    <span 
-                      key={tag}
-                      className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-md"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+            <div className="mt-3">
+              <div className="flex flex-wrap gap-2">
+                {post.frontmatter.category && (
+                  <span 
+                    className="text-xs px-2 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/30 rounded-md font-medium"
+                  >
+                    {post.frontmatter.category}
+                  </span>
+                )}
+                {post.frontmatter.tags && post.frontmatter.tags.map(tag => (
+                  <span 
+                    key={tag}
+                    className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-md"
+                  >
+                    {tag}
+                  </span>
+                ))}
               </div>
-            )}
+            </div>
           </div>
 
           <div className="prose dark:prose-invert max-w-none prose-sm sm:prose-base">

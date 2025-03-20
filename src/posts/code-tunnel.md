@@ -2,6 +2,7 @@
 title: VSCode Tunnel Service on Arch Linux
 date: 2024-01-30
 summary: Guide on how to set up a VSCode tunnel service on your Arch Linux system, allowing you to connect to your remote development server seamlessly through the https://vscode.dev/ website.
+category: Docs
 tags: [Arch, Chromebook, VSCode]
 ---
 

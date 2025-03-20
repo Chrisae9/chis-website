@@ -47,6 +47,13 @@ export function PostCard({ post, searchTerm, onPostClick }: PostCardProps) {
           <div className="flex items-center gap-1.5">
             <TagIcon className="h-4 w-4 text-gray-400 shrink-0" />
             <div className="flex flex-wrap gap-1.5">
+              {post.frontmatter.category && (
+                <span 
+                  className="text-xs px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/40 border border-blue-200 dark:border-blue-800/40 text-blue-700 dark:text-blue-300 rounded whitespace-nowrap font-medium"
+                >
+                  {post.frontmatter.category}
+                </span>
+              )}
               {post.frontmatter.tags.map((tag) => (
                 <span 
                   key={tag} 

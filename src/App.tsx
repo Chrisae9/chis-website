@@ -8,6 +8,7 @@ import { Layout } from './components/Layout';
 import { Sidebar } from './components/Sidebar';
 import { DynamicLinks } from './components/DynamicLinks';
 import { TableOfContents } from './components/TableOfContents';
+import { CategoryFilter } from './components/CategoryFilter';
 import { links } from './config/links';
 import { Post } from './types';
 import { loadPosts } from './utils/posts';
@@ -17,6 +18,7 @@ function App() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedPost, setSelectedPost] = useState<string | null>(null);
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     const storedMode = localStorage.getItem('darkMode');
@@ -65,10 +67,24 @@ function App() {
 
   const allTags = useMemo(() => {
     const tags = new Set<string>();
-    posts.forEach(post => {
+    const postsToConsider = selectedCategory 
+      ? posts.filter(post => post.frontmatter.category === selectedCategory)
+      : posts;
+      
+    postsToConsider.forEach(post => {
       post.frontmatter.tags.forEach(tag => tags.add(tag));
     });
     return Array.from(tags);
+  }, [posts, selectedCategory]);
+
+  const allCategories = useMemo(() => {
+    const categories = new Set<string>();
+    posts.forEach(post => {
+      if (post.frontmatter.category) {
+        categories.add(post.frontmatter.category);
+      }
+    });
+    return Array.from(categories);
   }, [posts]);
 
   const fuse = useMemo(() => new Fuse(posts, {
@@ -81,6 +97,10 @@ function App() {
 
     if (searchTerm) {
       result = fuse.search(searchTerm).map(({ item }) => item);
+    }
+
+    if (selectedCategory) {
+      result = result.filter(post => post.frontmatter.category === selectedCategory);
     }
 
     if (selectedTags.length > 0) {
@@ -97,7 +117,7 @@ function App() {
     });
 
     return result;
-  }, [posts, searchTerm, selectedTags, fuse, sortOrder]);
+  }, [posts, searchTerm, selectedCategory, selectedTags, fuse, sortOrder]);
 
   const handleTagToggle = (tag: string) => {
     setSelectedTags(prev =>
@@ -206,7 +226,19 @@ function App() {
         />
       ) : (
         <div className="space-y-8">
-          <SortControls sortOrder={sortOrder} onSortChange={setSortOrder} />
+          <div className="flex flex-col sm:flex-row gap-4 mb-6">
+            <div className="w-full sm:w-64">
+              <CategoryFilter 
+                categories={allCategories}
+                selectedCategory={selectedCategory}
+                onCategoryChange={setSelectedCategory}
+              />
+            </div>
+            <div className="flex-1">
+              <SortControls sortOrder={sortOrder} onSortChange={setSortOrder} />
+            </div>
+          </div>
+          
           {filteredPosts.map((post) => (
             <PostCard
               key={post.slug}
@@ -215,6 +247,12 @@ function App() {
               onPostClick={setSelectedPost}
             />
           ))}
+          
+          {filteredPosts.length === 0 && (
+            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+              No posts found. Try adjusting your filters.
+            </div>
+          )}
         </div>
       )}
     </Layout>

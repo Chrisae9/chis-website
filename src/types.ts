@@ -7,5 +7,6 @@ export interface Post {
     summary: string;
     tags: string[];
     backlinks?: string[];
+    category?: string;
   };
 }

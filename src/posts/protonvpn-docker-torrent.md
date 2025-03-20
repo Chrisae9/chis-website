@@ -2,6 +2,7 @@
 title: Torrenting with ProtonVPN over Docker
 date: 2023-11-20
 summary: Setting up QBitTorrent using ProtonVPN port forwarding in Docker. Accessible via browser over localhost.
+category: Docker
 tags: [Docker, Torrent, VPN]
 ---
 

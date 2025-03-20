@@ -2,6 +2,7 @@
 title: Phase10 Randomizer
 date: 2021-04-22
 summary: How I created a web app to generate a new rules for Phase 10.
+category: Website
 tags: [App, Website]
 ---
 

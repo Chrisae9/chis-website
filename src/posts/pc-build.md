@@ -2,6 +2,7 @@
 title: Mini ITX form factor PC Build 2021
 date: 2021-06-28
 summary: After 6.5 years I decided to repurpose my i7-4790K to be my new permanent server and build a new PC in a Mini ITX form factor.
+category: Builds
 tags: [Engineering, Gaming]
 ---
 
