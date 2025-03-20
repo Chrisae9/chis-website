@@ -1,5 +1,6 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { createInternalUrl, normalizeSlug } from './utils/routeUtils';
 import Fuse from 'fuse.js';
 import { SearchBar } from './components/SearchBar';
 import { TagList } from './components/TagList';
@@ -30,9 +31,19 @@ function App() {
   const [showLeftSidebar, setShowLeftSidebar] = useState(false);
   const [showRightSidebar, setShowRightSidebar] = useState(false);
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
+  
+  // Add state for tracking active sections
+  const [isConnectedPostsActive, setIsConnectedPostsActive] = useState(false);
+  const [isCommentsActive, setIsCommentsActive] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
+  
+  // Custom scroll handling for synchronized sidebar navigation
+  const handleSectionChange = (section: { connected: boolean, comments: boolean }) => {
+    setIsConnectedPostsActive(section.connected);
+    setIsCommentsActive(section.comments);
+  };
 
   // Load posts only once on initial mount
   useEffect(() => {
@@ -42,11 +53,14 @@ function App() {
         setPosts(loadedPosts);
         
         // After posts are loaded, handle the current URL
-        const slug = location.pathname.slice(1);
+        const slug = normalizeSlug(location.pathname);
+        console.log('Initial URL processing:', location.pathname, '→ normalized slug:', slug);
+        
         if (slug && slug.length > 0) {
           const postExists = loadedPosts.some(post => post.slug === slug);
           if (postExists) {
             setSelectedPost(slug);
+            console.log('Found matching post for slug:', slug);
           } else {
             console.warn(`Post with slug "${slug}" not found`);
             navigate('/', { replace: true });
@@ -64,14 +78,32 @@ function App() {
   useEffect(() => {
     if (posts.length === 0) return; // Skip if posts aren't loaded yet
     
-    const slug = location.pathname.slice(1);
+    const slug = normalizeSlug(location.pathname);
+    console.log('URL change detected:', location.pathname, '→ normalized slug:', slug);
+    
     if (slug && slug.length > 0) {
-      const postExists = posts.some(post => post.slug === slug);
-      if (postExists) {
+      // Log all available slugs for debugging
+      console.log('Available slugs:', posts.map(p => p.slug).join(', '));
+      
+      const matchingPost = posts.find(post => post.slug === slug);
+      if (matchingPost) {
+        console.log('Found matching post:', matchingPost.slug);
         setSelectedPost(slug);
       } else {
-        console.warn(`Post with slug "${slug}" not found`);
-        navigate('/', { replace: true });
+        console.warn(`Post with slug "${slug}" not found among ${posts.length} posts`);
+        
+        // Try a case-insensitive match as a fallback
+        const caseInsensitiveMatch = posts.find(
+          post => post.slug.toLowerCase() === slug.toLowerCase()
+        );
+        
+        if (caseInsensitiveMatch) {
+          console.log('Found case-insensitive match:', caseInsensitiveMatch.slug);
+          // Navigate to the correct case version
+          navigate(`/${caseInsensitiveMatch.slug}`, { replace: true });
+        } else {
+          navigate('/', { replace: true });
+        }
       }
     } else {
       setSelectedPost(null);
@@ -172,8 +204,26 @@ function App() {
     const connectedPostsSection = document.querySelector('[data-connected-posts]');
     if (connectedPostsSection) {
       connectedPostsSection.scrollIntoView({ behavior: 'smooth' });
+      setIsConnectedPostsActive(true);
+      setIsCommentsActive(false);
     }
   };
+
+  // Function to scroll to comments section
+  const scrollToComments = () => {
+    const commentsSection = document.getElementById('comments');
+    if (commentsSection) {
+      commentsSection.scrollIntoView({ behavior: 'smooth' });
+      setIsCommentsActive(true);
+      setIsConnectedPostsActive(false);
+    }
+  };
+
+  // Reset active sections when changing posts
+  useEffect(() => {
+    setIsConnectedPostsActive(false);
+    setIsCommentsActive(false);
+  }, [selectedPost]);
 
   // Left sidebar content - show table of contents when viewing a post
   const leftSidebarContent = selectedPostData ? (
@@ -182,11 +232,12 @@ function App() {
       onClose={() => setShowLeftSidebar(false)}
       showMobileHeader={true}
     >
-      <div className="sticky top-20">
+      <div className="sticky-toc">
         <TableOfContents 
           content={selectedPostData.content} 
           hasConnectedPosts={hasConnectedPosts}
           onConnectedPostsClick={scrollToConnectedPosts}
+          isConnectedPostsActive={isConnectedPostsActive}
         />
       </div>
     </Sidebar>
@@ -208,13 +259,16 @@ function App() {
   const handlePostSelect = (slug: string | null) => {
     if (slug) {
       // Check if the post exists before navigating
-      const postExists = posts.some(post => post.slug === slug);
-      if (postExists) {
-        navigate(`/${slug}`);
+      const matchingPost = posts.find(post => post.slug === slug);
+      if (matchingPost) {
+        const url = createInternalUrl(slug);
+        console.log(`Navigating to post: ${slug}, URL: ${url}`);
+        navigate(url);
       } else {
         console.warn(`Post with slug "${slug}" not found`);
       }
     } else {
+      console.log('Navigating to home page');
       navigate('/');
     }
   };
@@ -260,6 +314,9 @@ function App() {
           darkMode={darkMode}
           onPostClick={handlePostSelect}
           allPosts={posts}
+          onSectionChange={handleSectionChange}
+          isConnectedPostsActive={isConnectedPostsActive}
+          isCommentsActive={isCommentsActive}
         />
       ) : (
         <div className="space-y-8">

@@ -1,5 +1,3 @@
-- back to top
-- feat youtube video embeds
-- post categories
-
-https://githubvideo.com/
+- fix utterances callback
+- fix links
+- toc scrolling wrt comments and connected posts
