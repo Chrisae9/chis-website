@@ -16,9 +16,21 @@ interface PostContentProps {
   darkMode: boolean;
   onPostClick: (slug: string) => void;
   allPosts: Post[];
+  onSectionChange?: (section: { connected: boolean, comments: boolean }) => void;
+  isConnectedPostsActive?: boolean;
+  isCommentsActive?: boolean;
 }
 
-export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: PostContentProps) {
+export function PostContent({ 
+  post, 
+  onBack, 
+  darkMode, 
+  onPostClick, 
+  allPosts,
+  onSectionChange,
+  isConnectedPostsActive: externalIsConnectedPostsActive,
+  isCommentsActive
+}: PostContentProps) {
   const [copyStatus, setCopyStatus] = useState<string>('');
   const contentWithoutTitle = post.content.replace(/^#\s+.*$/m, '').trim();
   const formattedDate = new Date(post.frontmatter.date).toLocaleDateString('en-US', {
@@ -188,7 +200,12 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
     return () => clearTimeout(timer);
   }, [post.content]);
 
-  const [isConnectedPostsActive, setIsConnectedPostsActive] = useState(false);
+  const [localIsConnectedPostsActive, setLocalIsConnectedPostsActive] = useState(false);
+  
+  // Use external state if provided, otherwise use local state
+  const isConnectedPostsActive = externalIsConnectedPostsActive !== undefined 
+    ? externalIsConnectedPostsActive 
+    : localIsConnectedPostsActive;
   
   // Scroll to top when post changes
   useEffect(() => {
@@ -201,11 +218,7 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
       // Use 'c' key as shortcut to navigate to Connected Posts
       if (e.key === 'c' && hasConnectedPosts && !isInputElement(e.target as HTMLElement)) {
         e.preventDefault();
-        const connectedPostsSection = document.querySelector('[data-connected-posts]');
-        if (connectedPostsSection) {
-          connectedPostsSection.scrollIntoView({ behavior: 'smooth' });
-          setIsConnectedPostsActive(true);
-        }
+        scrollToConnectedPosts();
       }
     };
 
@@ -222,32 +235,72 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
     };
   }, [hasConnectedPosts]);
 
+  // Helper function to scroll to connected posts
+  const scrollToConnectedPosts = () => {
+    const headerOffset = 80;
+    const connectedPostsSection = document.getElementById('connected-posts');
+    
+    if (connectedPostsSection) {
+      const elementPosition = connectedPostsSection.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      
+      setLocalIsConnectedPostsActive(true);
+      if (onSectionChange) {
+        onSectionChange({ connected: true, comments: false });
+      }
+    }
+  };
+  
+  // Helper function to scroll to comments
+  const scrollToCommentsSection = () => {
+    const headerOffset = 80;
+    const commentsSection = document.getElementById('comments');
+    
+    if (commentsSection) {
+      const elementPosition = commentsSection.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      
+      if (onSectionChange) {
+        onSectionChange({ connected: false, comments: true });
+      }
+    }
+  };
+
   // Set up scroll event listener to detect when connected posts section is active
   useEffect(() => {
     if (!hasConnectedPosts) return;
 
     const handleScroll = () => {
-      const connectedPostsSection = document.querySelector('[data-connected-posts]');
-      if (!connectedPostsSection) return;
+      const connectedPostsSection = document.getElementById('connected-posts');
+      const commentsSection = document.getElementById('comments');
+      if (!connectedPostsSection || !commentsSection) return;
 
-      const headings = Array.from(document.querySelectorAll('h2, h3, h4'));
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
+      const scrollPosition = window.scrollY + 100; // Add offset for header
+      const connectedPostsPosition = connectedPostsSection.offsetTop - 100;
+      const commentsPosition = commentsSection.offsetTop - 100;
       
-      // Check if we're at the bottom of the page
-      const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
+      // Determine which section is active based on scroll position
+      const isConnectedActive = scrollPosition >= connectedPostsPosition && scrollPosition < commentsPosition;
+      const isCommentsActive = scrollPosition >= commentsPosition;
       
-      // Check if connected posts section is in view
-      const connectedPostsRect = connectedPostsSection.getBoundingClientRect();
-      const isConnectedPostsVisible = 
-        connectedPostsRect.top < window.innerHeight && 
-        connectedPostsRect.bottom > 0;
+      setLocalIsConnectedPostsActive(isConnectedActive);
       
-      // If we're at the bottom of the page or the connected posts section is the main thing in view
-      if (isAtBottom || (isConnectedPostsVisible && headings.length > 0 && 
-          scrollPosition > headings[headings.length - 1].getBoundingClientRect().bottom + window.scrollY)) {
-        setIsConnectedPostsActive(true);
-      } else {
-        setIsConnectedPostsActive(false);
+      // If we have an external handler, call it
+      if (onSectionChange) {
+        onSectionChange({ 
+          connected: isConnectedActive, 
+          comments: isCommentsActive 
+        });
       }
     };
 
@@ -259,7 +312,7 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [hasConnectedPosts]);
+  }, [hasConnectedPosts, onSectionChange]);
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const href = e.currentTarget.getAttribute('href');
@@ -342,6 +395,7 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
 
       {hasConnectedPosts && (
         <aside 
+          id="connected-posts"
           data-connected-posts
           className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden"
         >
@@ -396,7 +450,7 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
         </aside>
       )}
       
-      <div id="comments" className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
+      <div id="comments" data-comments className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
         <div className="p-4">
           <Utterances 
             repo={utterancesConfig.repo}
