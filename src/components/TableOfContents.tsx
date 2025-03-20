@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLink } from '@fortawesome/free-solid-svg-icons';
 
 interface TOCItem {
   id: string;
@@ -8,9 +10,15 @@ interface TOCItem {
 
 interface TableOfContentsProps {
   content: string;
+  hasConnectedPosts?: boolean;
+  onConnectedPostsClick?: () => void;
 }
 
-export function TableOfContents({ content }: TableOfContentsProps) {
+export function TableOfContents({ 
+  content, 
+  hasConnectedPosts = false, 
+  onConnectedPostsClick 
+}: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>('');
   const [headings, setHeadings] = useState<TOCItem[]>([]);
 
@@ -105,36 +113,48 @@ export function TableOfContents({ content }: TableOfContentsProps) {
     });
   };
 
-  if (headings.length === 0) {
-    return (
-      <div className="text-sm text-gray-500 dark:text-gray-400 italic">
-        No headings found in this post.
-      </div>
-    );
-  }
-
   return (
-    <nav className="space-y-2">
-      {headings.map((heading) => (
-        <a
-          key={heading.id}
-          href={`#${heading.id}`}
-          className={`
-            block text-sm py-1 border-l-2 pl-3 transition-colors duration-200
-            ${activeId === heading.id 
-              ? 'border-blue-500 text-blue-600 dark:text-blue-400' 
-              : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-            }
-            ${heading.level === 2 ? '' : 'ml-' + (heading.level - 2) * 3}
-          `}
-          onClick={(e) => {
-            e.preventDefault();
-            scrollToSection(heading.id);
-          }}
-        >
-          {heading.text}
-        </a>
-      ))}
-    </nav>
+    <div>
+      {headings.length === 0 ? (
+        <div className="text-sm text-gray-500 dark:text-gray-400 italic">
+          No headings found in this post.
+        </div>
+      ) : (
+        <nav className="space-y-2">
+          {headings.map((heading) => (
+            <a
+              key={heading.id}
+              href={`#${heading.id}`}
+              className={`
+                block text-sm py-1 border-l-2 pl-3 transition-colors duration-200
+                ${activeId === heading.id 
+                  ? 'border-blue-500 text-blue-600 dark:text-blue-400' 
+                  : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                }
+                ${heading.level === 2 ? '' : 'ml-' + (heading.level - 2) * 3}
+              `}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection(heading.id);
+              }}
+            >
+              {heading.text}
+            </a>
+          ))}
+        </nav>
+      )}
+      
+      {hasConnectedPosts && onConnectedPostsClick && (
+        <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <button
+            onClick={onConnectedPostsClick}
+            className="flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+          >
+            <span>Connected Posts</span>
+            <FontAwesomeIcon icon={faLink} className="text-xs" />
+          </button>
+        </div>
+      )}
+    </div>
   );
 }

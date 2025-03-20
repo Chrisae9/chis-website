@@ -112,6 +112,27 @@ function App() {
     return posts.find(post => post.slug === selectedPost);
   }, [selectedPost, posts]);
 
+  // Check if the selected post has connected posts
+  const hasConnectedPosts = useMemo(() => {
+    if (!selectedPostData) return false;
+    
+    const referencingPosts = posts.filter(p => 
+      p.frontmatter.backlinks?.includes(selectedPostData.slug) && p.slug !== selectedPostData.slug
+    );
+    
+    return (
+      (selectedPostData.frontmatter.backlinks?.length > 0 || referencingPosts.length > 0)
+    );
+  }, [selectedPostData, posts]);
+
+  // Function to scroll to connected posts section
+  const scrollToConnectedPosts = () => {
+    const connectedPostsSection = document.querySelector('[data-connected-posts]');
+    if (connectedPostsSection) {
+      connectedPostsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   // Left sidebar content - show table of contents when viewing a post
   const leftSidebarContent = selectedPostData ? (
     <Sidebar
@@ -120,7 +141,11 @@ function App() {
       showMobileHeader={true}
     >
       <div className="sticky top-20">
-        <TableOfContents content={selectedPostData.content} />
+        <TableOfContents 
+          content={selectedPostData.content} 
+          hasConnectedPosts={hasConnectedPosts}
+          onConnectedPostsClick={scrollToConnectedPosts}
+        />
       </div>
     </Sidebar>
   ) : (

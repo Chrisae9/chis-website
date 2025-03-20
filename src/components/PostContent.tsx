@@ -4,6 +4,8 @@ import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import { Post } from '../types';
 import { TableOfContents } from './TableOfContents';
+import { YouTubeEmbed } from './YouTubeEmbed';
+import { extractYouTubeVideoId } from '../utils/youtubeParser';
 
 interface PostContentProps {
   post: Post;
@@ -26,6 +28,8 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
     p.frontmatter.backlinks?.includes(post.slug) && p.slug !== post.slug
   );
 
+  const hasConnectedPosts = (post.frontmatter.backlinks?.length > 0 || referencingPosts.length > 0);
+
   // Improved ID sanitization function
   const sanitizeId = (text: string | undefined): string => {
     if (!text) return '';
@@ -41,6 +45,120 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
       .replace(/-+/g, '-')
       // Remove leading/trailing hyphens
       .replace(/^-+|-+$/g, '');
+  };
+
+  // Process content to handle YouTube embeds outside of code blocks
+  const processContent = (content: string): React.ReactNode[] => {
+    // Split content by code blocks to avoid processing embeds inside them
+    const parts: Array<{ type: 'code' | 'text', content: string }> = [];
+    let currentIndex = 0;
+    
+    // Find all code blocks
+    const codeBlockRegex = /```[\s\S]*?```/g;
+    let match;
+    
+    while ((match = codeBlockRegex.exec(content)) !== null) {
+      // Add text before code block
+      if (match.index > currentIndex) {
+        parts.push({
+          type: 'text',
+          content: content.substring(currentIndex, match.index)
+        });
+      }
+      
+      // Add code block
+      parts.push({
+        type: 'code',
+        content: match[0]
+      });
+      
+      currentIndex = match.index + match[0].length;
+    }
+    
+    // Add remaining text
+    if (currentIndex < content.length) {
+      parts.push({
+        type: 'text',
+        content: content.substring(currentIndex)
+      });
+    }
+    
+    // Process each part
+    return parts.map((part, index) => {
+      if (part.type === 'code') {
+        // Return code blocks as-is
+        return <ReactMarkdown key={index} remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>{part.content}</ReactMarkdown>;
+      } else {
+        // Process YouTube embeds in text parts
+        const segments: React.ReactNode[] = [];
+        let lastIndex = 0;
+        const youtubeRegex = /{{youtube\.(.*?)}}/g;
+        let embedMatch;
+        
+        while ((embedMatch = youtubeRegex.exec(part.content)) !== null) {
+          // Add text before embed
+          if (embedMatch.index > lastIndex) {
+            segments.push(
+              <ReactMarkdown 
+                key={`text-${index}-${lastIndex}`}
+                remarkPlugins={[remarkGfm]} 
+                rehypePlugins={[rehypeHighlight]}
+                components={{
+                  a: ({ node, ...props }) => (
+                    <a {...props} onClick={handleLinkClick} className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300" />
+                  ),
+                  h2: ({ node, ...props }) => <h2 {...props} id={props.id || sanitizeId(props.children?.toString())} />,
+                  h3: ({ node, ...props }) => <h3 {...props} id={props.id || sanitizeId(props.children?.toString())} />,
+                  h4: ({ node, ...props }) => <h4 {...props} id={props.id || sanitizeId(props.children?.toString())} />
+                }}
+              >
+                {part.content.substring(lastIndex, embedMatch.index)}
+              </ReactMarkdown>
+            );
+          }
+          
+          // Extract YouTube URL and add embed
+          const youtubeUrl = embedMatch[1].trim();
+          const videoId = extractYouTubeVideoId(youtubeUrl);
+          
+          if (videoId) {
+            segments.push(<YouTubeEmbed key={`youtube-${index}-${embedMatch.index}`} videoId={videoId} />);
+          } else {
+            // If invalid YouTube URL, just show the original text
+            segments.push(
+              <span key={`invalid-${index}-${embedMatch.index}`}>
+                {embedMatch[0]}
+              </span>
+            );
+          }
+          
+          lastIndex = embedMatch.index + embedMatch[0].length;
+        }
+        
+        // Add remaining text
+        if (lastIndex < part.content.length) {
+          segments.push(
+            <ReactMarkdown 
+              key={`text-${index}-${lastIndex}`}
+              remarkPlugins={[remarkGfm]} 
+              rehypePlugins={[rehypeHighlight]}
+              components={{
+                a: ({ node, ...props }) => (
+                  <a {...props} onClick={handleLinkClick} className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300" />
+                ),
+                h2: ({ node, ...props }) => <h2 {...props} id={props.id || sanitizeId(props.children?.toString())} />,
+                h3: ({ node, ...props }) => <h3 {...props} id={props.id || sanitizeId(props.children?.toString())} />,
+                h4: ({ node, ...props }) => <h4 {...props} id={props.id || sanitizeId(props.children?.toString())} />
+              }}
+            >
+              {part.content.substring(lastIndex)}
+            </ReactMarkdown>
+          );
+        }
+        
+        return segments;
+      }
+    }).flat();
   };
 
   // Add IDs to headings in the markdown content
@@ -66,6 +184,32 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
     const timer = setTimeout(addIdsToHeadings, 200);
     return () => clearTimeout(timer);
   }, [post.content]);
+
+  // Add keyboard shortcut to navigate to Connected Posts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Use 'c' key as shortcut to navigate to Connected Posts
+      if (e.key === 'c' && hasConnectedPosts && !isInputElement(e.target as HTMLElement)) {
+        e.preventDefault();
+        const connectedPostsSection = document.querySelector('[data-connected-posts]');
+        if (connectedPostsSection) {
+          connectedPostsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    };
+
+    // Helper function to check if the target is an input element
+    const isInputElement = (element: HTMLElement | null): boolean => {
+      if (!element) return false;
+      const tagName = element.tagName.toLowerCase();
+      return tagName === 'input' || tagName === 'textarea' || element.isContentEditable;
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [hasConnectedPosts]);
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const href = e.currentTarget.getAttribute('href');
@@ -134,54 +278,16 @@ export function PostContent({ post, onBack, darkMode, onPostClick, allPosts }: P
           </div>
 
           <div className="prose dark:prose-invert max-w-none prose-sm sm:prose-base">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeHighlight]}
-              components={{
-                a: ({ node, ...props }) => (
-                  <a {...props} onClick={handleLinkClick} className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300" />
-                ),
-                pre: ({ node, children }) => {
-                  const code = React.Children.toArray(children).find(
-                    child => React.isValidElement(child) && child.type === 'code'
-                  ) as React.ReactElement;
-
-                  // Extract the actual text content from the code element
-                  const codeContent = React.Children.toArray(code?.props?.children || [])
-                    .map(child => {
-                      if (typeof child === 'string') return child;
-                      if (React.isValidElement(child)) {
-                        return child.props.children;
-                      }
-                      return '';
-                    })
-                    .join('');
-
-                  return (
-                    <div className="relative group">
-                      <button
-                        onClick={() => copyToClipboard(codeContent)}
-                        className="absolute right-2 top-2 px-2 py-1 text-xs font-medium text-gray-600 bg-gray-100 dark:text-gray-300 dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                      >
-                        {copyStatus || 'Copy'}
-                      </button>
-                      <pre>{children}</pre>
-                    </div>
-                  );
-                },
-                h2: ({ node, ...props }) => <h2 {...props} id={props.id || sanitizeId(props.children?.toString())} />,
-                h3: ({ node, ...props }) => <h3 {...props} id={props.id || sanitizeId(props.children?.toString())} />,
-                h4: ({ node, ...props }) => <h4 {...props} id={props.id || sanitizeId(props.children?.toString())} />
-              }}
-            >
-              {contentWithoutTitle}
-            </ReactMarkdown>
+            {processContent(contentWithoutTitle)}
           </div>
         </div>
       </article>
 
-      {(post.frontmatter.backlinks?.length > 0 || referencingPosts.length > 0) && (
-        <aside className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
+      {hasConnectedPosts && (
+        <aside 
+          data-connected-posts
+          className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden"
+        >
           <div className="p-4">
             <h2 className="text-base font-semibold mb-4 text-gray-900 dark:text-gray-100">
               Connected Posts
