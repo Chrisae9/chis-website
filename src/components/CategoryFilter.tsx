@@ -14,6 +14,21 @@ export function CategoryFilter({
 }: CategoryFilterProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+  // Handle click outside to close dropdown
+  React.useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const filteredCategories = categories.filter(category => 
     category.toLowerCase().includes(searchTerm.toLowerCase())
@@ -26,13 +41,13 @@ export function CategoryFilter({
   };
 
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center justify-between w-full px-3 py-2 text-sm bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800"
       >
         <span className="text-gray-700 dark:text-gray-300">
-          {selectedCategory || 'All Categories'}
+          {selectedCategory || 'All'}
         </span>
         <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -62,7 +77,7 @@ export function CategoryFilter({
                     : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                 }`}
               >
-                All Categories
+                All
               </button>
               
               {filteredCategories.map(category => (

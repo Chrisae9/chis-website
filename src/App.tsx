@@ -226,15 +226,15 @@ function App() {
         />
       ) : (
         <div className="space-y-8">
-          <div className="flex flex-col sm:flex-row gap-4 mb-6">
-            <div className="w-full sm:w-64">
+          <div className="flex flex-row gap-4 mb-6 items-center justify-between">
+            <div className="w-1/2 sm:w-64">
               <CategoryFilter 
                 categories={allCategories}
                 selectedCategory={selectedCategory}
                 onCategoryChange={setSelectedCategory}
               />
             </div>
-            <div className="flex-1">
+            <div className="w-1/2 sm:flex-1 flex justify-end">
               <SortControls sortOrder={sortOrder} onSortChange={setSortOrder} />
             </div>
           </div>
