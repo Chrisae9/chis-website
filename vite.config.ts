@@ -1,8 +1,20 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import sitemap from 'vite-plugin-sitemap'
+import { getSitemapEntries } from './src/utils/sitemapConfig'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    sitemap({
+      dynamicRoutes: getSitemapEntries(),
+      hostname: 'https://chis.dev',
+      lastmod: new Date().toISOString(),
+      changefreq: 'weekly',
+      priority: 0.8,
+      outDir: 'dist'
+    }),
+  ],
   assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'],
   base: '/',
   resolve: {

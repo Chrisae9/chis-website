@@ -1,0 +1,6 @@
+# https://chis.dev robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://chis.dev/sitemap.xml
