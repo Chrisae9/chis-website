@@ -110,16 +110,6 @@ export function Layout({
                 : 'hidden lg:block'
             }`}
           >
-            {showLeftSidebar && (
-              <div className="p-4 flex justify-end lg:hidden">
-                <button
-                  onClick={() => setShowLeftSidebar(false)}
-                  className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors text-gray-700 dark:text-gray-100"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-            )}
             {leftSidebar}
           </aside>
 
@@ -135,16 +125,6 @@ export function Layout({
                   : 'hidden lg:block'
               }`}
             >
-              {showRightSidebar && (
-                <div className="p-4 flex justify-end lg:hidden">
-                  <button
-                    onClick={() => setShowRightSidebar(false)}
-                    className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors text-gray-700 dark:text-gray-100"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              )}
               {rightSidebar}
             </aside>
           )}
