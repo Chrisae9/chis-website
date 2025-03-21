@@ -33,11 +33,15 @@ export function PostContent({
 }: PostContentProps) {
   const [copyStatus, setCopyStatus] = useState<string>('');
   const contentWithoutTitle = post.content.replace(/^#\s+.*$/m, '').trim();
-  const formattedDate = new Date(post.frontmatter.date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
+  const formattedDate = (() => {
+    const date = new Date(post.frontmatter.date);
+    const localDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+    return localDate.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  })();
 
   const referencingPosts = allPosts.filter(p => 
     p.frontmatter.backlinks?.includes(post.slug) && p.slug !== post.slug
