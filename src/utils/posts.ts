@@ -15,7 +15,7 @@ function extractBacklinks(content: string): string[] {
 
 function processBacklinkSyntax(content: string): string {
   return content.replace(/\[\[(.*?)\]\]/g, (_, text) => {
-    return `[${text}](#${text})`;
+    return `[${text}](${text})`;
   });
 }
 

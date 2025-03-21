@@ -357,11 +357,27 @@ export function PostContent({
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const href = e.currentTarget.getAttribute('href');
-    if (href?.startsWith('#')) {
+    if (!href) return;
+    
+    if (href.startsWith('#')) {
+      // Internal anchor link - prevent default and scroll
       e.preventDefault();
-      const slug = href.slice(1);
-      onPostClick(slug);
+      const elementId = href.slice(1);
+      const element = document.getElementById(elementId);
+      if (element) {
+        const yPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = yPosition - 64;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    } else if (!href.startsWith('http')) {
+      // Internal navigation link
+      e.preventDefault();
+      onPostClick(href);
     }
+    // External links will use default behavior
   };
 
   const copyToClipboard = (text: string) => {
