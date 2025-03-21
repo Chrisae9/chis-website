@@ -3,3 +3,4 @@
 - move sitemap url to config
 - update dependencies
 - sidebar consistency
+- light/dark mode transition fix
