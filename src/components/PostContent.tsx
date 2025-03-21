@@ -139,7 +139,7 @@ export function PostContent({
         // Process YouTube embeds in text parts
         const segments: React.ReactNode[] = [];
         let lastIndex = 0;
-        const youtubeRegex = /{{youtube\.(.*?)}}/g;
+        const youtubeRegex = /\[\[youtube\.(.*?)\]\]/g;
         let embedMatch;
         
         while ((embedMatch = youtubeRegex.exec(part.content)) !== null) {
@@ -164,9 +164,8 @@ export function PostContent({
             );
           }
           
-          // Extract YouTube URL and add embed
-          const youtubeUrl = embedMatch[1].trim();
-          const videoId = extractYouTubeVideoId(youtubeUrl);
+          // The videoId is directly in the match
+          const videoId = embedMatch[1].trim();
           
           if (videoId) {
             segments.push(<YouTubeEmbed key={`youtube-${index}-${embedMatch.index}`} videoId={videoId} />);
@@ -372,7 +371,7 @@ export function PostContent({
           behavior: 'smooth'
         });
       }
-    } else if (!href.startsWith('http')) {
+    } else if (!href.startsWith('http://') && !href.startsWith('https://')) {
       // Internal navigation link
       e.preventDefault();
       onPostClick(href);

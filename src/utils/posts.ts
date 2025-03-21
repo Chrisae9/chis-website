@@ -14,9 +14,12 @@ function extractBacklinks(content: string): string[] {
 }
 
 function processBacklinkSyntax(content: string): string {
-  return content.replace(/\[\[(.*?)\]\]/g, (_, text) => {
+  // Process backlinks but exclude YouTube embeds
+  let processed = content.replace(/\[\[((?!youtube\.)[^[\]]*?)\]\]/g, (_, text) => {
     return `[${text}](${text})`;
   });
+  
+  return processed;
 }
 
 export async function loadPosts(): Promise<Post[]> {

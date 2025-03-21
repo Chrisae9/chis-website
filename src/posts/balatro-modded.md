@@ -10,6 +10,8 @@ tags: [Gaming, Modding, Steam Deck]
 
 ![Bunco](/images/bunco.png)
 
+[[youtube.okdysgL4MM0]]
+
 After achieving 100% completion in Balatro, I wanted to explore more content. I discovered the [Bunco mod](https://firch.github.io/BuncoWeb/) which adds exciting new features to the game.
 
 Since I exclusively play Balatro on my Steam Deck, I'll guide you through the process of installing mods on this platform. This guide is adapted from the [Steam Community guide](https://steamcommunity.com/sharedfiles/filedetails/?id=3400691352).
