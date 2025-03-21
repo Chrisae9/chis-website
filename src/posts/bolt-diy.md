@@ -2,6 +2,7 @@
 title: Using Bolt to Build a Website
 date: 2025-03-18
 summary: Exploring the capabilities of Bolt and Bolt.DIY for building a personal website, comparing their features, limitations, and overall usability.
+category: AI
 tags: [AI, Website]
 ---
 
