@@ -27,7 +27,7 @@ export function scrollToSection(sectionId: string, behavior: ScrollBehavior = 's
   const section = document.getElementById(sectionId) || document.querySelector(`[data-${sectionId}]`);
   if (section) {
     // Get the position of the element relative to the document
-    const yPosition = section.getBoundingClientRect().top + window.pageYOffset;
+    const yPosition = section.getBoundingClientRect().top + window.scrollY;
     
     // Calculate position with offset for fixed header (64px)
     const offsetPosition = yPosition - 64;

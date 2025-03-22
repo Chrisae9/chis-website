@@ -1,15 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link, Sun, Moon, Menu, X } from 'lucide-react';
 import { BackToTop } from './BackToTop';
+import { SidebarConfig } from '../types';
 
-interface LayoutProps {
+interface LayoutProps extends SidebarConfig {
   children: React.ReactNode;
   darkMode: boolean;
   toggleDarkMode: () => void;
-  showLeftSidebar: boolean;
-  showRightSidebar: boolean;
-  setShowLeftSidebar: (show: boolean) => void;
-  setShowRightSidebar: (show: boolean) => void;
   leftSidebar: React.ReactNode;
   rightSidebar: React.ReactNode;
   header: React.ReactNode;
@@ -29,28 +26,6 @@ export function Layout({
   header,
   isPostView
 }: LayoutProps) {
-  // Handle screen size changes to properly hide/show sidebars
-  useEffect(() => {
-    const handleResize = () => {
-      // If we're at desktop size (lg breakpoint is 1024px), ensure mobile sidebars are closed
-      if (window.innerWidth >= 1024) {
-        // Only close if they're currently shown in mobile view
-        if (showLeftSidebar || showRightSidebar) {
-          setShowLeftSidebar(false);
-          setShowRightSidebar(false);
-        }
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    
-    // Initial check
-    handleResize();
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [showLeftSidebar, showRightSidebar, setShowLeftSidebar, setShowRightSidebar]);
   return (
     <div className={`min-h-screen bg-gradient-blue`}>
       <header className="sticky top-0 z-10 bg-white/80 dark:bg-gray-900/80 border-b border-gray-200 dark:border-gray-800 backdrop-blur-sm">
