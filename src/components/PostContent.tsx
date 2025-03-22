@@ -66,6 +66,11 @@ export function PostContent({
       .replace(/^-+|-+$/g, '');
   };
 
+  // Function to check if a URL is a valid external URL
+  const isExternalUrl = (url: string): boolean => {
+    return url.startsWith('http://') || url.startsWith('https://');
+  };
+
   // Process content to handle YouTube embeds outside of code blocks
   const processContent = (content: string): React.ReactNode[] => {
     // Split content by code blocks to avoid processing embeds inside them
@@ -139,7 +144,7 @@ export function PostContent({
         // Process YouTube embeds in text parts
         const segments: React.ReactNode[] = [];
         let lastIndex = 0;
-        const youtubeRegex = /\[\[youtube\.(.*?)\]\]/g;
+        const youtubeRegex = /\{\{youtube\.(.*?)\}\}/g;
         let embedMatch;
         
         while ((embedMatch = youtubeRegex.exec(part.content)) !== null) {
@@ -151,9 +156,22 @@ export function PostContent({
                 remarkPlugins={[remarkGfm]} 
                 rehypePlugins={[rehypeHighlight]}
                 components={{
-                  a: ({ node, ...props }) => (
-                    <a {...props} onClick={handleLinkClick} className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300" />
-                  ),
+                  a: ({ node, ...props }) => {
+                    // Add target="_blank" and rel="noopener noreferrer" for external links
+                    const href = props.href || '';
+                    const isExternal = isExternalUrl(href);
+                    
+                    // Create a wrapped component that ensures the click handler is triggered
+                    return (
+                      <a 
+                        {...props} 
+                        onClick={(e) => handleLinkClick(e)} 
+                        className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 cursor-pointer"
+                        target={isExternal ? "_blank" : undefined}
+                        rel={isExternal ? "noopener noreferrer" : undefined}
+                      />
+                    );
+                  },
                   h2: ({ node, ...props }) => <h2 {...props} id={props.id || sanitizeId(props.children?.toString())} />,
                   h3: ({ node, ...props }) => <h3 {...props} id={props.id || sanitizeId(props.children?.toString())} />,
                   h4: ({ node, ...props }) => <h4 {...props} id={props.id || sanitizeId(props.children?.toString())} />
@@ -189,9 +207,22 @@ export function PostContent({
               remarkPlugins={[remarkGfm]} 
               rehypePlugins={[rehypeHighlight]}
               components={{
-                a: ({ node, ...props }) => (
-                  <a {...props} onClick={handleLinkClick} className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300" />
-                ),
+                a: ({ node, ...props }) => {
+                  // Add target="_blank" and rel="noopener noreferrer" for external links
+                  const href = props.href || '';
+                  const isExternal = isExternalUrl(href);
+                  
+                  // Create a wrapped component that ensures the click handler is triggered
+                  return (
+                    <a 
+                      {...props} 
+                      onClick={(e) => handleLinkClick(e)} 
+                      className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 cursor-pointer"
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noopener noreferrer" : undefined}
+                    />
+                  );
+                },
                 h2: ({ node, ...props }) => <h2 {...props} id={props.id || sanitizeId(props.children?.toString())} />,
                 h3: ({ node, ...props }) => <h3 {...props} id={props.id || sanitizeId(props.children?.toString())} />,
                 h4: ({ node, ...props }) => <h4 {...props} id={props.id || sanitizeId(props.children?.toString())} />
@@ -354,9 +385,15 @@ export function PostContent({
     };
   }, [hasConnectedPosts, onSectionChange]);
 
+  // Add console logging for debugging
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const href = e.currentTarget.getAttribute('href');
-    if (!href) return;
+    console.log('Link clicked:', href);
+    
+    if (!href) {
+      console.error('Link has no href attribute');
+      return;
+    }
     
     if (href.startsWith('#')) {
       // Internal anchor link - prevent default and scroll
@@ -370,13 +407,28 @@ export function PostContent({
           top: offsetPosition,
           behavior: 'smooth'
         });
+      } else {
+        console.warn(`Element with id "${elementId}" not found`);
       }
-    } else if (!href.startsWith('http://') && !href.startsWith('https://')) {
+    } else if (isExternalUrl(href)) {
+      // External links - let the browser handle them normally
+      console.log('External link detected, browser will handle');
+      // No preventDefault() here, but ensure it opens in a new tab
+      if (!e.currentTarget.hasAttribute('target')) {
+        e.currentTarget.setAttribute('target', '_blank');
+        e.currentTarget.setAttribute('rel', 'noopener noreferrer');
+      }
+    } else {
       // Internal navigation link
       e.preventDefault();
-      onPostClick(href);
+      
+      // Remove leading slash if present to get the clean slug
+      const slug = href.startsWith('/') ? href.substring(1) : href;
+      console.log('Navigating to internal link with slug:', slug);
+      
+      // Navigate to the post
+      onPostClick(slug);
     }
-    // External links will use default behavior
   };
 
   const copyToClipboard = (text: string) => {
