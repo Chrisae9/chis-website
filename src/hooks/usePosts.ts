@@ -6,7 +6,7 @@ import { loadPosts, extractAllTags, extractAllCategories, sortPostsByDate, findP
 import { normalizeSlug, createInternalUrl } from '../utils/routeUtils';
 import { SortOrder } from '../components/SortControls';
 
-export function usePosts() {
+export function usePosts(includeDrafts: boolean = false) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -24,7 +24,7 @@ export function usePosts() {
     const loadData = async () => {
       try {
         setIsLoading(true);
-        const loadedPosts = await loadPosts();
+        const loadedPosts = await loadPosts(includeDrafts);
         setPosts(loadedPosts);
         
         // After posts are loaded, handle the current URL
@@ -48,7 +48,7 @@ export function usePosts() {
     };
     
     loadData();
-  }, []); // Empty dependency array - only run once on mount
+  }, [includeDrafts]); // Run when includeDrafts changes
 
   // Handle URL changes
   useEffect(() => {

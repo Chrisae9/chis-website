@@ -5,6 +5,7 @@ export interface PostFrontmatter {
   tags: string[];
   backlinks?: string[];
   category?: string;
+  draft?: boolean;
 }
 
 export interface Post {

@@ -4,6 +4,7 @@ date: 2022-01-05
 summary: How I setup a Project Zomboid server that was orchestrated from my Discord bot.
 category: Game
 tags: [Gaming, Server]
+draft: true
 ---
 
 Project Zomboid

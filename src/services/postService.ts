@@ -38,8 +38,9 @@ function processBacklinkSyntax(content: string): string {
 
 /**
  * Loads all posts from the filesystem
+ * @param includeDrafts Whether to include draft posts (defaults to false)
  */
-export async function loadPosts(): Promise<Post[]> {
+export async function loadPosts(includeDrafts: boolean = false): Promise<Post[]> {
   const postFiles = import.meta.glob('../posts/*.md', { 
     query: '?raw',
     import: 'default'
@@ -64,7 +65,12 @@ export async function loadPosts(): Promise<Post[]> {
     })
   );
   
-  return posts;
+  // Filter out draft posts unless includeDrafts is true
+  const filteredPosts = includeDrafts 
+    ? posts 
+    : posts.filter(post => !post.frontmatter.draft);
+  
+  return filteredPosts;
 }
 
 /**

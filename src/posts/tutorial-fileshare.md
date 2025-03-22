@@ -4,6 +4,7 @@ date: 2021-03-03
 summary: Using my Linux knowledge to bypass the Discord upload limit. Dropping a file into a shared folder, then having it automatically compressed, and shared via server URL. 
 category: Troubleshooting
 tags: [Discord]
+draft: true
 ---
 
 
