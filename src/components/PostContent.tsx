@@ -274,29 +274,6 @@ export function PostContent({
     window.scrollTo(0, 0);
   }, [post.slug]);
 
-  // Add keyboard shortcut to navigate to Connected Posts
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Use 'c' key as shortcut to navigate to Connected Posts
-      if (e.key === 'c' && hasConnectedPosts && !isInputElement(e.target as HTMLElement)) {
-        e.preventDefault();
-        scrollToConnectedPosts();
-      }
-    };
-
-    // Helper function to check if the target is an input element
-    const isInputElement = (element: HTMLElement | null): boolean => {
-      if (!element) return false;
-      const tagName = element.tagName.toLowerCase();
-      return tagName === 'input' || tagName === 'textarea' || element.isContentEditable;
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [hasConnectedPosts]);
-
   // Helper function to scroll to connected posts
   const scrollToConnectedPosts = () => {
     const connectedPostsSection = document.getElementById('connected-posts');
