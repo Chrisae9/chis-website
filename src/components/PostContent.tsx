@@ -298,29 +298,6 @@ export function PostContent({
     }
   };
   
-  // Helper function to scroll to comments
-  const scrollToCommentsSection = () => {
-    const commentsSection = document.getElementById('comments');
-    
-    if (commentsSection) {
-      // Get the position of the element relative to the document
-      const yPosition = commentsSection.getBoundingClientRect().top + window.pageYOffset;
-      
-      // Calculate position with offset for fixed header (64px)
-      const offsetPosition = yPosition - 64;
-      
-      // Scroll to the position
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-      
-      if (onSectionChange) {
-        onSectionChange({ connected: false, comments: true });
-      }
-    }
-  };
-
   // Set up scroll event listener to detect when connected posts section is active
   useEffect(() => {
     if (!hasConnectedPosts) return;

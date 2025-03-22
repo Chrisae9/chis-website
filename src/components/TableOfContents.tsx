@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { MessageSquare } from 'lucide-react';
@@ -13,14 +13,12 @@ interface TableOfContentsProps {
   content: string;
   hasConnectedPosts?: boolean;
   onConnectedPostsClick?: () => void;
-  isConnectedPostsActive?: boolean;
 }
 
 export function TableOfContents({ 
   content, 
   hasConnectedPosts = false, 
   onConnectedPostsClick,
-  isConnectedPostsActive = false
 }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>('');
   const [headings, setHeadings] = useState<TOCItem[]>([]);
@@ -151,13 +149,9 @@ export function TableOfContents({
         {hasConnectedPosts && onConnectedPostsClick && (
           <button
             onClick={onConnectedPostsClick}
-            className={`
-              flex items-center gap-1.5 text-sm mb-3
-              ${isConnectedPostsActive 
-                ? 'text-blue-600 dark:text-blue-400 font-medium' 
-                : 'text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400'}
-              transition-colors duration-200
-            `}
+            className="flex items-center gap-1.5 mb-3 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+
+ 
           >
             <span>Connected Posts</span>
             <FontAwesomeIcon icon={faLink} className="text-xs" />
