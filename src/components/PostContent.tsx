@@ -6,9 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import { Post } from '../types';
-import { TableOfContents } from './TableOfContents';
 import { YouTubeEmbed } from './YouTubeEmbed';
-import { extractYouTubeVideoId } from '../utils/youtubeParser';
 
 interface PostContentProps {
   post: Post;
@@ -23,13 +21,10 @@ interface PostContentProps {
 
 export function PostContent({ 
   post, 
-  onBack, 
   darkMode, 
   onPostClick, 
   allPosts,
   onSectionChange,
-  isConnectedPostsActive: externalIsConnectedPostsActive,
-  isCommentsActive
 }: PostContentProps) {
   const [copyStatus, setCopyStatus] = useState<string>('');
   const contentWithoutTitle = post.content.replace(/^#\s+.*$/m, '').trim();
@@ -262,41 +257,11 @@ export function PostContent({
     return () => clearTimeout(timer);
   }, [post.content]);
 
-  const [localIsConnectedPostsActive, setLocalIsConnectedPostsActive] = useState(false);
-  
-  // Use external state if provided, otherwise use local state
-  const isConnectedPostsActive = externalIsConnectedPostsActive !== undefined 
-    ? externalIsConnectedPostsActive 
-    : localIsConnectedPostsActive;
   
   // Scroll to top when post changes
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [post.slug]);
-
-  // Helper function to scroll to connected posts
-  const scrollToConnectedPosts = () => {
-    const connectedPostsSection = document.getElementById('connected-posts');
-    
-    if (connectedPostsSection) {
-      // Get the position of the element relative to the document
-      const yPosition = connectedPostsSection.getBoundingClientRect().top + window.pageYOffset;
-      
-      // Calculate position with offset for fixed header (64px)
-      const offsetPosition = yPosition - 64;
-      
-      // Scroll to the position
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-      
-      setLocalIsConnectedPostsActive(true);
-      if (onSectionChange) {
-        onSectionChange({ connected: true, comments: false });
-      }
-    }
-  };
   
   // Set up scroll event listener to detect when connected posts section is active
   useEffect(() => {
@@ -317,9 +282,7 @@ export function PostContent({
       // Determine which section is active based on scroll position
       const isAtConnectedPosts = scrollY >= connectedPostsTop && scrollY < commentsTop;
       const isAtComments = scrollY >= commentsTop;
-      
-      setLocalIsConnectedPostsActive(isAtConnectedPosts);
-      
+            
       // If we have an external handler, call it
       if (onSectionChange) {
         onSectionChange({ 
