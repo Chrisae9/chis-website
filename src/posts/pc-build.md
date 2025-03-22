@@ -6,11 +6,9 @@ category: Builds
 tags: [Engineering, Gaming]
 ---
 
+{{youtube.okdysgL4MM0}}
+
 After 6.5 years I decided to repurpose my i7-4790K to be my new permanent server and build a new PC in a Mini ITX form factor.
-
-## Youtube Video
-
-[![YouTube](http://i.ytimg.com/vi/okdysgL4MM0/hqdefault.jpg)](https://www.youtube.com/watch?v=okdysgL4MM0)
 
 ## Pictures
 

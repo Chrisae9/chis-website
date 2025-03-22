@@ -55,5 +55,3 @@ ref: [https://superuser.com/questions/397149/can-you-gpg-sign-old-commits](https
 ```
 git rebase --exec 'git commit --amend --no-edit -n -S' -i development
 ```
-
-[[code-tunnel]]

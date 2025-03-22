@@ -9,7 +9,7 @@ tags: [App, Website]
 
 ![phase10](/images/phase10.png)
 
-[https://phase.chis.dev/](https://phase.chis.dev/)
+[phase.chis.dev/](https://phase.chis.dev/)
 
 ## Background
 

@@ -92,7 +92,7 @@ Here is my configuration for saving files in the Downloads tab.
 
 To streamline the process of ensuring your qBittorrent client uses the same port as Gluetun, you can use a combination of a Python script and a Bash script. The Python script updates the qBittorrent listening port, while the Bash script manages the overall process, including reading the new port from Gluetun and updating the Docker Compose configuration.
 
-### Python Script: `listening_port.py`
+### Python Script
 
 The Python script `listening_port.py` updates the qBittorrent listening port. Here’s the code, with sensitive credentials obfuscated:
 
@@ -150,7 +150,7 @@ Create a `requirements.txt` file with the following content:
     ```
     
 
-### Bash Script: `change_port.sh`
+### Bash Script
 
 The Bash script `change_port.sh` automates the process of updating the port in both Docker Compose and qBittorrent. Here’s the script:
 
@@ -240,15 +240,15 @@ echo "Port update and service restart completed successfully."
     - `change_port.sh` in the root directory next to the Docker Compose file.
 2. **Make the Bash script executable:**
     
-    ```bash
-    chmod +x change_port.sh
-    ```
+```bash
+  chmod +x change_port.sh
+```
     
 3. **Run the Bash script to update the ports and restart the services:**
     
-    ```bash
-    ./change_port.sh
-    ```
+```bash
+  ./change_port.sh
+```
     
 
 By following these steps, you can ensure that your qBittorrent client dynamically updates its port to match the one used by Gluetun, maintaining a seamless and secure torrenting experience.

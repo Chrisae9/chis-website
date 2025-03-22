@@ -48,7 +48,7 @@ I installed Windows onto an additional drive, booted into Windows, and installed
 
 I recommend that anyone else using Intel Rapid Storage back up their data first. Be careful of the software, as it doesn’t require much confirmation for serious modifications to your hard drives.  
 
-![Untitled](RAID%20troubleshooting%20d02f415d29784a2cbbccfcf433ad99ba/Untitled%202.png)
+![raid2](/images/raid2.png)
 
 To recover my data, I had to install UFS Explorer and copy my data to a different drive.
 

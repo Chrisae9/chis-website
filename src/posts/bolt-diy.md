@@ -1,7 +1,7 @@
 ---
 title: Using Bolt to Build a Website
 date: 2025-03-18
-summary: Exploring the capabilities of Bolt and Bolt.DIY for building a personal website, comparing their features, limitations, and overall usability.
+summary: Exploring the capabilities of Bolt and Bolt.diy for building a personal website, comparing their features, limitations, and overall usability.
 category: AI
 tags: [AI, Website]
 ---
@@ -29,11 +29,11 @@ After working through a couple of errors, I got some impressive results:
 
 The initial output was surprisingly good - much better than my previous attempts. I believe this success was partly due to the website's built-in custom prompts and its use of Vite for the development environment. However, I quickly hit the rate limit and discovered that continuing would require a $20 monthly subscription.
 
-## Discovering Bolt.DIY
+## Discovering Bolt.diy
 
-Not wanting to pay for what was essentially an AI wrapper, I searched for alternatives to bolt.new. This led me to discovering [Bolt.DIY](https://github.com/stackblitz-labs/bolt.diy), a self-hosted version of Bolt that was forked from the original project. The key advantage? It supports using your own AI model instead of being limited to their service (which I suspect uses Claude).
+Not wanting to pay for what was essentially an AI wrapper, I searched for alternatives to bolt.new. This led me to discovering [Bolt.diy](https://github.com/stackblitz-labs/bolt.diy), a self-hosted version of Bolt that was forked from the original project. The key advantage? It supports using your own AI model instead of being limited to their service (which I suspect uses Claude).
 
-### Setting Up Bolt.DIY
+### Setting Up Bolt.diy
 Here's the simple Docker compose file I used to get it running:
 
 ```yaml
@@ -47,7 +47,7 @@ services:
       OPEN_ROUTER_API_KEY: KEY
 ```
 
-One important note: there's no volume mount for persistent storage because Bolt.DIY operates entirely in the browser. I discovered this when my desktop Chrome browser (with hardware acceleration disabled) experienced significant lag. However, I was able to import my code directly from bolt.new by downloading and importing it, which worked perfectly.
+One important note: there's no volume mount for persistent storage because Bolt.diy operates entirely in the browser. I discovered this when my desktop Chrome browser (with hardware acceleration disabled) experienced significant lag. However, I was able to import my code directly from bolt.new by downloading and importing it, which worked perfectly.
 
 ## Final Thoughts
 

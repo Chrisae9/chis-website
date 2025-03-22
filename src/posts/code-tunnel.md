@@ -8,8 +8,6 @@ tags: [Arch, Chromebook, VSCode]
 
 The purpose of this guide is to create a VSCode tunnel using the code CLI, creating a service that optionally runs on boot. This allows you to connect to your remote development server over the [vscode.dev](https://vscode.dev/) website. This setup is particularly useful if you're working on a machine with limited resources, like an old Pixelbook, where the local Linux development version of VSCode might be too choppy and slow.
 
-{{youtube.okdysgL4MM0}}
-
 ## Why Use a VSCode Tunnel?
 
 Running VSCode directly on an older machine like a Pixelbook can be inefficient. The Linux development version of VSCode may run too slowly, making coding a frustrating experience. By using a VSCode tunnel, you can offload the heavy lifting to a remote server and access a smooth, responsive development environment via the [vscode.dev](https://vscode.dev/) website.
@@ -125,5 +123,3 @@ alias c='code -r .'
 ```
 
 When you are in the VSCode terminal, you can type `c` to open the current working directory into the VSCode editor.
-
-{{youtube.https://youtu.be/dQw4w9WgXcQ}}
