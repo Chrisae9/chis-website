@@ -1,4 +1,3 @@
-import React from 'react';
 import { SearchBar } from './components/SearchBar';
 import { TagList } from './components/TagList';
 import { PostContent } from './components/PostContent';
@@ -46,9 +45,8 @@ function App() {
   const {
     sectionState,
     hasConnectedPosts,
-    scrollToConnectedPosts,
-    handleSectionChange
-  } = useSectionNavigation(selectedPostData, posts);
+    scrollToConnectedPosts
+  } = useSectionNavigation(selectedPostData || null, posts);
 
   // Left sidebar content - show table of contents when viewing a post
   const leftSidebarContent = selectedPostData ? (
@@ -150,7 +148,6 @@ function App() {
           darkMode={darkMode}
           onPostClick={handlePostSelect}
           allPosts={posts}
-          onSectionChange={handleSectionChange}
           isConnectedPostsActive={sectionState.connected}
           isCommentsActive={sectionState.comments}
         />
