@@ -1,25 +1,52 @@
+// React imports
 import { useState, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+
+// Third-party imports
 import Fuse from 'fuse.js';
+
+// Local imports - types
 import { Post } from '../types';
-import { loadPosts, extractAllTags, extractAllCategories, sortPostsByDate, findPostBySlug, findPostBySlugCaseInsensitive } from '../services/postService';
-import { normalizeSlug, createInternalUrl } from '../utils/routeUtils';
 import { SortOrder } from '../components/SortControls';
 
+// Local imports - services and utilities
+import { 
+  loadPosts, 
+  extractAllTags, 
+  extractAllCategories, 
+  sortPostsByDate, 
+  findPostBySlug, 
+  findPostBySlugCaseInsensitive
+} from '../services/postService';
+import { normalizeSlug, createInternalUrl } from '../utils/routeUtils';
+
+/**
+ * Custom hook for managing the blog's posts and related state
+ * Handles post loading, filtering, searching, and navigation
+ *
+ * @param includeDrafts - Whether to include draft posts (defaults to false)
+ * @returns An object containing post data and functions for manipulating posts
+ */
 export function usePosts(includeDrafts: boolean = false) {
+  // Post data state
   const [posts, setPosts] = useState<Post[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedPost, setSelectedPost] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
+  
+  // Loading and error states
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // React Router hooks
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Load posts on initial mount
+  /**
+   * Load posts on initial mount or when includeDrafts changes
+   */
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -48,9 +75,12 @@ export function usePosts(includeDrafts: boolean = false) {
     };
     
     loadData();
-  }, [includeDrafts]); // Run when includeDrafts changes
+  }, [includeDrafts, location.pathname, navigate]);
 
-  // Handle URL changes
+  /**
+   * Handle URL changes to select the correct post
+   * Includes case-insensitive slug matching as a fallback
+   */
   useEffect(() => {
     if (posts.length === 0 || isLoading) return; // Skip if posts aren't loaded yet
     
@@ -77,25 +107,34 @@ export function usePosts(includeDrafts: boolean = false) {
     }
   }, [location.pathname, posts, navigate, isLoading]);
 
-  // Create search index
+  /**
+   * Create search index for fuzzy search functionality
+   */
   const fuse = useMemo(() => new Fuse(posts, {
     keys: ['frontmatter.title', 'frontmatter.summary', 'content'],
     threshold: 0.3,
   }), [posts]);
 
-  // Get all unique tags
+  /**
+   * Get all unique tags, filtered by selected category if applicable
+   */
   const allTags = useMemo(() => 
     extractAllTags(posts, selectedCategory), 
     [posts, selectedCategory]
   );
 
-  // Get all unique categories
+  /**
+   * Get all unique categories from the posts
+   */
   const allCategories = useMemo(() => 
     extractAllCategories(posts), 
     [posts]
   );
 
-  // Filter posts based on search, tags, and category
+  /**
+   * Filter posts based on search term, tags, and category
+   * Sort the filtered results by date
+   */
   const filteredPosts = useMemo(() => {
     let result = posts;
 
@@ -117,13 +156,18 @@ export function usePosts(includeDrafts: boolean = false) {
     return sortPostsByDate(result, sortOrder === 'asc');
   }, [posts, searchTerm, selectedCategory, selectedTags, fuse, sortOrder]);
 
-  // Get the currently selected post data
+  /**
+   * Get the currently selected post data
+   */
   const selectedPostData = useMemo(() => {
     if (!selectedPost) return null;
     return findPostBySlug(posts, selectedPost);
   }, [selectedPost, posts]);
 
-  // Handle tag selection
+  /**
+   * Toggle a tag selection (add if not selected, remove if already selected)
+   * @param tag - The tag to toggle
+   */
   const handleTagToggle = (tag: string) => {
     setSelectedTags(prev =>
       prev.includes(tag)
@@ -132,7 +176,10 @@ export function usePosts(includeDrafts: boolean = false) {
     );
   };
 
-  // Handle post selection
+  /**
+   * Handle post selection and navigation
+   * @param slug - The slug of the post to select, or null to go to home
+   */
   const handlePostSelect = (slug: string | null) => {
     if (slug) {
       // Check if the post exists before navigating

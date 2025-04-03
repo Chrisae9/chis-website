@@ -1,14 +1,27 @@
+// Third-party imports
 import { IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core';
 
+/**
+ * Interface for external links displayed in the site navigation
+ */
 export interface DynamicLink {
+  /** Display name of the link */
   name: string;
+  /** URL for the link destination */
   url: string;
+  /** Icon configuration for the link using Font Awesome */
   icon: {
+    /** Font Awesome icon prefix ('fas' for solid, 'fab' for brands, etc.) */
     prefix: IconPrefix;
+    /** Font Awesome icon name */
     name: IconName;
   };
 }
 
+/**
+ * External links displayed in the sidebar
+ * These are personal projects and social media profiles
+ */
 export const links: DynamicLink[] = [
   {
     name: "GitHub",

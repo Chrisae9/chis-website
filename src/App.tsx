@@ -1,3 +1,4 @@
+// Component imports
 import { SearchBar } from './components/SearchBar';
 import { TagList } from './components/TagList';
 import { PostContent } from './components/PostContent';
@@ -6,14 +7,29 @@ import { Sidebar } from './components/Sidebar';
 import { DynamicLinks } from './components/DynamicLinks';
 import { TableOfContents } from './components/TableOfContents';
 import { PostList } from './components/PostList';
-import { links } from './config/links';
+
+// Centralized configuration import
+import { links, APP_NAME } from './config';
+
+// Hook imports
 import { usePosts } from './hooks/usePosts';
 import { useTheme } from './hooks/useTheme';
 import { useSidebar } from './hooks/useSidebar';
 import { useSectionNavigation } from './hooks/useSectionNavigation';
 
+/**
+ * Main application component that orchestrates the blog's UI and state
+ * 
+ * This component:
+ * - Composes all the core UI components
+ * - Manages application state through custom hooks
+ * - Handles conditional rendering based on current view state
+ * - Provides loading and error states
+ * 
+ * @returns React component
+ */
 function App() {
-  // Custom hooks for different concerns
+  // Custom hooks for different application concerns
   const { 
     filteredPosts, 
     selectedPostData, 
@@ -33,8 +49,10 @@ function App() {
     error
   } = usePosts();
   
+  // Theme management (dark/light mode)
   const { darkMode, toggleDarkMode } = useTheme();
   
+  // Sidebar visibility management
   const { 
     showLeftSidebar, 
     setShowLeftSidebar, 
@@ -42,14 +60,16 @@ function App() {
     setShowRightSidebar 
   } = useSidebar();
   
+  // Section navigation for the selected post
   const {
     sectionState,
     hasConnectedPosts,
     scrollToConnectedPosts
   } = useSectionNavigation(selectedPostData || null, posts);
 
-  // Left sidebar content - show table of contents when viewing a post
+  // Left sidebar content - conditional based on current view
   const leftSidebarContent = selectedPostData ? (
+    // When viewing a post: Show table of contents
     <Sidebar
       title="Table of Contents"
       onClose={() => setShowLeftSidebar(false)}
@@ -65,6 +85,7 @@ function App() {
       </div>
     </Sidebar>
   ) : (
+    // When viewing post list: Show tag filter
     <Sidebar
       title="Tags"
       onClose={() => setShowLeftSidebar(false)}
@@ -78,6 +99,7 @@ function App() {
     </Sidebar>
   );
 
+  // Loading state
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-white dark:bg-gray-900">
@@ -89,6 +111,7 @@ function App() {
     );
   }
 
+  // Error state
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-white dark:bg-gray-900">
@@ -99,6 +122,7 @@ function App() {
           <button 
             onClick={() => window.location.reload()} 
             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+            aria-label="Reload page"
           >
             Try Again
           </button>
@@ -107,6 +131,7 @@ function App() {
     );
   }
 
+  // Main application layout
   return (
     <Layout
       darkMode={darkMode}
@@ -117,13 +142,16 @@ function App() {
       setShowRightSidebar={setShowRightSidebar}
       header={
         selectedPostData ? (
+          // Back button when viewing a post
           <button
             onClick={() => handlePostSelect(null)}
             className="flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+            aria-label="Back to posts list"
           >
             ← Back to posts
           </button>
         ) : (
+          // Search bar when viewing post list
           <SearchBar value={searchTerm} onChange={setSearchTerm} />
         )
       }
@@ -141,6 +169,7 @@ function App() {
       }
       isPostView={!!selectedPostData}
     >
+      {/* Main content area - conditionally render post content or post list */}
       {selectedPostData ? (
         <PostContent
           post={selectedPostData}

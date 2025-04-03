@@ -1,12 +1,21 @@
+// React imports
 import React, { useState, useEffect } from 'react';
+
+// Third-party imports
 import { Tag as TagIcon, Copy, Check } from 'lucide-react';
-import { Utterances } from './Utterances';
-import { utterancesConfig } from '../config/utterances';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
-import { Post } from '../types';
+
+// Local imports - components
+import { Utterances } from './Utterances';
 import { YouTubeEmbed } from './YouTubeEmbed';
+
+// Local imports - types
+import { Post } from '../types';
+
+// Centralized configuration imports
+import { utterancesConfig } from '../config';
 
 interface PostContentProps {
   post: Post;
