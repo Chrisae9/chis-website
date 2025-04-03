@@ -39,7 +39,7 @@ services:
   app:
     image: nginx
     container_name: chis-blog
-    restart: unless-stopped
+    restart: always
     pull_policy: always
     volumes:
       - ./dist:/usr/share/nginx/html:ro

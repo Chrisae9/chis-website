@@ -6,8 +6,6 @@ category: Steam Deck
 tags: [Gaming, Modding, Steam Deck]
 ---
 
-# Modding Balatro on Steam Deck
-
 ![Bunco](/images/bunco.png)
 
 
