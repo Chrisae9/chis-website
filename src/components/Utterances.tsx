@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface UtterancesProps {
   repo: string;
   theme: string;
+  slug?: string; // Added slug as an optional property
 }
 
 export function Utterances({ repo, theme }: UtterancesProps) {

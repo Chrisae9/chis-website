@@ -42,7 +42,7 @@ export function PostContent({
     p.frontmatter.backlinks?.includes(post.slug) && p.slug !== post.slug
   );
 
-  const hasConnectedPosts = (post.frontmatter.backlinks?.length > 0 || referencingPosts.length > 0);
+  const hasConnectedPosts = ((post.frontmatter.backlinks?.length ?? 0) > 0 || referencingPosts.length > 0);
 
   // Improved ID sanitization function
   const sanitizeId = (text: string | undefined): string => {
@@ -243,7 +243,8 @@ export function PostContent({
       const headings = article.querySelectorAll('h2, h3, h4');
       headings.forEach(heading => {
         if (!heading.id) {
-          const id = sanitizeId(heading.textContent);
+          // Convert possibly null textContent to undefined or string
+          const id = sanitizeId(heading.textContent || undefined);
           if (id) heading.id = id;
         }
       });
@@ -445,7 +446,7 @@ export function PostContent({
             </h2>
             
             <div className="space-y-4">
-              {post.frontmatter.backlinks?.length > 0 && (
+              {post.frontmatter.backlinks && post.frontmatter.backlinks.length > 0 && (
                 <div className="pb-3">
                   <h3 className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
                     Links in this post
