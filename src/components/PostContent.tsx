@@ -136,18 +136,24 @@ export function PostContent({
           </div>
         );
       } else {
-        // Process YouTube embeds in text parts
-        const segments: React.ReactNode[] = [];
+        // Find custom image syntax and YouTubeEmbed outside of code blocks
+        const customContent: React.ReactNode[] = [];
         let lastIndex = 0;
-        const youtubeRegex = /\{\{youtube\.(.*?)\}\}/g;
-        let embedMatch;
         
-        while ((embedMatch = youtubeRegex.exec(part.content)) !== null) {
-          // Add text before embed
-          if (embedMatch.index > lastIndex) {
-            segments.push(
+        // Custom image regex that matches !XX[alt](/path)
+        const customImageRegex = /!(\d+)\[([^\]]+)\]\(([^)]+)\)/g;
+        const youtubeRegex = /\{\{youtube\.(.*?)\}\}/g;
+        
+        // First process custom images
+        let customMatch;
+        let partContent = part.content;
+        
+        while ((customMatch = customImageRegex.exec(partContent)) !== null) {
+          // Add text before the custom image
+          if (customMatch.index > lastIndex) {
+            customContent.push(
               <ReactMarkdown 
-                key={`text-${index}-${lastIndex}`}
+                key={`text-before-img-${index}-${lastIndex}`}
                 remarkPlugins={[remarkGfm]} 
                 rehypePlugins={[rehypeHighlight]}
                 components={{
@@ -172,63 +178,129 @@ export function PostContent({
                   h4: ({ node, ...props }) => <h4 {...props} id={props.id || sanitizeId(props.children?.toString())} />
                 }}
               >
-                {part.content.substring(lastIndex, embedMatch.index)}
+                {partContent.substring(lastIndex, customMatch.index)}
               </ReactMarkdown>
             );
           }
           
-          // The videoId is directly in the match
-          const videoId = embedMatch[1].trim();
+          // Extract image details
+          const width = parseInt(customMatch[1], 10);
+          const alt = customMatch[2];
+          const src = customMatch[3];
           
-          if (videoId) {
-            segments.push(<YouTubeEmbed key={`youtube-${index}-${embedMatch.index}`} videoId={videoId} />);
-          } else {
-            // If invalid YouTube URL, just show the original text
+          // Add the custom sized image
+          customContent.push(
+            <div key={`custom-img-${index}-${customMatch.index}`} className="flex justify-center">
+              <img 
+                src={src} 
+                alt={alt} 
+                style={{ width: `${width}%`, maxWidth: '100%' }} 
+                className="mx-auto"
+              />
+            </div>
+          );
+          
+          lastIndex = customMatch.index + customMatch[0].length;
+        }
+        
+        // Add remaining text after custom images or all text if no custom images
+        if (lastIndex < partContent.length) {
+          // Now process remaining content for YouTube embeds
+          const remainingContent = partContent.substring(lastIndex);
+          const segments: React.ReactNode[] = [];
+          let ytLastIndex = 0;
+          let embedMatch;
+          
+          while ((embedMatch = youtubeRegex.exec(remainingContent)) !== null) {
+            // Add text before embed
+            if (embedMatch.index > ytLastIndex) {
+              segments.push(
+                <ReactMarkdown 
+                  key={`text-${index}-${ytLastIndex}`}
+                  remarkPlugins={[remarkGfm]} 
+                  rehypePlugins={[rehypeHighlight]}
+                  components={{
+                    a: ({ node, ...props }) => {
+                      // Add target="_blank" and rel="noopener noreferrer" for external links
+                      const href = props.href || '';
+                      const isExternal = isExternalUrl(href);
+                      
+                      // Create a wrapped component that ensures the click handler is triggered
+                      return (
+                        <a 
+                          {...props} 
+                          onClick={(e) => handleLinkClick(e)} 
+                          className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 cursor-pointer"
+                          target={isExternal ? "_blank" : undefined}
+                          rel={isExternal ? "noopener noreferrer" : undefined}
+                        />
+                      );
+                    },
+                    h2: ({ node, ...props }) => <h2 {...props} id={props.id || sanitizeId(props.children?.toString())} />,
+                    h3: ({ node, ...props }) => <h3 {...props} id={props.id || sanitizeId(props.children?.toString())} />,
+                    h4: ({ node, ...props }) => <h4 {...props} id={props.id || sanitizeId(props.children?.toString())} />
+                  }}
+                >
+                  {remainingContent.substring(ytLastIndex, embedMatch.index)}
+                </ReactMarkdown>
+              );
+            }
+            
+            // The videoId is directly in the match
+            const videoId = embedMatch[1].trim();
+            
+            if (videoId) {
+              segments.push(<YouTubeEmbed key={`youtube-${index}-${embedMatch.index}`} videoId={videoId} />);
+            } else {
+              // If invalid YouTube URL, just show the original text
+              segments.push(
+                <span key={`invalid-${index}-${embedMatch.index}`}>
+                  {embedMatch[0]}
+                </span>
+              );
+            }
+            
+            ytLastIndex = embedMatch.index + embedMatch[0].length;
+          }
+          
+          // Add remaining text after YouTube embeds or all text if no YouTube embeds
+          if (ytLastIndex < remainingContent.length) {
             segments.push(
-              <span key={`invalid-${index}-${embedMatch.index}`}>
-                {embedMatch[0]}
-              </span>
+              <ReactMarkdown 
+                key={`text-final-${index}-${ytLastIndex}`}
+                remarkPlugins={[remarkGfm]} 
+                rehypePlugins={[rehypeHighlight]}
+                components={{
+                  a: ({ node, ...props }) => {
+                    // Add target="_blank" and rel="noopener noreferrer" for external links
+                    const href = props.href || '';
+                    const isExternal = isExternalUrl(href);
+                    
+                    // Create a wrapped component that ensures the click handler is triggered
+                    return (
+                      <a 
+                        {...props} 
+                        onClick={(e) => handleLinkClick(e)} 
+                        className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 cursor-pointer"
+                        target={isExternal ? "_blank" : undefined}
+                        rel={isExternal ? "noopener noreferrer" : undefined}
+                      />
+                    );
+                  },
+                  h2: ({ node, ...props }) => <h2 {...props} id={props.id || sanitizeId(props.children?.toString())} />,
+                  h3: ({ node, ...props }) => <h3 {...props} id={props.id || sanitizeId(props.children?.toString())} />,
+                  h4: ({ node, ...props }) => <h4 {...props} id={props.id || sanitizeId(props.children?.toString())} />
+                }}
+              >
+                {remainingContent.substring(ytLastIndex)}
+              </ReactMarkdown>
             );
           }
           
-          lastIndex = embedMatch.index + embedMatch[0].length;
+          customContent.push(...segments);
         }
         
-        // Add remaining text
-        if (lastIndex < part.content.length) {
-          segments.push(
-            <ReactMarkdown 
-              key={`text-${index}-${lastIndex}`}
-              remarkPlugins={[remarkGfm]} 
-              rehypePlugins={[rehypeHighlight]}
-              components={{
-                a: ({ node, ...props }) => {
-                  // Add target="_blank" and rel="noopener noreferrer" for external links
-                  const href = props.href || '';
-                  const isExternal = isExternalUrl(href);
-                  
-                  // Create a wrapped component that ensures the click handler is triggered
-                  return (
-                    <a 
-                      {...props} 
-                      onClick={(e) => handleLinkClick(e)} 
-                      className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 cursor-pointer"
-                      target={isExternal ? "_blank" : undefined}
-                      rel={isExternal ? "noopener noreferrer" : undefined}
-                    />
-                  );
-                },
-                h2: ({ node, ...props }) => <h2 {...props} id={props.id || sanitizeId(props.children?.toString())} />,
-                h3: ({ node, ...props }) => <h3 {...props} id={props.id || sanitizeId(props.children?.toString())} />,
-                h4: ({ node, ...props }) => <h4 {...props} id={props.id || sanitizeId(props.children?.toString())} />
-              }}
-            >
-              {part.content.substring(lastIndex)}
-            </ReactMarkdown>
-          );
-        }
-        
-        return segments;
+        return customContent;
       }
     }).flat();
   };
