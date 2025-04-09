@@ -88,5 +88,3 @@ If you have any questions or suggestions about our Privacy Policy, please contac
 *This Privacy Policy was last updated on April 9, 2025.*
 
 ---
-
-**Disclaimer:** This is a sample privacy policy and should be used as a guide. It does not constitute legal advice. Please consult a legal professional to tailor the policy to your specific circumstances and to ensure compliance with applicable laws and regulations.
