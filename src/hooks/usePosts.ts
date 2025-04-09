@@ -30,6 +30,7 @@ import { normalizeSlug, createInternalUrl } from '../utils/routeUtils';
 export function usePosts(includeDrafts: boolean = false) {
   // Post data state
   const [posts, setPosts] = useState<Post[]>([]);
+  const [allPosts, setAllPosts] = useState<Post[]>([]);  // Includes hidden posts
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -51,14 +52,20 @@ export function usePosts(includeDrafts: boolean = false) {
     const loadData = async () => {
       try {
         setIsLoading(true);
-        const loadedPosts = await loadPosts(includeDrafts);
-        setPosts(loadedPosts);
+        
+        // Load both visible and hidden posts - we'll use hidden ones for direct URL access
+        const loadedVisiblePosts = await loadPosts(includeDrafts, false);
+        const loadedAllPosts = await loadPosts(includeDrafts, true);
+        
+        setPosts(loadedVisiblePosts);
+        setAllPosts(loadedAllPosts);
         
         // After posts are loaded, handle the current URL
         const slug = normalizeSlug(location.pathname);
         
         if (slug && slug.length > 0 && slug !== 'about') {
-          const postExists = loadedPosts.some(post => post.slug === slug);
+          // Check if the post exists in ALL posts (including hidden)
+          const postExists = loadedAllPosts.some(post => post.slug === slug);
           if (postExists) {
             setSelectedPost(slug);
           } else {
@@ -82,18 +89,19 @@ export function usePosts(includeDrafts: boolean = false) {
    * Includes case-insensitive slug matching as a fallback
    */
   useEffect(() => {
-    if (posts.length === 0 || isLoading) return; // Skip if posts aren't loaded yet
+    if (allPosts.length === 0 || isLoading) return; // Skip if posts aren't loaded yet
     
     const slug = normalizeSlug(location.pathname);
     
     if (slug && slug.length > 0 && slug !== 'about') {
-      const matchingPost = findPostBySlug(posts, slug);
+      // Use allPosts (including hidden) for direct URL access
+      const matchingPost = findPostBySlug(allPosts, slug);
       
       if (matchingPost) {
         setSelectedPost(slug);
       } else {
         // Try a case-insensitive match as a fallback
-        const caseInsensitiveMatch = findPostBySlugCaseInsensitive(posts, slug);
+        const caseInsensitiveMatch = findPostBySlugCaseInsensitive(allPosts, slug);
         
         if (caseInsensitiveMatch) {
           // Navigate to the correct case version
@@ -105,7 +113,7 @@ export function usePosts(includeDrafts: boolean = false) {
     } else {
       setSelectedPost(null);
     }
-  }, [location.pathname, posts, navigate, isLoading]);
+  }, [location.pathname, allPosts, navigate, isLoading]);
 
   /**
    * Create search index for fuzzy search functionality
@@ -161,8 +169,9 @@ export function usePosts(includeDrafts: boolean = false) {
    */
   const selectedPostData = useMemo(() => {
     if (!selectedPost) return null;
-    return findPostBySlug(posts, selectedPost);
-  }, [selectedPost, posts]);
+    // Check in all posts (including hidden) to ensure we can view hidden posts by direct URL
+    return findPostBySlug(allPosts, selectedPost);
+  }, [selectedPost, allPosts]);
 
   /**
    * Toggle a tag selection (add if not selected, remove if already selected)

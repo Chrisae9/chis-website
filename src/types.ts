@@ -21,6 +21,8 @@ export interface PostFrontmatter {
   category?: string;
   /** Optional flag to mark the post as a draft (not published) */
   draft?: boolean;
+  /** Optional flag to hide the post from listing pages while still allowing direct URL access */
+  hidden?: boolean;
 }
 
 /**

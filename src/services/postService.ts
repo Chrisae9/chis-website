@@ -39,8 +39,9 @@ function processBacklinkSyntax(content: string): string {
 /**
  * Loads all posts from the filesystem
  * @param includeDrafts Whether to include draft posts (defaults to false)
+ * @param includeHidden Whether to include hidden posts (defaults to false)
  */
-export async function loadPosts(includeDrafts: boolean = false): Promise<Post[]> {
+export async function loadPosts(includeDrafts: boolean = false, includeHidden: boolean = false): Promise<Post[]> {
   const postFiles = import.meta.glob('../posts/*.md', { 
     query: '?raw',
     import: 'default'
@@ -66,9 +67,16 @@ export async function loadPosts(includeDrafts: boolean = false): Promise<Post[]>
   );
   
   // Filter out draft posts unless includeDrafts is true
-  const filteredPosts = includeDrafts 
-    ? posts 
-    : posts.filter(post => !post.frontmatter.draft);
+  // Filter out hidden posts unless includeHidden is true
+  const filteredPosts = posts.filter(post => {
+    // Include the post if:
+    // 1. It's not a draft OR includeDrafts is true
+    // 2. AND it's not hidden OR includeHidden is true
+    const shouldIncludeDraft = !post.frontmatter.draft || includeDrafts;
+    const shouldIncludeHidden = !post.frontmatter.hidden || includeHidden;
+    
+    return shouldIncludeDraft && shouldIncludeHidden;
+  });
   
   return filteredPosts;
 }
