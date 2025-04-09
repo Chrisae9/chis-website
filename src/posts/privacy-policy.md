@@ -1,7 +1,7 @@
 ---
 title: Privacy Policy
 date: 2023-12-14
-summary: Privacy policy for ChrisDev Blog visitors
+summary: Privacy policy Chis.dev
 category: Policy
 tags: [Privacy, Legal]
 hidden: true
