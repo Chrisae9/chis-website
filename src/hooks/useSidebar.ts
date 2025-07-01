@@ -14,6 +14,7 @@ import { useState, useEffect } from 'react';
 export function useSidebar() {
   const [showLeftSidebar, setShowLeftSidebar] = useState(false);
   const [showRightSidebar, setShowRightSidebar] = useState(false);
+  const [previousWidth, setPreviousWidth] = useState(window.innerWidth);
 
   /**
    * Handle screen size changes to properly manage sidebar visibility
@@ -24,27 +25,28 @@ export function useSidebar() {
      * Resize event handler that closes mobile sidebars when screen becomes desktop-sized
      */
     const handleResize = () => {
-      // If we're at desktop size (lg breakpoint is 1024px), ensure mobile sidebars are closed
-      if (window.innerWidth >= 1024) {
-        // Only close if they're currently shown in mobile view
+      const currentWidth = window.innerWidth;
+      
+      // Only close sidebars if we transitioned from mobile to desktop
+      // and the sidebars are currently shown
+      if (previousWidth < 1024 && currentWidth >= 1024) {
         if (showLeftSidebar || showRightSidebar) {
           setShowLeftSidebar(false);
           setShowRightSidebar(false);
         }
       }
+      
+      setPreviousWidth(currentWidth);
     };
 
     // Add event listener for window resize
     window.addEventListener('resize', handleResize);
     
-    // Initial check on mount
-    handleResize();
-    
     // Clean up event listener on unmount
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [showLeftSidebar, showRightSidebar]);
+  }, [showLeftSidebar, showRightSidebar, previousWidth]);
 
   return {
     showLeftSidebar,

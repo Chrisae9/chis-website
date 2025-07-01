@@ -37,7 +37,8 @@ export function useSectionNavigation(selectedPost: Post | null, allPosts: Post[]
     const referencingPosts = findReferencingPosts(allPosts, selectedPost.slug);
     
     return (
-      (selectedPost.frontmatter.backlinks?.length > 0 || referencingPosts.length > 0)
+      (selectedPost.frontmatter.backlinks && selectedPost.frontmatter.backlinks.length > 0) || 
+      (referencingPosts && referencingPosts.length > 0)
     );
   }, [selectedPost, allPosts]);
 

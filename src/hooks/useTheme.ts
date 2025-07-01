@@ -14,16 +14,26 @@ import { useState, useEffect } from 'react';
 export function useTheme() {
   // Initialize state from localStorage or default to light mode
   const [darkMode, setDarkMode] = useState<boolean>(() => {
-    const storedMode = localStorage.getItem('darkMode');
-    return storedMode ? JSON.parse(storedMode) : false;
+    try {
+      const storedMode = localStorage.getItem('darkMode');
+      return storedMode ? JSON.parse(storedMode) : false;
+    } catch {
+      // Return default value if localStorage data is invalid
+      return false;
+    }
   });
 
   /**
    * Apply theme changes to DOM and persist to localStorage
    */
   useEffect(() => {
-    // Save preference to localStorage
-    localStorage.setItem('darkMode', JSON.stringify(darkMode));
+    try {
+      // Save preference to localStorage
+      localStorage.setItem('darkMode', JSON.stringify(darkMode));
+    } catch {
+      // Silently handle localStorage errors (e.g., quota exceeded)
+      console.warn('Failed to save theme preference to localStorage');
+    }
     
     // Update document class for CSS styling
     if (darkMode) {
