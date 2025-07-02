@@ -86,6 +86,35 @@ Every feature, component, and utility function—no matter how small—must be c
 - Always analyze the UI in screenshots, reflect on what you think is wrong, and clearly state your analysis.
 - Prompt the user to confirm or correct your analysis before attempting any fixes.
 
+### 12. Dark Mode Troubleshooting Protocol (User Addition)
+When debugging dark mode issues, follow this systematic approach that successfully identified and fixed Tailwind CSS v4 configuration problems:
+
+**Step 1: Verify State Management**
+- Check that the theme toggle hook (`useTheme`) correctly manages state and applies/removes the `dark` class to `document.documentElement`
+- Confirm localStorage persistence is working with string values (`'true'`/`'false'`)
+
+**Step 2: Test DOM Manipulation**
+- Use Playwright to verify that clicking the theme toggle actually changes the DOM class
+- Navigate to `http://localhost:5173` and interact with the theme toggle button
+- Verify button text changes correctly ("Switch to dark mode" ↔ "Switch to light mode")
+
+**Step 3: Identify CSS Configuration Issues**
+- For Tailwind CSS v4, ensure `src/index.css` uses `@import "tailwindcss"` instead of individual layer imports
+- Add the critical `@custom-variant dark (&:where(.dark, .dark *));` directive for class-based dark mode
+- Remove `darkMode: 'class'` from `tailwind.config.js` (not needed in v4)
+
+**Step 4: Fix Test Environment**
+- Update `src/test/setup.ts` localStorage mock to actually store/retrieve values using a Map
+- Ensure integration tests use `waitFor()` for async state changes
+- Import `waitFor` from `@testing-library/react` in test files
+
+**Step 5: Validation**
+- Run full test suite to ensure all tests pass: `docker compose --profile test up app-test`
+- Use Playwright to manually verify dark mode visual changes work in the browser
+- Check that localStorage persistence survives page refreshes
+
+This protocol successfully resolved Tailwind v4 configuration issues and test environment problems that prevented dark mode from working correctly.
+
 ---
 **Always read and follow these instructions before and during every task.**
 

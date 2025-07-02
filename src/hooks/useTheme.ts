@@ -16,7 +16,7 @@ export function useTheme() {
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     try {
       const storedMode = localStorage.getItem('darkMode');
-      return storedMode ? JSON.parse(storedMode) : false;
+      return storedMode === 'true';
     } catch {
       // Return default value if localStorage data is invalid
       return false;
@@ -29,7 +29,7 @@ export function useTheme() {
   useEffect(() => {
     try {
       // Save preference to localStorage
-      localStorage.setItem('darkMode', JSON.stringify(darkMode));
+      localStorage.setItem('darkMode', darkMode.toString());
     } catch {
       // Silently handle localStorage errors (e.g., quota exceeded)
       console.warn('Failed to save theme preference to localStorage');

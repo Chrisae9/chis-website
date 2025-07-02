@@ -6,6 +6,7 @@
  */
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 import sitemap from 'vite-plugin-sitemap'
 import { getSitemapEntries } from './src/utils/sitemapConfig'
 import { SITE_URL } from './src/config/constants/site'
@@ -17,6 +18,9 @@ export default defineConfig({
   plugins: [
     // React plugin for JSX support
     react(),
+    
+    // Tailwind CSS plugin for styling
+    tailwindcss(),
     
     // Sitemap generator for SEO
     sitemap({

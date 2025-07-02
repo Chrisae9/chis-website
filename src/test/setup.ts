@@ -31,12 +31,13 @@ Object.defineProperty(window, 'scrollTo', {
   value: () => {},
 })
 
-// Mock localStorage
+// Mock localStorage with actual storage functionality
+const localStorageStore = new Map<string, string>()
 const localStorageMock = {
-  getItem: (key: string) => null,
-  setItem: () => {},
-  removeItem: () => {},
-  clear: () => {},
+  getItem: (key: string) => localStorageStore.get(key) || null,
+  setItem: (key: string, value: string) => localStorageStore.set(key, value),
+  removeItem: (key: string) => localStorageStore.delete(key),
+  clear: () => localStorageStore.clear(),
 }
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
@@ -54,9 +55,6 @@ global.IntersectionObserver = class IntersectionObserver {
 // Reset all mocks after each test
 import { afterEach } from 'vitest'
 afterEach(() => {
-  // Reset localStorage
-  localStorageMock.getItem = () => null
-  localStorageMock.setItem = () => {}
-  localStorageMock.removeItem = () => {}
-  localStorageMock.clear = () => {}
+  // Reset localStorage by clearing the store
+  localStorageStore.clear()
 })

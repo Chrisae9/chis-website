@@ -55,7 +55,7 @@ export function Layout({
   isPostView
 }: LayoutProps) {
   return (
-    <div className={`min-h-screen bg-gradient-blue`}>
+    <div className={`min-h-screen bg-gray-50 dark:bg-gray-900`}>
       {/* Sticky header with navigation controls */}
       <header className="sticky top-0 z-10 bg-white/80 dark:bg-gray-900/80 border-b border-gray-200 dark:border-gray-800 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto h-16 flex items-center justify-between gap-4 px-4">
@@ -118,7 +118,7 @@ export function Layout({
           <aside 
             className={`col-span-2 ${
               showLeftSidebar 
-                ? 'fixed inset-y-0 left-0 w-64 z-50 sidebar-gradient border-r border-gray-200 dark:border-gray-800 lg:relative lg:inset-auto lg:w-auto' 
+                ? 'fixed inset-y-0 left-0 w-64 z-50 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-800 lg:relative lg:inset-auto lg:w-auto' 
                 : 'hidden lg:block'
             }`}
           >
@@ -135,7 +135,7 @@ export function Layout({
             <aside 
               className={`col-span-3 ${
                 showRightSidebar 
-                  ? 'fixed inset-y-0 right-0 w-64 z-50 sidebar-gradient border-l border-gray-200 dark:border-gray-800 lg:relative lg:inset-auto lg:w-auto' 
+                  ? 'fixed inset-y-0 right-0 w-64 z-50 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-800 lg:relative lg:inset-auto lg:w-auto' 
                   : 'hidden lg:block'
               }`}
             >

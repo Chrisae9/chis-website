@@ -3,7 +3,7 @@ networks:
     external: true
 services:
   app-build:
-    image: node:18-alpine
+    image: node:24.3-alpine
     user: "1000:1000"
     container_name: chis-blog-build
     pull_policy: always
@@ -19,7 +19,7 @@ services:
       - build
 
   app-dev:
-    image: node:18-alpine
+    image: node:24.3-alpine
     user: "1000:1000"
     container_name: chis-blog-dev
     pull_policy: always
@@ -37,7 +37,7 @@ services:
       - dev
 
   app-test:
-    image: node:18-alpine
+    image: node:24.3-alpine
     user: "1000:1000"
     container_name: chis-blog-test
     pull_policy: always

@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 // Third-party imports
-import { Search } from 'lucide-react';
+import { Search, ChevronDown } from 'lucide-react';
 
 /**
  * Props for the CategoryFilter component
@@ -106,9 +106,7 @@ export function CategoryFilter({
         <span className="text-gray-700 dark:text-gray-300">
           {selectedCategory || 'All'}
         </span>
-        <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
+        <ChevronDown className="w-4 h-4 ml-2" aria-hidden="true" />
       </button>
 
       {/* Dropdown menu */}

@@ -363,7 +363,7 @@ describe('PostCard', () => {
       render(<PostCard post={defaultPost} searchTerm="" onPostClick={mockOnPostClick} />)
       
       const card = screen.getByRole('button')
-      expect(card).toHaveClass('bg-gradient-blue-subtle')
+      expect(card).toHaveClass('bg-white', 'dark:bg-gray-800')
     })
 
     it('should have hover effects', () => {

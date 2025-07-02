@@ -65,7 +65,7 @@ export function PostCard({ post, searchTerm, onPostClick }: PostCardProps) {
 
   return (
     <article 
-      className="bg-gradient-blue-subtle border border-blue-100 dark:border-blue-900/30 hover:border-blue-200 dark:hover:border-blue-800/30 cursor-pointer rounded-lg shadow-sm transition-all hover:shadow-md"
+      className="bg-white dark:bg-gray-800 border border-blue-100 dark:border-blue-900/30 hover:border-blue-200 dark:hover:border-blue-800/30 cursor-pointer rounded-lg shadow-sm transition-all hover:shadow-md"
       onClick={() => onPostClick(post.slug)}
       tabIndex={0}
       role="button"

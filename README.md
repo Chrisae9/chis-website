@@ -1,6 +1,6 @@
 # Digital Garden / Blog
 
-A modern, responsive blog/digital garden built with React, TypeScript, and Tailwind CSS.
+A modern, responsive blog/digital garden built with React 19, TypeScript 5.8, Vite 7.0, and Tailwind CSS 4.1. Fully containerized with Docker for consistent development and deployment.
 
 ## Project Structure
 
@@ -30,8 +30,9 @@ src/
 
 ### Prerequisites
 
-- Node.js 16+
+- Node.js 24.3+ (LTS)
 - npm or yarn
+- Docker (recommended for containerized development)
 
 ### Setup
 
@@ -44,6 +45,19 @@ npm run dev
 
 # Build for production
 npm run build
+```
+
+### Docker Development (Recommended)
+
+```bash
+# Start development server with Docker
+docker compose --profile dev up app-dev
+
+# Run tests with Docker
+docker compose --profile test up app-test
+
+# Build for production with Docker
+docker compose --profile build up app-build
 ```
 
 ## Adding Content
