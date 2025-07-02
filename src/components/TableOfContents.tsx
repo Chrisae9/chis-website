@@ -28,10 +28,14 @@ interface TableOfContentsProps {
   hasConnectedPosts?: boolean;
   /** Callback when connected posts link is clicked */
   onConnectedPostsClick?: () => void;
+  /** Callback when comments link is clicked */
+  onCommentsClick?: () => void;
   /** Whether connected posts section is currently active */
   isConnectedPostsActive?: boolean;
   /** Whether comments section is currently active */
   isCommentsActive?: boolean;
+  /** Callback when a heading is clicked - should clear section states */
+  onHeadingClick?: () => void;
 }
 
 /**
@@ -51,8 +55,10 @@ export function TableOfContents({
   content, 
   hasConnectedPosts = false, 
   onConnectedPostsClick,
+  onCommentsClick,
   isConnectedPostsActive = false,
-  isCommentsActive = false
+  isCommentsActive = false,
+  onHeadingClick
 }: TableOfContentsProps) {
   // Currently active heading ID for highlighting
   const [activeId, setActiveId] = useState<string>('');
@@ -145,6 +151,9 @@ export function TableOfContents({
     // Set active ID immediately for better UX
     setActiveId(id);
     
+    // Notify parent that a heading was clicked to clear section states
+    onHeadingClick?.();
+    
     // Calculate the position to scroll to (accounting for fixed header)
     const headerHeight = 80; // Adjust based on your header height
     const offsetPosition = element.offsetTop - headerHeight;
@@ -220,7 +229,7 @@ export function TableOfContents({
         
         {/* Comments link */}
         <button
-          onClick={scrollToComments}
+          onClick={onCommentsClick || scrollToComments}
           className={`flex items-center gap-1.5 text-sm transition-colors duration-200 ${
             isCommentsActive
               ? 'text-blue-600 dark:text-blue-400 font-medium'

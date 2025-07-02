@@ -9,7 +9,7 @@ import { TableOfContents } from './components/TableOfContents';
 import { PostList } from './components/PostList';
 
 // Centralized configuration import
-import { links, APP_NAME } from './config';
+import { links } from './config';
 
 // Hook imports
 import { usePosts } from './hooks/usePosts';
@@ -64,7 +64,9 @@ function App() {
   const {
     sectionState,
     hasConnectedPosts,
-    scrollToConnectedPosts
+    scrollToConnectedPosts,
+    scrollToComments,
+    handleSectionChange
   } = useSectionNavigation(selectedPostData || null, posts);
 
   // Left sidebar content - conditional based on current view
@@ -80,7 +82,10 @@ function App() {
           content={selectedPostData.content} 
           hasConnectedPosts={hasConnectedPosts}
           onConnectedPostsClick={scrollToConnectedPosts}
+          onCommentsClick={scrollToComments}
           isConnectedPostsActive={sectionState.connected}
+          isCommentsActive={sectionState.comments}
+          onHeadingClick={() => handleSectionChange({ connected: false, comments: false })}
         />
       </div>
     </Sidebar>
