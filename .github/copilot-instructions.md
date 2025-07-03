@@ -85,6 +85,7 @@ Every feature, component, and utility function—no matter how small—must be c
 - When the user asks for a screenshot, do not open the Simple Browser. Always use Playwright to interact with the running blog and capture the UI for screenshots and UI analysis.
 - Always analyze the UI in screenshots, reflect on what you think is wrong, and clearly state your analysis.
 - Prompt the user to confirm or correct your analysis before attempting any fixes.
+- **Keep the browser open**: Never close the Playwright browser unless explicitly asked. The user prefers to keep it open to see changes in real-time.
 
 ### 13. Content Management Patterns (Essential Knowledge)
 
@@ -116,19 +117,18 @@ interface PostFrontmatter {
 4. `processBacklinkSyntax()` converts `{{}}` to `[text](/)` markdown links
 5. Two collections created: visible posts and all posts (for direct URL access)
 
-### 14. Tailwind CSS v4 Configuration (Critical)
+### 14. Tailwind CSS v4 Configuration (Fixed)
 
 #### Dark Mode Setup
 - Uses `@import "tailwindcss"` import syntax (not layer imports)  
-- **Critical**: Must include `darkMode: 'class'` in `tailwind.config.js` for class-based dark mode
-- **Workaround Required**: Add `@variant dark (&:where(.dark, .dark *));` in CSS as processing trigger
+- **Configuration**: Requires both `darkMode: 'class'` in `tailwind.config.js` AND `@custom-variant dark (&:where(.dark, .dark *));` in CSS
 - Theme toggle adds/removes `.dark` class on `document.documentElement`
-- **Note**: The `@variant` line causes CSS lint errors but is required for dark mode to work properly
+- **Note**: The `@custom-variant` line causes CSS lint errors but is the proper Tailwind CSS v4 syntax
 
-#### Version-Specific Gotchas
-- **v4.x vs v3.x**: Different import syntax - v4 uses single `@import "tailwindcss"`
+#### Version-Specific Configuration
+- **v4.x syntax**: Use `@custom-variant dark (&:where(.dark, .dark *));` (NOT `@variant`)
 - **Build Pipeline**: Requires `@tailwindcss/vite` plugin for proper processing
-- **Dark Mode**: More complex than v3 - needs both config AND CSS trigger
+- **Dark Mode**: Requires both config file setting AND CSS custom variant declaration
 - **Documentation**: Always verify solutions against v4.1+ docs, not generic Tailwind guides
 
 #### Custom Utility Classes in `src/index.css`
