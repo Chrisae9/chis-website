@@ -85,7 +85,6 @@ Every feature, component, and utility function—no matter how small—must be c
 - When the user asks for a screenshot, do not open the Simple Browser. Always use Playwright to interact with the running blog and capture the UI for screenshots and UI analysis.
 - Always analyze the UI in screenshots, reflect on what you think is wrong, and clearly state your analysis.
 - Prompt the user to confirm or correct your analysis before attempting any fixes.
-- **Keep the browser open**: Never close the Playwright browser unless explicitly asked. The user prefers to keep it open to see changes in real-time.
 
 ### 13. Content Management Patterns (Essential Knowledge)
 
@@ -117,19 +116,13 @@ interface PostFrontmatter {
 4. `processBacklinkSyntax()` converts `{{}}` to `[text](/)` markdown links
 5. Two collections created: visible posts and all posts (for direct URL access)
 
-### 14. Tailwind CSS v4 Configuration (Fixed)
+### 14. Tailwind CSS v4 Configuration (Critical)
 
 #### Dark Mode Setup
 - Uses `@import "tailwindcss"` import syntax (not layer imports)  
-- **Configuration**: Requires both `darkMode: 'class'` in `tailwind.config.js` AND `@custom-variant dark (&:where(.dark, .dark *));` in CSS
+- **Critical**: Must include `darkMode: 'class'` in `tailwind.config.js` for class-based dark mode
 - Theme toggle adds/removes `.dark` class on `document.documentElement`
-- **Note**: The `@custom-variant` line causes CSS lint errors but is the proper Tailwind CSS v4 syntax
-
-#### Version-Specific Configuration
-- **v4.x syntax**: Use `@custom-variant dark (&:where(.dark, .dark *));` (NOT `@variant`)
-- **Build Pipeline**: Requires `@tailwindcss/vite` plugin for proper processing
-- **Dark Mode**: Requires both config file setting AND CSS custom variant declaration
-- **Documentation**: Always verify solutions against v4.1+ docs, not generic Tailwind guides
+- Do NOT use `@custom-variant dark` directive in CSS (this is incorrect for Tailwind CSS v4)
 
 #### Custom Utility Classes in `src/index.css`
 - `.bg-gradient-blue`: Main background gradient with dark mode variant
@@ -221,54 +214,6 @@ interface PostFrontmatter {
 2. Verify React Router setup in `main.tsx`
 3. Test case-insensitive fallback behavior
 4. Validate hidden post direct access patterns
-
-### 19. Version-Aware Development Protocol (Critical)
-
-**Always check `package.json` first before implementing any feature or fixing any issue.** Version mismatches are a common source of bugs and configuration problems.
-
-#### Pre-Implementation Checklist
-1. **Read `package.json`** to identify exact versions of all dependencies
-2. **Search for version-specific documentation** using the exact version numbers
-3. **Verify syntax and configuration** matches the installed version, not the latest docs
-4. **Check for breaking changes** between major versions before applying solutions
-
-#### Key Dependencies to Version-Check
-- **Tailwind CSS**: v4.x has different syntax than v3.x (e.g., `@import "tailwindcss"` vs layer imports)
-- **React**: v19 has different features than v18
-- **Vite**: v7.x may have different plugin configurations than v6.x
-- **TypeScript**: v5.8 has different compiler options than v4.x
-- **React Router**: v7.x has different API than v6.x
-
-#### Version Research Process
-1. **Check installed version**: `"package": "^X.Y.Z"` in `package.json`
-2. **Search for docs**: Use queries like "Tailwind CSS v4.1 dark mode configuration"
-3. **Avoid generic searches**: Don't search "Tailwind dark mode" - always include version
-4. **Cross-reference multiple sources**: Official docs, GitHub issues, Stack Overflow for that specific version
-
-#### Example - The Tailwind v4 Dark Mode Issue
-- **Problem**: Used v3 syntax (`darkMode: 'class'` only) when v4 was installed
-- **Root Cause**: Applied generic "Tailwind dark mode" solutions instead of v4-specific configuration
-- **Solution**: Required both `darkMode: 'class'` in config AND `@variant dark` workaround for v4
-- **Prevention**: Should have searched "Tailwind CSS v4.1 dark mode" specifically
-
-#### Documentation Priority Order
-1. **Official docs for exact version** (e.g., https://tailwindcss.com/docs/v4.0)
-2. **GitHub repository releases/changelog** for breaking changes
-3. **Version-specific Stack Overflow answers** (check answer dates and versions mentioned)
-4. **Migration guides** when moving between major versions
-
-#### Red Flags That Indicate Version Mismatch
-- CSS/JS syntax errors that work in online examples
-- Configuration options that seem to be ignored
-- Features that "should work" according to docs but don't
-- Build errors mentioning deprecated or unknown properties
-- Dark mode, theming, or styling that doesn't apply correctly
-
-#### When Stuck on Version Issues
-1. **Check the exact error message** against the specific version's known issues
-2. **Look for version-specific workarounds** in GitHub issues
-3. **Consider if you need a different approach** for your version
-4. **Document any workarounds** (like the `@variant dark` line) with clear comments explaining why
 
 ---
 **Always read and follow these instructions before and during every task.**
