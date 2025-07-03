@@ -71,7 +71,7 @@ function App() {
 
   // Left sidebar content - conditional based on current view
   const leftSidebarContent = selectedPostData ? (
-    // When viewing a post: Show table of contents only
+    // When viewing a post: Show table of contents
     <Sidebar
       title="Table of Contents"
       onClose={() => setShowLeftSidebar(false)}
@@ -147,8 +147,14 @@ function App() {
       setShowRightSidebar={setShowRightSidebar}
       header={
         selectedPostData ? (
-          // No header content when viewing a post (back button moved to sidebar)
-          null
+          // Back button when viewing a post
+          <button
+            onClick={() => handlePostSelect(null)}
+            className="flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+            aria-label="Back to posts list"
+          >
+            ← Back to posts
+          </button>
         ) : (
           // Search bar when viewing post list
           <SearchBar value={searchTerm} onChange={setSearchTerm} />

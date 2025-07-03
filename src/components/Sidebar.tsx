@@ -24,7 +24,6 @@ interface SidebarProps {
  * Features:
  * - Responsive design with mobile-specific header
  * - Optional close button for mobile view
- * - Optional back button above title
  * - Consistent padding and spacing
  * - Adapts to both left and right sidebar positions
  * 
