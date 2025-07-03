@@ -47,7 +47,7 @@ export function TagList({ tags, selectedTags, onTagToggle }: TagListProps) {
           onChange={(e) => setTagSearch(e.target.value)}
           placeholder="Filter tags"
           aria-label="Filter tags"
-          className="w-full h-9 pl-8 pr-3 text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-gray-300 dark:focus:border-gray-700 rounded-md placeholder-gray-500 dark:placeholder-gray-400"
+          className="w-full h-9 pl-8 pr-3 text-sm bg-glass-light text-gray-900 dark:text-gray-100 border border-white/20 dark:border-gray-300/20 focus:outline-none focus:border-gray-300 dark:focus:border-gray-700 rounded-md placeholder-gray-500 dark:placeholder-gray-400 shadow-elegant transition-all duration-200"
         />
         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400 dark:text-gray-500" aria-hidden="true" />
       </div>
@@ -59,10 +59,10 @@ export function TagList({ tags, selectedTags, onTagToggle }: TagListProps) {
             key={tag}
             onClick={() => onTagToggle(tag)}
             aria-pressed={selectedTags.includes(tag)}
-            className={`px-2.5 py-1 text-sm rounded transition-colors ${
+            className={`px-2.5 py-1 text-sm rounded shadow-elegant transition-all duration-200 hover:scale-105 ${
               selectedTags.includes(tag)
-                ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-700'
-                : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-100 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700'
+                ? 'bg-blue-100/90 dark:bg-blue-900/90 text-gray-900 dark:text-gray-100 border border-blue-300/30 dark:border-blue-700/30'
+                : 'bg-glass-light text-gray-700 dark:text-gray-100 border border-white/20 dark:border-gray-300/20 hover:border-gray-300 dark:hover:border-gray-700'
             }`}
           >
             {tag}

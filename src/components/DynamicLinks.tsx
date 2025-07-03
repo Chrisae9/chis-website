@@ -43,7 +43,7 @@ export function DynamicLinks({ links }: DynamicLinksProps) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Visit ${link.name} (opens in new tab)`}
-          className="inline-flex items-center gap-2 px-3 py-1.5 text-sm rounded-md bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-100 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 transition-colors"
+          className="inline-flex items-center gap-2 px-3 py-1.5 text-sm rounded-md bg-glass-light text-gray-700 dark:text-gray-100 border border-white/20 dark:border-gray-300/20 hover:border-gray-300 dark:hover:border-gray-700 shadow-elegant hover:shadow-card transition-all duration-200 hover:scale-105"
         >
           <FontAwesomeIcon icon={[link.icon.prefix, link.icon.name]} className="w-4 h-4" aria-hidden="true" />
           {link.name}

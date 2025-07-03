@@ -185,7 +185,7 @@ describe('SearchBar', () => {
       render(<SearchBar {...defaultProps} />)
       
       const input = screen.getByRole('textbox')
-      expect(input).toHaveClass('w-full', 'h-10', 'pl-10', 'pr-4')
+      expect(input).toHaveClass('w-full', 'h-12', 'pl-12', 'pr-4')
     })
 
     it('should be visually integrated with search icon', () => {

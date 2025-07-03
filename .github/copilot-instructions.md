@@ -86,34 +86,134 @@ Every feature, component, and utility function—no matter how small—must be c
 - Always analyze the UI in screenshots, reflect on what you think is wrong, and clearly state your analysis.
 - Prompt the user to confirm or correct your analysis before attempting any fixes.
 
-### 12. Dark Mode Troubleshooting Protocol (User Addition)
-When debugging dark mode issues, follow this systematic approach that successfully identified and fixed Tailwind CSS v4 configuration problems:
+### 13. Content Management Patterns (Essential Knowledge)
 
-**Step 1: Verify State Management**
-- Check that the theme toggle hook (`useTheme`) correctly manages state and applies/removes the `dark` class to `document.documentElement`
-- Confirm localStorage persistence is working with string values (`'true'`/`'false'`)
+#### Frontmatter Schema Enforcement
+All posts must follow this exact frontmatter structure in `src/types.ts`:
+```typescript
+interface PostFrontmatter {
+  title: string;           // Required: Display title
+  date: string;           // Required: ISO format (YYYY-MM-DD)
+  summary: string;        // Required: Brief description
+  tags: string[];         // Required: Array of tags
+  backlinks?: string[];   // Auto-generated from {{}} syntax
+  category?: string;      // Optional: Single category
+  draft?: boolean;        // Optional: Hide from production
+  hidden?: boolean;       // Optional: Hide from lists but allow direct access
+}
+```
 
-**Step 2: Test DOM Manipulation**
-- Use Playwright to verify that clicking the theme toggle actually changes the DOM class
-- Navigate to `http://localhost:5173` and interact with the theme toggle button
-- Verify button text changes correctly ("Switch to dark mode" ↔ "Switch to light mode")
+#### Wiki-Style Backlink System
+- Use `{{Post Title}}` syntax in markdown to create links between posts
+- `postService.ts` automatically extracts and converts these to proper markdown links
+- Backlinks create bidirectional relationships displayed in "Connected Posts" sections
+- Link generation uses exact slug transformation: title → lowercase → spaces to dashes → remove special chars
 
-**Step 3: Identify CSS Configuration Issues**
-- For Tailwind CSS v4, ensure `src/index.css` uses `@import "tailwindcss"` instead of individual layer imports
-- Add the critical `@custom-variant dark (&:where(.dark, .dark *));` directive for class-based dark mode
-- Remove `darkMode: 'class'` from `tailwind.config.js` (not needed in v4)
+#### Content Processing Pipeline
+1. `loadPosts()` uses `import.meta.glob('../posts/*.md', { query: '?raw' })` 
+2. `gray-matter` parses frontmatter and content
+3. `extractBacklinks()` finds `{{}}` syntax and adds to frontmatter
+4. `processBacklinkSyntax()` converts `{{}}` to `[text](/)` markdown links
+5. Two collections created: visible posts and all posts (for direct URL access)
 
-**Step 4: Fix Test Environment**
-- Update `src/test/setup.ts` localStorage mock to actually store/retrieve values using a Map
-- Ensure integration tests use `waitFor()` for async state changes
-- Import `waitFor` from `@testing-library/react` in test files
+### 14. Tailwind CSS v4 Configuration (Critical)
 
-**Step 5: Validation**
-- Run full test suite to ensure all tests pass: `docker compose --profile test up app-test`
-- Use Playwright to manually verify dark mode visual changes work in the browser
-- Check that localStorage persistence survives page refreshes
+#### Dark Mode Setup
+- Uses `@import "tailwindcss"` import syntax (not layer imports)  
+- **Critical**: Must include `darkMode: 'class'` in `tailwind.config.js` for class-based dark mode
+- Theme toggle adds/removes `.dark` class on `document.documentElement`
+- Do NOT use `@custom-variant dark` directive in CSS (this is incorrect for Tailwind CSS v4)
 
-This protocol successfully resolved Tailwind v4 configuration issues and test environment problems that prevented dark mode from working correctly.
+#### Custom Utility Classes in `src/index.css`
+- `.bg-gradient-blue`: Main background gradient with dark mode variant
+- `.sidebar-gradient`: Glass morphism backgrounds with backdrop-blur
+- `.shadow-elegant|card|header|sidebar`: Layered shadow system
+- `.prose`: Custom markdown styling that works with dark mode
+
+### 15. Development Workflow Essentials
+
+#### Required Commands (Memorize These)
+- **Dev server**: `docker compose --profile dev up app-dev` (port 5173)
+- **Test suite**: `docker compose --profile test up app-test` (verbose output)
+- **Production build**: `docker compose --profile build up app-build`
+- **Never use `npm run` commands directly** - always use Docker profiles
+
+#### File-Based Routing Logic
+- URL structure: `/{slug}` maps to `src/posts/{slug}.md`
+- `useLocation` + `normalizeSlug()` extracts slug from pathname
+- Case-insensitive fallback with redirect to correct case
+- Special handling for hidden posts (accessible by direct URL only)
+
+#### State Persistence Patterns
+- Theme preference: localStorage with `'true'`/`'false'` strings
+- Search and filter state: Component-local only (no persistence)
+- Post navigation: URL-driven with React Router
+
+### 16. Testing Architecture (Project-Specific)
+
+#### Mock Factories in `src/test/utils.tsx`
+- `createMockPost()`: Single post with configurable overrides
+- `createMockPosts()`: Multiple posts with incremental naming
+- `mockLocalStorage()`: Functional localStorage mock with Map storage
+- `renderWithProviders()`: Wraps components with BrowserRouter
+
+#### Integration Test Focus Areas
+- Dark mode DOM manipulation (`document.documentElement.classList`)
+- Responsive sidebar behavior (viewport width changes)
+- Post loading and filtering state management
+- Backlink processing and markdown conversion
+
+#### Vitest Configuration Details
+- Uses jsdom environment with globals enabled
+- `src/test/setup.ts` provides Buffer polyfill and mocks
+- Coverage excludes test files, configs, and dist directory
+- Reporter set to 'verbose' for detailed test output
+
+### 17. Production and Deployment Patterns
+
+#### Docker Multi-Profile Setup
+- **dev**: Development server with hot reload and file watching
+- **test**: Test runner with coverage and verbose output
+- **build**: Production build with optimized assets
+- **prod**: Nginx-based serving with Traefik labels for `chis.dev`
+
+#### Vite Build Configuration
+- Sitemap generation using `vite-plugin-sitemap` with dynamic routes from posts
+- Path aliases: `@` maps to `/src`, `@assets` maps to `/src/assets`
+- Asset handling for images, with automatic optimization
+- Source maps enabled for debugging production issues
+
+#### SEO and Performance
+- Dynamic sitemap generated from post frontmatter
+- Canonical URLs using `SITE_URL` constant
+- React 19 concurrent features for improved performance
+- Responsive images and lazy loading where applicable
+
+#### Nginx Configuration
+- Serves built assets from `/dist` directory
+- Handles SPA routing with fallback to `index.html`
+- Gzip compression and caching headers
+- Integration with Traefik reverse proxy for SSL termination
+
+### 18. Emergency Debugging Checklist
+
+#### Content Loading Issues
+1. Check `import.meta.glob` pattern in `postService.ts`
+2. Verify frontmatter format matches `PostFrontmatter` interface
+3. Check for markdown syntax errors breaking gray-matter parsing
+4. Validate backlink syntax doesn't contain invalid characters
+
+#### Styling Issues
+1. Verify Tailwind v4 CSS import in `src/index.css`
+2. Check dark mode variant directive is present
+3. Validate custom utility classes aren't conflicting
+4. Ensure responsive classes work across breakpoints
+
+#### Route Navigation Problems
+1. Check `normalizeSlug()` logic for URL parsing
+2. Verify React Router setup in `main.tsx`
+3. Test case-insensitive fallback behavior
+4. Validate hidden post direct access patterns
 
 ---
 **Always read and follow these instructions before and during every task.**
@@ -122,7 +222,9 @@ If the user says "run," always start the dev server. If the user says "run tests
 
 Whenever the user asks for a screenshot, you must analyze the UI in the screenshot, reflect on what you think is wrong, and clearly state your analysis. Then, prompt the user to confirm or correct your analysis before attempting any fixes. Only after user feedback should you proceed to fix the issues.
 
-Always keep this Copilot instructions file up to date with user requests and project conventions. Any time the user asks to 'remember' a workflow, rule, or best practice, add it here.
+Always keep this Copilot instructions file up to date with user requests and project conventions. Any time the user asks to 'remember' a workflow, rule, or best practice, add it here immediately.
+
+**These instructions represent the collective knowledge of successfully building and maintaining this React/TypeScript blog application. They include battle-tested solutions for common issues like Tailwind v4 dark mode configuration, Docker development workflows, and content management patterns. Follow them to avoid repeating solved problems and maintain consistency across the codebase.**
 
 ## User Communication Shortcuts (User Addition)
 
@@ -138,23 +240,50 @@ When working with Vite, always reference the official Vite documentation at http
 
 This is a modern React/TypeScript blog application with the following key characteristics:
 
-- **Tech Stack**: React 18, TypeScript, Vite, Tailwind CSS, React Router
-- **Content**: Markdown-based posts with frontmatter metadata
-- **Features**: Search, filtering, dark mode, backlinks, table of contents
+- **Tech Stack**: React 19, TypeScript 5.8, Vite 7.0, Tailwind CSS 4.1
+- **Content**: Markdown-based posts with frontmatter metadata and wiki-style backlinks
+- **Features**: Search, filtering, dark mode, table of contents, connected posts visualization
 - **Architecture**: Hook-based state management, service layer for data, component-based UI
 
+### Critical Architectural Patterns
+
+#### Content Loading Strategy
+- Posts are loaded using Vite's `import.meta.glob('../posts/*.md', { query: '?raw' })` pattern
+- Content is processed at load time for backlinks (`{{Post Title}}` syntax) and converted to markdown links
+- Two post collections: `posts` (visible) and `allPosts` (includes hidden) for direct URL access
+- Frontmatter schema is strictly typed and includes `draft`, `hidden`, `backlinks`, and `category` fields
+
+#### State Management Flow
+- `usePosts` is the primary data hook that coordinates post loading, filtering, search, and navigation
+- `useTheme` manages dark mode with localStorage persistence and DOM class manipulation
+- `useSidebar` handles responsive sidebar visibility with automatic mobile-to-desktop transitions
+- `useSectionNavigation` manages table of contents highlighting and section scrolling
+
+#### Component Architecture
+- `App.tsx` is the main orchestrator that conditionally renders `PostContent` vs `PostList`
+- `Layout.tsx` provides responsive grid layout with conditional sidebars based on view type
+- Sidebar content changes contextually: TOC for posts, tags for list view
+- All components are functional with TypeScript interfaces for props
+
+#### Docker-First Development
+- **Always use Docker commands**: `docker compose --profile dev up app-dev` and `docker compose --profile test up app-test`
+- Container setup ensures Node 24.3 environment with proper user permissions (1000:1000)
+- Dev server runs on port 5173 with host binding for container access
+
 ### Key Files and Directories:
-- `src/components/`: React components for UI
-- `src/hooks/`: Custom React hooks for state management
-- `src/posts/`: Markdown blog posts with frontmatter
-- `src/services/`: Data services and business logic
-- `src/types/`: TypeScript type definitions
-- `src/config/`: Configuration files
-- `src/utils/`: Utility functions
+- `src/components/`: UI components with strict typing and responsive design
+- `src/hooks/`: Custom React hooks for state management and side effects
+- `src/posts/`: Markdown blog posts with strict frontmatter schema
+- `src/services/postService.ts`: Core data processing including backlink extraction
+- `src/types.ts`: Central type definitions for Post, PostFrontmatter, SidebarConfig
+- `src/config/`: Feature-based configuration modules (links, utterances, constants)
+- `src/utils/`: Route handling, section parsing, sitemap generation
+- `src/test/`: Test utilities with mock factories and provider wrappers
 
 ### Testing Requirements:
 - All components must have unit tests
-- All hooks must have integration tests
-- All services must have unit tests
+- All hooks must have integration tests using `renderHook` from `@testing-library/react`
+- All services must have unit tests with mock data factories
 - All utilities must have unit tests
 - Key user flows must have Playwright e2e tests
+- Integration tests validate DOM manipulation (especially dark mode with Tailwind v4)

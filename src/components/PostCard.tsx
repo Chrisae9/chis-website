@@ -42,7 +42,7 @@ export function PostCard({ post, searchTerm, onPostClick }: PostCardProps) {
     const parts = text.split(new RegExp(`(${searchTerm})`, 'gi'));
     return parts.map((part, i) => 
       part.toLowerCase() === searchTerm.toLowerCase() ? 
-        <mark key={i} className="bg-yellow-100 dark:bg-yellow-900/50 text-gray-900 dark:text-gray-100 px-0.5">{part}</mark> : 
+        <mark key={i} className="bg-yellow-200 dark:bg-yellow-600/70 text-gray-900 dark:text-gray-100 px-0.5 rounded">{part}</mark> : 
         part
     );
   };
@@ -65,7 +65,7 @@ export function PostCard({ post, searchTerm, onPostClick }: PostCardProps) {
 
   return (
     <article 
-      className="bg-white dark:bg-gray-800 border border-blue-100 dark:border-blue-900/30 hover:border-blue-200 dark:hover:border-blue-800/30 cursor-pointer rounded-lg shadow-sm transition-all hover:shadow-md"
+      className="bg-glass-card border-0 cursor-pointer rounded-lg shadow-card hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1"
       onClick={() => onPostClick(post.slug)}
       tabIndex={0}
       role="button"
@@ -79,7 +79,7 @@ export function PostCard({ post, searchTerm, onPostClick }: PostCardProps) {
     >
       <div className="p-4">
         {/* Post title with search highlighting */}
-        <h2 className="text-base font-medium mb-3 text-gray-900 dark:text-gray-100">
+        <h2 className="text-base font-medium mb-3 text-gray-900 dark:text-white">
           {highlightText(post.frontmatter.title)}
         </h2>
         
@@ -87,8 +87,8 @@ export function PostCard({ post, searchTerm, onPostClick }: PostCardProps) {
         <div className="flex flex-col gap-2 mb-3 sm:flex-row sm:items-center sm:gap-3">
           {/* Date */}
           <div className="flex items-center gap-1.5">
-            <Calendar className="h-4 w-4 text-gray-400" aria-hidden="true" />
-            <span className="text-sm text-gray-600 dark:text-gray-300">
+            <Calendar className="h-4 w-4 text-gray-400 dark:text-gray-300" aria-hidden="true" />
+            <span className="text-sm text-gray-600 dark:text-gray-200">
               {formatDate(post.frontmatter.date)}
             </span>
           </div>
@@ -96,7 +96,7 @@ export function PostCard({ post, searchTerm, onPostClick }: PostCardProps) {
           {/* Category */}
           {post.frontmatter.category && (
             <div className="flex items-center gap-1.5">
-              <span className="text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-full whitespace-nowrap font-medium">
+              <span className="text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-full whitespace-nowrap font-medium">
                 {post.frontmatter.category}
               </span>
             </div>
@@ -104,12 +104,12 @@ export function PostCard({ post, searchTerm, onPostClick }: PostCardProps) {
           
           {/* Tags */}
           <div className="flex items-center gap-1.5">
-            <TagIcon className="h-4 w-4 text-gray-400 shrink-0" aria-hidden="true" />
+            <TagIcon className="h-4 w-4 text-gray-400 dark:text-gray-300 shrink-0" aria-hidden="true" />
             <div className="flex flex-wrap gap-1.5">
               {post.frontmatter.tags.map((tag) => (
                 <span 
                   key={tag} 
-                  className="text-xs px-1.5 py-0.5 bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800/30 text-gray-700 dark:text-gray-200 rounded whitespace-nowrap"
+                  className="text-xs px-1.5 py-0.5 bg-blue-50 dark:bg-blue-900/40 border border-blue-100 dark:border-blue-700/40 text-gray-700 dark:text-blue-200 rounded whitespace-nowrap"
                 >
                   {tag}
                 </span>
@@ -119,12 +119,12 @@ export function PostCard({ post, searchTerm, onPostClick }: PostCardProps) {
         </div>
 
         {/* Post summary with search highlighting */}
-        <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
+        <p className="text-sm text-gray-600 dark:text-gray-200 mb-3 line-clamp-2">
           {highlightText(post.frontmatter.summary)}
         </p>
         
         {/* Read more link */}
-        <div className="flex items-center text-sm text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 font-medium">
+        <div className="flex items-center text-sm text-gray-700 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-300 font-medium">
           Read more <ChevronRight className="h-4 w-4 ml-1" aria-hidden="true" />
         </div>
       </div>

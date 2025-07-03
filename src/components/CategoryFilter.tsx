@@ -101,7 +101,7 @@ export function CategoryFilter({
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-label={`Category filter, currently ${selectedCategory || 'All'}`}
-        className="flex items-center justify-between w-full px-3 py-2 text-sm bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800"
+        className="flex items-center justify-between w-full px-3 py-2 text-sm bg-glass-light border border-white/20 dark:border-gray-300/20 rounded-md shadow-elegant hover:bg-white/80 dark:hover:bg-gray-900/80 transition-all duration-200"
       >
         <span className="text-gray-700 dark:text-gray-300">
           {selectedCategory || 'All'}
@@ -112,7 +112,7 @@ export function CategoryFilter({
       {/* Dropdown menu */}
       {isOpen && (
         <div 
-          className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-md shadow-lg"
+          className="absolute z-10 w-full mt-1 bg-glass-card border border-white/20 dark:border-gray-300/20 rounded-md shadow-card"
           role="listbox"
           aria-label="Category options"
         >
@@ -126,7 +126,7 @@ export function CategoryFilter({
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search categories"
                 aria-label="Search categories"
-                className="w-full h-9 pl-8 pr-3 text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full h-9 pl-8 pr-3 text-sm bg-glass-light text-gray-900 dark:text-gray-100 border border-white/20 dark:border-gray-300/20 rounded-md shadow-elegant focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
               />
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400 dark:text-gray-500" aria-hidden="true" />
             </div>

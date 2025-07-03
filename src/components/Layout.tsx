@@ -1,7 +1,7 @@
 // React imports
 import React from 'react';
 
-// Third-party imports
+// Third-party      <header className="sticky top-0 z-10 bg-white/60 dark:bg-gray-900/60 border-b border-white/20 dark:border-gray-800/40 backdrop-blur-md shadow-header".imports
 import { Link, Sun, Moon, Menu, X } from 'lucide-react';
 
 // Local imports
@@ -55,25 +55,24 @@ export function Layout({
   isPostView
 }: LayoutProps) {
   return (
-    <div className={`min-h-screen bg-gray-50 dark:bg-gray-900`}>
+    <div className={`min-h-screen bg-gradient-blue`}>
       {/* Sticky header with navigation controls */}
-      <header className="sticky top-0 z-10 bg-white/80 dark:bg-gray-900/80 border-b border-gray-200 dark:border-gray-800 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto h-16 flex items-center justify-between gap-4 px-4">
-          {/* Left section: sidebar toggle and header content */}
+      <header className="sticky top-0 z-10 bg-white/60 dark:bg-gray-900/60 border-b border-white/20 dark:border-gray-800/40 backdrop-blur-md shadow-header">
+        <div className="max-w-7xl mx-auto h-20 flex items-center justify-between gap-6 px-4">
+          {/* Left section: sidebar toggle */}
           <div className="flex items-center gap-3 lg:w-64">
             <button
               onClick={() => setShowLeftSidebar(!showLeftSidebar)}
-              className="lg:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors text-gray-700 dark:text-gray-100"
+              className="lg:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors text-gray-700 dark:text-gray-100 shadow-elegant"
               aria-label={showLeftSidebar ? "Close left sidebar" : "Open left sidebar"}
             >
               {showLeftSidebar ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </button>
-            {header}
           </div>
           
-          {/* Middle section: flexible space */}
-          <div className="flex-1 max-w-2xl">
-            {/* Search bar container */}
+          {/* Middle section: centered search area */}
+          <div className="flex-1 max-w-4xl flex justify-center">
+            {header}
           </div>
 
           {/* Right section: action buttons */}
@@ -82,7 +81,7 @@ export function Layout({
             {!isPostView && (
               <button
                 onClick={() => setShowRightSidebar(!showRightSidebar)}
-                className="lg:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors text-gray-700 dark:text-gray-100"
+                className="lg:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors text-gray-700 dark:text-gray-100 shadow-elegant"
                 aria-label={showRightSidebar ? "Close right sidebar" : "Open right sidebar"}
               >
                 {showRightSidebar ? <X className="h-4 w-4" /> : <Link className="h-4 w-4" />}
@@ -90,7 +89,7 @@ export function Layout({
             )}
             <button
               onClick={toggleDarkMode}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors text-gray-700 dark:text-gray-100"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors text-gray-700 dark:text-gray-100 shadow-elegant"
               aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
             >
               {darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
@@ -118,7 +117,7 @@ export function Layout({
           <aside 
             className={`col-span-2 ${
               showLeftSidebar 
-                ? 'fixed inset-y-0 left-0 w-64 z-50 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-800 lg:relative lg:inset-auto lg:w-auto' 
+                ? 'fixed inset-y-0 left-0 w-64 z-50 sidebar-gradient border-r border-gray-200 dark:border-gray-800 shadow-sidebar lg:relative lg:inset-auto lg:w-auto' 
                 : 'hidden lg:block'
             }`}
           >
@@ -135,7 +134,7 @@ export function Layout({
             <aside 
               className={`col-span-3 ${
                 showRightSidebar 
-                  ? 'fixed inset-y-0 right-0 w-64 z-50 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-800 lg:relative lg:inset-auto lg:w-auto' 
+                  ? 'fixed inset-y-0 right-0 w-64 z-50 sidebar-gradient border-l border-gray-200 dark:border-gray-800 shadow-sidebar lg:relative lg:inset-auto lg:w-auto' 
                   : 'hidden lg:block'
               }`}
             >

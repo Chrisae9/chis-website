@@ -1,5 +1,5 @@
 // React imports
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 // Third-party imports
 import { ArrowUp } from 'lucide-react';
@@ -54,7 +54,7 @@ export function BackToTop() {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors text-gray-700 dark:text-gray-100"
+          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-100 shadow-elegant hover:shadow-card"
           aria-label="Back to top"
           title="Scroll back to top"
         >

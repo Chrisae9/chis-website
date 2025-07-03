@@ -34,36 +34,35 @@ interface SortControlsProps {
  */
 export function SortControls({ sortOrder, onSortChange }: SortControlsProps) {
   return (
-    <div className="flex items-center justify-end mb-3 text-xs">
-      <div className="text-gray-500 dark:text-gray-400 mr-2">
+    <div className="flex items-center justify-end mb-3 text-sm">
+      <div className="text-gray-600 dark:text-gray-300 mr-3 font-medium">
         Sort:
       </div>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center bg-glass-light rounded-lg p-1 shadow-elegant">
         <button
           onClick={() => onSortChange('desc')}
-          className={`flex items-center gap-0.5 px-1.5 py-0.5 rounded ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-all duration-200 ${
             sortOrder === 'desc'
-              ? 'text-blue-600 dark:text-blue-400 font-medium'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+              ? 'text-white bg-blue-600 shadow-md font-medium'
+              : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-700'
           }`}
           aria-label="Sort by newest first"
           aria-pressed={sortOrder === 'desc'}
         >
-          <ArrowDown className="h-3 w-3" aria-hidden="true" />
+          <ArrowDown className="h-3.5 w-3.5" aria-hidden="true" />
           <span>Newest</span>
         </button>
-        <span className="text-gray-300 dark:text-gray-600" aria-hidden="true">|</span>
         <button
           onClick={() => onSortChange('asc')}
-          className={`flex items-center gap-0.5 px-1.5 py-0.5 rounded ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-all duration-200 ${
             sortOrder === 'asc'
-              ? 'text-blue-600 dark:text-blue-400 font-medium'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+              ? 'text-white bg-blue-600 shadow-md font-medium'
+              : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-700'
           }`}
           aria-label="Sort by oldest first"
           aria-pressed={sortOrder === 'asc'}
         >
-          <ArrowUp className="h-3 w-3" aria-hidden="true" />
+          <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />
           <span>Oldest</span>
         </button>
       </div>
