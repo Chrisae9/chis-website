@@ -1,6 +1,3 @@
-// React imports
-import React from 'react';
-
 // Third-party imports
 import { ArrowDown, ArrowUp } from 'lucide-react';
 
@@ -40,8 +37,8 @@ export function SortControls({ sortOrder, onSortChange }: SortControlsProps) {
           onClick={() => onSortChange('desc')}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-all duration-200 ${
             sortOrder === 'desc'
-              ? 'text-white bg-blue-600 shadow-md font-medium'
-              : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-700'
+              ? 'text-blue-50 bg-blue-600/70 backdrop-blur-sm shadow-md font-medium'
+              : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 hover:bg-white/80 dark:hover:bg-gray-700/50 hover:backdrop-blur-sm'
           }`}
           aria-label="Sort by newest first"
           aria-pressed={sortOrder === 'desc'}
@@ -53,8 +50,8 @@ export function SortControls({ sortOrder, onSortChange }: SortControlsProps) {
           onClick={() => onSortChange('asc')}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-all duration-200 ${
             sortOrder === 'asc'
-              ? 'text-white bg-blue-600 shadow-md font-medium'
-              : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-700'
+              ? 'text-blue-50 bg-blue-600/70 backdrop-blur-sm shadow-md font-medium'
+              : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 hover:bg-white/80 dark:hover:bg-gray-700/50 hover:backdrop-blur-sm'
           }`}
           aria-label="Sort by oldest first"
           aria-pressed={sortOrder === 'asc'}

@@ -106,7 +106,7 @@ export function CategoryFilter({
         <span className="text-gray-700 dark:text-gray-300">
           {selectedCategory || 'All'}
         </span>
-        <ChevronDown className="w-4 h-4 ml-2" aria-hidden="true" />
+        <ChevronDown className="w-4 h-4 ml-2 text-gray-700 dark:text-gray-300" aria-hidden="true" />
       </button>
 
       {/* Dropdown menu */}
@@ -124,7 +124,7 @@ export function CategoryFilter({
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search categories"
+                placeholder="Filter..."
                 aria-label="Search categories"
                 className="w-full h-9 pl-8 pr-3 text-sm bg-glass-light text-gray-900 dark:text-gray-100 border border-white/20 dark:border-gray-300/20 rounded-md shadow-elegant focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
               />

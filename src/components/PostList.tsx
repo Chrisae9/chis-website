@@ -59,7 +59,7 @@ export function PostList({
       {/* Filter and sort controls */}
       <div className="flex flex-row gap-4 mb-6 items-center">
         {/* Category filter */}
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           <CategoryFilter 
             categories={categories}
             selectedCategory={selectedCategory}

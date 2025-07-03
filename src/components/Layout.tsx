@@ -91,17 +91,6 @@ export function Layout({
         </button>
       </div>
 
-      {/* Fixed header - no background, only contains search/content when in list view */}
-      {!isPostView && (
-        <header className="fixed top-0 left-0 right-0 z-30 py-4 bg-gradient-blue/95 backdrop-blur-sm border-b border-gray-200/20 dark:border-gray-700/20">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="flex justify-center">
-              {header}
-            </div>
-          </div>
-        </header>
-      )}
-
       {/* Overlay for mobile sidebars - visible only on small screens when sidebar is open */}
       {(showLeftSidebar || showRightSidebar) && (
         <div
@@ -115,7 +104,7 @@ export function Layout({
       )}
 
       {/* Main content grid */}
-      <div className={`max-w-7xl mx-auto px-4 ${!isPostView ? 'pt-20 pb-4' : 'py-4'}`}>
+      <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="grid grid-cols-12 gap-4">
           {/* Left sidebar */}
           <aside 
@@ -130,6 +119,12 @@ export function Layout({
 
           {/* Main content area - different column spans based on view type */}
           <main className={`${isPostView ? 'col-span-12 lg:col-span-10 lg:col-start-3' : 'col-span-12 lg:col-span-7'} space-y-4`}>
+            {/* Header content (search bar or back button) */}
+            {header && (
+              <div className="flex justify-center mb-4">
+                {header}
+              </div>
+            )}
             {children}
           </main>
 
