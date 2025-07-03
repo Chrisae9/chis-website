@@ -57,9 +57,9 @@ export function PostList({
   return (
     <div className="space-y-8">
       {/* Filter and sort controls */}
-      <div className="flex flex-row gap-4 mb-6 items-center justify-between">
+      <div className="flex flex-row gap-4 mb-6 items-center">
         {/* Category filter */}
-        <div className="w-1/2 sm:w-64">
+        <div className="flex-1">
           <CategoryFilter 
             categories={categories}
             selectedCategory={selectedCategory}
@@ -67,7 +67,7 @@ export function PostList({
           />
         </div>
         {/* Sort controls */}
-        <div className="w-1/2 sm:flex-1 flex justify-end">
+        <div className="flex-shrink-0">
           <SortControls sortOrder={sortOrder} onSortChange={onSortChange} />
         </div>
       </div>

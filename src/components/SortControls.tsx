@@ -34,10 +34,7 @@ interface SortControlsProps {
  */
 export function SortControls({ sortOrder, onSortChange }: SortControlsProps) {
   return (
-    <div className="flex items-center justify-end mb-3 text-sm">
-      <div className="text-gray-600 dark:text-gray-300 mr-3 font-medium">
-        Sort:
-      </div>
+    <div className="flex items-center justify-end text-sm">
       <div className="flex items-center bg-glass-light rounded-lg p-1 shadow-elegant">
         <button
           onClick={() => onSortChange('desc')}
