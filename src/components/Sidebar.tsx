@@ -32,7 +32,7 @@ interface SidebarProps {
  */
 export function Sidebar({ title, onClose, showMobileHeader = false, children }: SidebarProps) {
   return (
-    <div className="h-full p-4 bg-glass-light rounded-2xl shadow-sidebar" role="complementary" aria-label={title}>
+    <div className="max-h-[98vh] p-4 bg-glass-light rounded-2xl shadow-sidebar overflow-hidden" role="complementary" aria-label={title}>
       {/* Mobile header with close button - only visible on small screens */}
       {showMobileHeader && (
         <div className="flex items-center justify-between mb-3 md:hidden">
@@ -55,7 +55,9 @@ export function Sidebar({ title, onClose, showMobileHeader = false, children }: 
       </div>
       
       {/* Sidebar content */}
-      {children}
+      <div className="overflow-y-auto max-h-full">
+        {children}
+      </div>
     </div>
   );
 }

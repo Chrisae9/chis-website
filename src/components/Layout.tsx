@@ -121,7 +121,7 @@ export function Layout({
           <main className={`${isPostView ? 'col-span-12 lg:col-span-10 lg:col-start-3' : 'col-span-12 lg:col-span-7'} space-y-4`}>
             {/* Header content (search bar or back button) */}
             {header && (
-              <div className="flex justify-center mb-4">
+              <div className="flex justify-center lg:justify-start mb-4">
                 {header}
               </div>
             )}

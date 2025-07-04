@@ -29,7 +29,7 @@ interface SearchBarProps {
  */
 export function SearchBar({ value, onChange }: SearchBarProps) {
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full max-w-md mx-auto lg:max-w-none lg:mx-0">
       <div className="relative w-full">
         <input
           type="text"

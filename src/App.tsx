@@ -146,19 +146,10 @@ function App() {
       setShowLeftSidebar={setShowLeftSidebar}
       setShowRightSidebar={setShowRightSidebar}
       header={
-        selectedPostData ? (
-          // Back button when viewing a post
-          <button
-            onClick={() => handlePostSelect(null)}
-            className="flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-            aria-label="Back to posts list"
-          >
-            ← Back to posts
-          </button>
-        ) : (
+        !selectedPostData ? (
           // Search bar when viewing post list
           <SearchBar value={searchTerm} onChange={setSearchTerm} />
-        )
+        ) : null
       }
       leftSidebar={leftSidebarContent}
       rightSidebar={

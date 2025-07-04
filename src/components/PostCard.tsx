@@ -42,7 +42,7 @@ export function PostCard({ post, searchTerm, onPostClick }: PostCardProps) {
     const parts = text.split(new RegExp(`(${searchTerm})`, 'gi'));
     return parts.map((part, i) => 
       part.toLowerCase() === searchTerm.toLowerCase() ? 
-        <mark key={i} className="bg-yellow-200 dark:bg-yellow-600/70 text-gray-900 dark:text-gray-100 px-0.5 rounded">{part}</mark> : 
+        <mark key={i} className="search-highlight">{part}</mark> : 
         part
     );
   };
