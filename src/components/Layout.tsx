@@ -2,7 +2,7 @@
 import React from 'react';
 
 // Third-party imports
-import { Sun, Moon, Menu, X, Link } from 'lucide-react';
+import { Sun, Moon, Menu, Link } from 'lucide-react';
 
 // Local imports
 import { SidebarConfig } from '../types';
@@ -61,11 +61,18 @@ export function Layout({
           {/* Links button - only show on list view */}
           {!isPostView && (
             <button
-              onClick={() => setShowRightSidebar(!showRightSidebar)}
+              onClick={() => {
+                if (showRightSidebar) {
+                  setShowRightSidebar(false);
+                } else {
+                  setShowLeftSidebar(false); // Close left sidebar if open
+                  setShowRightSidebar(true);
+                }
+              }}
               className="w-12 h-12 bg-white/60 dark:bg-gray-900/60 hover:bg-white/90 dark:hover:bg-gray-900/90 rounded-full transition-all duration-200 text-gray-700 dark:text-gray-100 shadow-lg backdrop-blur-sm border border-gray-200/30 dark:border-gray-700/30 flex items-center justify-center lg:hidden"
               aria-label={showRightSidebar ? "Close links sidebar" : "Open links sidebar"}
             >
-              {showRightSidebar ? <X className="h-5 w-5" /> : <Link className="h-5 w-5" />}
+              <Link className="h-5 w-5" />
             </button>
           )}
           
@@ -83,11 +90,18 @@ export function Layout({
       {/* Mobile sidebar controls - positioned at bottom left */}
       <div className="fixed bottom-4 left-4 z-50 opacity-60 hover:opacity-100 transition-opacity duration-200 lg:hidden">
         <button
-          onClick={() => setShowLeftSidebar(!showLeftSidebar)}
+          onClick={() => {
+            if (showLeftSidebar) {
+              setShowLeftSidebar(false);
+            } else {
+              setShowRightSidebar(false); // Close right sidebar if open
+              setShowLeftSidebar(true);
+            }
+          }}
           className="w-12 h-12 bg-white/60 dark:bg-gray-900/60 hover:bg-white/90 dark:hover:bg-gray-900/90 rounded-full transition-all duration-200 text-gray-700 dark:text-gray-100 shadow-lg backdrop-blur-sm border border-gray-200/30 dark:border-gray-700/30 flex items-center justify-center"
           aria-label={showLeftSidebar ? "Close left sidebar" : "Open left sidebar"}
         >
-          {showLeftSidebar ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          <Menu className="h-5 w-5" />
         </button>
       </div>
 
@@ -110,7 +124,7 @@ export function Layout({
           <aside 
             className={`col-span-2 ${
               showLeftSidebar 
-                ? 'fixed top-4 bottom-4 left-4 w-64 z-50 lg:relative lg:inset-auto lg:w-auto lg:top-auto lg:bottom-auto lg:left-auto' 
+                ? 'fixed bottom-4 left-4 right-4 w-auto z-60 lg:relative lg:inset-auto lg:w-auto lg:top-auto lg:bottom-auto lg:left-auto lg:right-auto' 
                 : 'hidden lg:block'
             }`}
           >
@@ -133,7 +147,7 @@ export function Layout({
             <aside 
               className={`col-span-3 ${
                 showRightSidebar 
-                  ? 'fixed top-4 bottom-4 right-4 w-64 z-50 lg:relative lg:inset-auto lg:w-auto lg:top-auto lg:bottom-auto lg:right-auto' 
+                  ? 'fixed bottom-4 left-4 right-4 w-auto z-60 lg:relative lg:inset-auto lg:w-auto lg:top-auto lg:bottom-auto lg:left-auto lg:right-auto' 
                   : 'hidden lg:block'
               }`}
             >

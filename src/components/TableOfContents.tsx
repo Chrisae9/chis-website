@@ -100,12 +100,26 @@ export function TableOfContents({
   }, [content]);
 
   /**
+   * Clear active heading when special sections are active
+   */
+  useEffect(() => {
+    if (isConnectedPostsActive || isCommentsActive) {
+      setActiveId('');
+    }
+  }, [isConnectedPostsActive, isCommentsActive]);
+
+  /**
    * Set up scroll event listener to update active heading
    */
   useEffect(() => {
     if (headings.length === 0) return;
 
     const handleScroll = () => {
+      // Don't update active heading if special sections are active
+      if (isConnectedPostsActive || isCommentsActive) {
+        return;
+      }
+
       // Get all heading elements that have IDs matching our extracted headings
       const headingElements = headings
         .map(heading => document.getElementById(heading.id))
@@ -139,7 +153,7 @@ export function TableOfContents({
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [headings]);
+  }, [headings, isConnectedPostsActive, isCommentsActive]);
 
   /**
    * Handle clicking on TOC items - smooth scroll to section
@@ -176,7 +190,7 @@ export function TableOfContents({
   };
 
   return (
-    <div>
+    <div className="sticky top-4 z-10">
       {/* Heading navigation */}
       {headings.length === 0 ? (
         <div className="text-sm text-gray-500 dark:text-gray-400 italic">

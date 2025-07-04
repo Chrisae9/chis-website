@@ -1,17 +1,12 @@
 // React imports
 import React from 'react';
 
-// Third-party imports
-import { X } from 'lucide-react';
-
 /**
  * Props for the Sidebar component
  */
 interface SidebarProps {
   /** Title displayed at the top of the sidebar */
   title: string;
-  /** Optional callback function when the close button is clicked */
-  onClose?: () => void;
   /** Whether to show the mobile header with close button */
   showMobileHeader?: boolean;
   /** Content to render inside the sidebar */
@@ -30,22 +25,13 @@ interface SidebarProps {
  * @param props - Component properties
  * @returns React component
  */
-export function Sidebar({ title, onClose, showMobileHeader = false, children }: SidebarProps) {
+export function Sidebar({ title, showMobileHeader = false, children }: SidebarProps) {
   return (
-    <div className="max-h-[98vh] p-4 bg-glass-light rounded-2xl shadow-sidebar overflow-hidden" role="complementary" aria-label={title}>
-      {/* Mobile header with close button - only visible on small screens */}
+    <div className="sticky top-4 max-h-[calc(100vh-2rem)] p-4 bg-glass-light rounded-2xl shadow-sidebar overflow-hidden z-10" role="complementary" aria-label={title}>
+      {/* Mobile header without close button - only visible on small screens */}
       {showMobileHeader && (
-        <div className="flex items-center justify-between mb-3 md:hidden">
+        <div className="flex items-center justify-center mb-3 md:hidden">
           <h2 className="text-sm font-medium text-gray-900 dark:text-gray-100">{title}</h2>
-          {onClose && (
-            <button
-              onClick={onClose}
-              className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-100 rounded shadow-elegant transition-all duration-200"
-              aria-label="Close sidebar"
-            >
-              <X className="h-4 w-4" aria-hidden="true" />
-            </button>
-          )}
         </div>
       )}
       
