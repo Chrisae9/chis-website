@@ -124,7 +124,7 @@ export function Layout({
           <aside 
             className={`col-span-2 ${
               showLeftSidebar 
-                ? 'fixed bottom-4 left-4 right-4 w-auto z-60 lg:relative lg:inset-auto lg:w-auto lg:top-auto lg:bottom-auto lg:left-auto lg:right-auto' 
+                ? 'fixed bottom-20 left-4 right-4 w-auto z-60 lg:relative lg:inset-auto lg:w-auto lg:top-auto lg:bottom-auto lg:left-auto lg:right-auto' 
                 : 'hidden lg:block'
             }`}
           >
@@ -147,7 +147,7 @@ export function Layout({
             <aside 
               className={`col-span-3 ${
                 showRightSidebar 
-                  ? 'fixed bottom-4 left-4 right-4 w-auto z-60 lg:relative lg:inset-auto lg:w-auto lg:top-auto lg:bottom-auto lg:left-auto lg:right-auto' 
+                  ? 'fixed bottom-20 left-4 right-4 w-auto z-60 lg:relative lg:inset-auto lg:w-auto lg:top-auto lg:bottom-auto lg:left-auto lg:right-auto' 
                   : 'hidden lg:block'
               }`}
             >
