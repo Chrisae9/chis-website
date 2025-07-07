@@ -83,8 +83,11 @@ Every feature, component, and utility function—no matter how small—must be c
 
 ### 11. Screenshot and UI Analysis Protocol (User Addition)
 - When the user asks for a screenshot, do not open the Simple Browser. Always use Playwright to interact with the running blog and capture the UI for screenshots and UI analysis.
+- **CRITICAL IMAGE ANALYSIS LIMITATION**: I have demonstrated inconsistent ability to accurately analyze screenshots. When viewing images, I sometimes miss or incorrectly assess visual issues that I was specifically trying to fix.
+- **MANDATORY VERIFICATION PROTOCOL**: After making any UI fix and taking a screenshot, I must explicitly state: "I need you to confirm whether the [specific issue] is actually fixed in this screenshot, as I have shown inconsistent image analysis abilities."
 - Always analyze the UI in screenshots, reflect on what you think is wrong, and clearly state your analysis.
 - Prompt the user to confirm or correct your analysis before attempting any fixes.
+- **NEVER claim a visual issue is fixed based solely on my screenshot analysis** - always ask for user confirmation.
 
 ### 13. Content Management Patterns (Essential Knowledge)
 

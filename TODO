@@ -1,5 +1,2 @@
-- import the rest of posts
-- small readme
-- move sitemap url to config
-- update dependencies
-- light/dark mode transition fix
+- Fix posts not showing up
+- Tags/links sidebar are still not long enough causing the side of the page to be cut off
