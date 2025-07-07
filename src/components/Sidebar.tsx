@@ -27,7 +27,7 @@ interface SidebarProps {
  */
 export function Sidebar({ title, showMobileHeader = false, children }: SidebarProps) {
   return (
-    <div className="sticky top-4 max-h-[calc(100vh-2rem)] p-4 bg-glass-light rounded-2xl shadow-sidebar overflow-hidden z-10" role="complementary" aria-label={title}>
+    <div className="sticky top-4 p-6 bg-glass-light rounded-2xl shadow-sidebar overflow-hidden z-10" role="complementary" aria-label={title}>
       {/* Mobile header without close button - only visible on small screens */}
       {showMobileHeader && (
         <div className="flex items-center justify-center mb-3 md:hidden">
