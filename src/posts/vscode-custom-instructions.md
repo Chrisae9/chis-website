@@ -1,6 +1,6 @@
 ---
 title: VS Code Custom Instructions and Docker Security
-date: 2025-01-05
+date: 2025-07-05
 summary: How to safely use GitHub Copilot custom instructions with Docker containerization, including the terminal allowlist setting that's only available in VS Code Insiders.
 category: Docs
 tags: [VSCode, AI, Copilot, Docker, Security]

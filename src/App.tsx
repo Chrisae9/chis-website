@@ -74,7 +74,6 @@ function App() {
     // When viewing a post: Show table of contents
     <Sidebar
       title="Table of Contents"
-      onClose={() => setShowLeftSidebar(false)}
       showMobileHeader={true}
     >
       <div className="sticky-toc">
@@ -93,7 +92,6 @@ function App() {
     // When viewing post list: Show tag filter
     <Sidebar
       title="Tags"
-      onClose={() => setShowLeftSidebar(false)}
       showMobileHeader={true}
     >
       <TagList
@@ -155,7 +153,6 @@ function App() {
       rightSidebar={
         <Sidebar
           title="Links"
-          onClose={() => setShowRightSidebar(false)}
           showMobileHeader={true}
         >
           <div className="space-y-3">
