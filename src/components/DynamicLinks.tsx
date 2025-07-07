@@ -35,7 +35,7 @@ interface DynamicLinksProps {
  */
 export function DynamicLinks({ links }: DynamicLinksProps) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1.5">
       {links.map((link) => (
         <a
           key={link.name}
@@ -43,9 +43,9 @@ export function DynamicLinks({ links }: DynamicLinksProps) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Visit ${link.name} (opens in new tab)`}
-          className="inline-flex items-center gap-2 px-3 py-1.5 text-sm rounded-md bg-glass-light text-gray-700 dark:text-gray-100 border border-white/20 dark:border-gray-300/20 hover:border-gray-300 dark:hover:border-gray-700 shadow-elegant hover:shadow-card transition-all duration-200 hover:scale-105"
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-md bg-glass-light text-gray-700 dark:text-gray-100 border border-white/20 dark:border-gray-300/20 hover:border-gray-300 dark:hover:border-gray-700 shadow-elegant hover:shadow-card transition-all duration-200 hover:scale-105"
         >
-          <FontAwesomeIcon icon={[link.icon.prefix, link.icon.name]} className="w-4 h-4" aria-hidden="true" />
+          <FontAwesomeIcon icon={[link.icon.prefix, link.icon.name]} className="w-3 h-3" aria-hidden="true" />
           {link.name}
         </a>
       ))}

@@ -122,7 +122,7 @@ export function Layout({
         <div className="grid grid-cols-12 gap-4">
           {/* Left sidebar */}
           <aside 
-            className={`col-span-2 ${
+            className={`col-span-2 overflow-visible ${
               showLeftSidebar 
                 ? 'fixed bottom-20 left-4 right-4 w-auto z-60 lg:relative lg:inset-auto lg:w-auto lg:top-auto lg:bottom-auto lg:left-auto lg:right-auto' 
                 : 'hidden lg:block'
@@ -145,7 +145,7 @@ export function Layout({
           {/* Right sidebar - only visible in list view (not post view) */}
           {!isPostView && (
             <aside 
-              className={`col-span-3 ${
+              className={`col-span-3 overflow-visible ${
                 showRightSidebar 
                   ? 'fixed bottom-20 left-4 right-4 w-auto z-60 lg:relative lg:inset-auto lg:w-auto lg:top-auto lg:bottom-auto lg:left-auto lg:right-auto' 
                   : 'hidden lg:block'

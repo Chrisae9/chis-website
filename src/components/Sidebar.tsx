@@ -27,7 +27,7 @@ interface SidebarProps {
  */
 export function Sidebar({ title, showMobileHeader = false, children }: SidebarProps) {
   return (
-    <div className="sticky top-4 p-6 bg-glass-light rounded-2xl shadow-sidebar overflow-hidden z-10" role="complementary" aria-label={title}>
+    <div className="sticky top-4 p-4 bg-glass-light rounded-2xl shadow-sidebar z-10" role="complementary" aria-label={title}>
       {/* Mobile header without close button - only visible on small screens */}
       {showMobileHeader && (
         <div className="flex items-center justify-center mb-3 md:hidden">
@@ -41,7 +41,7 @@ export function Sidebar({ title, showMobileHeader = false, children }: SidebarPr
       </div>
       
       {/* Sidebar content */}
-      <div className="overflow-y-auto max-h-full">
+      <div className="overflow-visible">
         {children}
       </div>
     </div>
