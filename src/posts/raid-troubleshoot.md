@@ -4,7 +4,7 @@ date: 2023-11-17
 summary: Right before Thanksgiving, my server failed to boot. Thinking it was a failed hard drive, I tried to diagnose the problem. Leading to an even worse issue. Here is the post-mortem.
 category: Learning
 tags: [Post-Mortem, RAID]
-draft: true
+draft: false
 ---
 
 ## Introduction
@@ -28,8 +28,6 @@ I was attempting to copy over some Emulation files from my Steam Deck to my lapt
 ## Diagnosis
 
 After I realized my server was unresponsive, I plugged in a monitor and keyboard into the device. After a quick restart, I got a dialog box that showed my RAID configuration in a degraded state.
-
-![Untitled](RAID%20troubleshooting%20d02f415d29784a2cbbccfcf433ad99ba/Untitled%201.png)
 
 When booting into Arch, the system failed to boot since it could not mount the RAID configuration. 
 
