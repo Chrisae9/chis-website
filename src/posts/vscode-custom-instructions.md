@@ -6,9 +6,10 @@ category: Docs
 tags: [VSCode, AI, Copilot, Workflow, Template]
 ---
 
-## From Idea to MVP: My Frictionless AI Workflow
 
 !45[vscode copilot](/images/vscode-copilot.png)
+
+> **Note:** I previously used Claude Sonnet 4 for Copilot workflows, but after running out of premium requests, I now use GPT-4.1 with a [custom chat mode](https://gist.github.com/burkeholland/88af0249c4b6aff3820bf37898c8bacf). For deep research and planning, I open a browser and use Gemini 2.5 Pro to gather and synthesize information before coding.
 
 Establishing a robust AI-powered development workflow should not require extensive manual setup. This post outlines how I leverage AI, VS Code, and a custom template to streamline the process—moving beyond the era of copy-pasting code from chat windows to a fully integrated, automated workflow.
 
