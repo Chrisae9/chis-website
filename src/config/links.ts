@@ -32,6 +32,14 @@ export const links: DynamicLink[] = [
     }
   },
   {
+    name: "Coin Flip Tracker",
+    url: "https://coin.chis.dev/",
+    icon: {
+      prefix: "fas",
+      name: "coins"
+    }
+  },
+  {
     name: "File Hosting",
     url: "https://share.chis.dev/",
     icon: {
