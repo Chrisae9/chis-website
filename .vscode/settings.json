@@ -1,0 +1,15 @@
+{
+  "github.copilot.chat.agent.terminal.allowList": {
+    "nvm": true,
+    "nvm use && npm run test -- --reporter verbose": true,
+    "nvm use && npm run dev": true,
+    "nvm use && npx vitest --clearCache": true,
+    "npm run test -- --reporter verbose": true,
+    "npm run dev": true,
+    "docker compose --profile test up app-test": true,
+    "docker compose --profile dev up app-dev": true,
+    "docker compose --profile dev down": true,
+    "docker compose --profile test down": true,
+  }
+}
+  

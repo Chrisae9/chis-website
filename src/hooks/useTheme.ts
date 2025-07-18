@@ -1,52 +1,37 @@
-// React imports
+'use client'
+
 import { useState, useEffect } from 'react';
 
-/**
- * Custom hook for managing the application's theme (dark/light mode)
- * 
- * Features:
- * - Persists theme preference in localStorage
- * - Updates document class for CSS styling
- * - Provides toggle function for switching themes
- * 
- * @returns Object containing current theme state and toggle function
- */
 export function useTheme() {
-  // Initialize state from localStorage or default to light mode
-  const [darkMode, setDarkMode] = useState<boolean>(() => {
-    try {
-      const storedMode = localStorage.getItem('darkMode');
-      return storedMode === 'true';
-    } catch {
-      // Return default value if localStorage data is invalid
-      return false;
-    }
-  });
+  const [darkMode, setDarkMode] = useState(false);
 
-  /**
-   * Apply theme changes to DOM and persist to localStorage
-   */
   useEffect(() => {
-    try {
-      // Save preference to localStorage
-      localStorage.setItem('darkMode', darkMode.toString());
-    } catch {
-      // Silently handle localStorage errors (e.g., quota exceeded)
-      console.warn('Failed to save theme preference to localStorage');
+    // Check for stored theme preference or default to light mode
+    const stored = localStorage.getItem('darkMode');
+    if (stored !== null) {
+      setDarkMode(JSON.parse(stored));
+    } else {
+      // Check system preference
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setDarkMode(systemPrefersDark);
     }
-    
-    // Update document class for CSS styling
+  }, []);
+
+  useEffect(() => {
+    // Apply theme to HTML element
     if (darkMode) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
+    
+    // Store preference
+    localStorage.setItem('darkMode', JSON.stringify(darkMode));
   }, [darkMode]);
 
-  /**
-   * Toggle between dark and light mode
-   */
-  const toggleDarkMode = () => setDarkMode(!darkMode);
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
 
   return { darkMode, toggleDarkMode };
 }

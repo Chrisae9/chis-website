@@ -1,45 +1,20 @@
-// React imports
+'use client'
+
 import React from 'react';
-
-// Third-party imports
 import { Sun, Moon, Menu, Link } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { SidebarConfig } from '@/types';
 
-// Local imports
-import { SidebarConfig } from '../types';
-
-/**
- * Props for the Layout component
- * Extends SidebarConfig to include sidebar visibility state and controls
- */
 interface LayoutProps extends SidebarConfig {
-  /** Main content to render in the layout */
   children: React.ReactNode;
-  /** Current theme state (true for dark mode, false for light mode) */
   darkMode: boolean;
-  /** Function to toggle between dark and light mode */
   toggleDarkMode: () => void;
-  /** Content to render in the left sidebar */
   leftSidebar: React.ReactNode;
-  /** Content to render in the right sidebar */
   rightSidebar: React.ReactNode;
-  /** Content to render in the header (e.g., search bar, back button) */
   header: React.ReactNode;
-  /** Whether the current view is a post detail view */
   isPostView: boolean;
 }
 
-/**
- * Main layout component for the application
- * 
- * Features:
- * - Responsive layout with sidebars that collapse on mobile
- * - Sticky header with navigation controls
- * - Dark/light mode toggle
- * - Different layouts for post view vs. list view
- * 
- * @param props - Component properties
- * @returns React component
- */
 export function Layout({
   children,
   darkMode,
@@ -60,7 +35,7 @@ export function Layout({
         <div className="flex gap-2">
           {/* Links button - only show on list view */}
           {!isPostView && (
-            <button
+            <Button
               onClick={() => {
                 if (showRightSidebar) {
                   setShowRightSidebar(false);
@@ -69,27 +44,31 @@ export function Layout({
                   setShowRightSidebar(true);
                 }
               }}
-              className="w-12 h-12 bg-white/60 dark:bg-gray-900/60 hover:bg-white/90 dark:hover:bg-gray-900/90 rounded-full transition-all duration-200 text-gray-700 dark:text-gray-100 shadow-lg backdrop-blur-sm border border-gray-200/30 dark:border-gray-700/30 flex items-center justify-center lg:hidden"
+              variant="ghost"
+              size="icon"
+              className="w-12 h-12 bg-white/60 dark:bg-gray-900/60 hover:bg-white/90 dark:hover:bg-gray-900/90 rounded-full transition-all duration-200 text-gray-700 dark:text-gray-100 shadow-lg backdrop-blur-sm border border-gray-200/30 dark:border-gray-700/30 lg:hidden"
               aria-label={showRightSidebar ? "Close links sidebar" : "Open links sidebar"}
             >
               <Link className="h-5 w-5" />
-            </button>
+            </Button>
           )}
           
           {/* Theme toggle */}
-          <button
+          <Button
             onClick={toggleDarkMode}
-            className="w-12 h-12 bg-white/60 dark:bg-gray-900/60 hover:bg-white/90 dark:hover:bg-gray-900/90 rounded-full transition-all duration-200 text-gray-700 dark:text-gray-100 shadow-lg backdrop-blur-sm border border-gray-200/30 dark:border-gray-700/30 flex items-center justify-center"
+            variant="ghost"
+            size="icon"
+            className="w-12 h-12 bg-white/60 dark:bg-gray-900/60 hover:bg-white/90 dark:hover:bg-gray-900/90 rounded-full transition-all duration-200 text-gray-700 dark:text-gray-100 shadow-lg backdrop-blur-sm border border-gray-200/30 dark:border-gray-700/30"
             aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
           >
             {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Mobile sidebar controls - positioned at bottom left */}
       <div className="fixed bottom-4 left-4 z-50 opacity-60 hover:opacity-100 transition-opacity duration-200 lg:hidden">
-        <button
+        <Button
           onClick={() => {
             if (showLeftSidebar) {
               setShowLeftSidebar(false);
@@ -98,11 +77,13 @@ export function Layout({
               setShowLeftSidebar(true);
             }
           }}
-          className="w-12 h-12 bg-white/60 dark:bg-gray-900/60 hover:bg-white/90 dark:hover:bg-gray-900/90 rounded-full transition-all duration-200 text-gray-700 dark:text-gray-100 shadow-lg backdrop-blur-sm border border-gray-200/30 dark:border-gray-700/30 flex items-center justify-center"
+          variant="ghost"
+          size="icon"
+          className="w-12 h-12 bg-white/60 dark:bg-gray-900/60 hover:bg-white/90 dark:hover:bg-gray-900/90 rounded-full transition-all duration-200 text-gray-700 dark:text-gray-100 shadow-lg backdrop-blur-sm border border-gray-200/30 dark:border-gray-700/30"
           aria-label={showLeftSidebar ? "Close left sidebar" : "Open left sidebar"}
         >
           <Menu className="h-5 w-5" />
-        </button>
+        </Button>
       </div>
 
       {/* Overlay for mobile sidebars - visible only on small screens when sidebar is open */}

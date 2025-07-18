@@ -1,0 +1,18 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Test: Run All Tests",
+			"type": "shell",
+			"command": "docker",
+			"args": [
+				"compose",
+				"--profile",
+				"test",
+				"up",
+				"app-test"
+			],
+			"group": "test"
+		}
+	]
+}
